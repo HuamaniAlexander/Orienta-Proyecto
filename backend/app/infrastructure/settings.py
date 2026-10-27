@@ -11,3 +11,5 @@ class Settings(BaseSettings):
     insforge_base_url: str = ""
     insforge_api_key: SecretStr = SecretStr("")
     ml_artifacts_path: Path = Path(__file__).resolve().parents[2] / 'ml_artifacts'
+    gemini_api_key: SecretStr = SecretStr('')
+    gemini_model: str = 'gemini-3.8-flash'
