@@ -72,44 +72,6 @@ export function Home() {
         </div>
       </section>
       {data && <InstitutionCarousel institutions={data.instituciones} />}
-      <section className="stats-section" aria-label="El catálogo en cifras">
-        <div className="container stats-grid">
-          {[
-            {
-              value: data?.resumen.carreras,
-              label: "carreras por descubrir",
-              icon: GraduationCap,
-            },
-            {
-              value: data?.resumen.ofertas,
-              label: "opciones académicas",
-              icon: BookOpen,
-            },
-            {
-              value: data?.resumen.instituciones,
-              label: "instituciones en el catálogo",
-              icon: Building2,
-            },
-            {
-              value: data?.resumen.distritos,
-              label: "distritos de Lima Norte",
-              icon: MapPin,
-            },
-          ].map(({ icon: Icon, ...item }) => (
-            <div className="stat" key={item.label}>
-              <span className="stat-icon" aria-hidden="true">
-                <Icon size={21} />
-              </span>
-              <div>
-                <strong>
-                  <AnimatedCount value={item.value} />
-                </strong>
-                <span>{item.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
       <section className="section container" id="como-funciona">
         <div className="section-heading centered">
           <p className="eyebrow">UN CAMINO MÁS SIMPLE</p>
@@ -147,6 +109,44 @@ export function Home() {
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
+          ))}
+        </div>
+      </section>
+      <section className="stats-section" aria-label="El catálogo en cifras">
+        <div className="container stats-grid">
+          {[
+            {
+              value: data?.resumen.carreras,
+              label: "carreras por descubrir",
+              icon: GraduationCap,
+            },
+            {
+              value: data?.resumen.ofertas,
+              label: "opciones académicas",
+              icon: BookOpen,
+            },
+            {
+              value: data?.resumen.instituciones,
+              label: "instituciones en el catálogo",
+              icon: Building2,
+            },
+            {
+              value: data?.resumen.distritos,
+              label: "distritos de Lima Norte",
+              icon: MapPin,
+            },
+          ].map(({ icon: Icon, ...item }) => (
+            <div className="stat" key={item.label}>
+              <span className="stat-icon" aria-hidden="true">
+                <Icon size={21} />
+              </span>
+              <div>
+                <strong>
+                  <AnimatedCount value={item.value} />
+                </strong>
+                <span>{item.label}</span>
+              </div>
+            </div>
           ))}
         </div>
       </section>
