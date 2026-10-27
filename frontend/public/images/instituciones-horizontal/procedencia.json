@@ -12,8 +12,9 @@
     "origen": "https://cdn.cibertec.edu.pe/www/logo.svg"
   },
   "22": {
-    "archivo": "/images/instituciones-horizontal/22.svg",
-    "origen": "https://www.cientifica.edu.pe/wp-content/uploads/2023/08/logo-cientifica.svg"
+    "archivo": "/images/instituciones-horizontal/22-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
   },
   "1": {
     "archivo": "/images/instituciones-horizontal/1.svg",
@@ -28,11 +29,85 @@
     "origen": "https://www.ucss.edu.pe/templates/gk_gamenews/images/logo.png"
   },
   "10": {
-    "archivo": "/images/instituciones-horizontal/10.svg",
-    "origen": "https://www.sise.edu.pe/assets/containers/logo.svg"
+    "archivo": "/images/instituciones-horizontal/10-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
   },
   "23": {
     "archivo": "/images/instituciones-horizontal/23.svg",
     "origen": "https://www.senati.edu.pe/sites/all/themes/senati_theme/img/logo_azul.svg"
+  },
+  "4": {
+    "archivo": "/images/instituciones-horizontal/4-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "6": {
+    "archivo": "/images/instituciones-horizontal/6-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "8": {
+    "archivo": "/images/instituciones-horizontal/8-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "13": {
+    "archivo": "/images/instituciones-horizontal/13-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "14": {
+    "archivo": "/images/instituciones-horizontal/14-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "15": {
+    "archivo": "/images/instituciones-horizontal/15-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "16": {
+    "archivo": "/images/instituciones-horizontal/16-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "17": {
+    "archivo": "/images/instituciones-horizontal/17-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "18": {
+    "archivo": "/images/instituciones-horizontal/18-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados",
+    "fondo": "oscuro"
+  },
+  "20": {
+    "archivo": "/images/instituciones-horizontal/20-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "21": {
+    "archivo": "/images/instituciones-horizontal/21-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados"
+  },
+  "9": {
+    "archivo": "/images/instituciones-horizontal/9-20261027.webp",
+    "origen": "Archivo horizontal proporcionado por el usuario",
+    "tratamiento": "Recorte de márgenes y optimización WebP; colores y proporciones conservados",
+    "fondo": "oscuro"
+  },
+  "12": {
+    "archivo": "/images/instituciones-horizontal/12-composicion-20261027.webp",
+    "origen": "Emblema proporcionado por el usuario",
+    "tratamiento": "Composición de presentación ORIENTA: emblema original y nombre del catálogo; no es una versión oficial del logotipo",
+    "nota": "Se usa solo el emblema USIL del adjunto; el catálogo corresponde al Instituto de Emprendedores USIL, no a la universidad."
+  },
+  "19": {
+    "archivo": "/images/instituciones-horizontal/19-composicion-20261027.webp",
+    "origen": "Emblema proporcionado por el usuario",
+    "tratamiento": "Composición de presentación ORIENTA: emblema original y nombre del catálogo; no es una versión oficial del logotipo"
   }
 }

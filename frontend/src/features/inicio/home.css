@@ -132,6 +132,11 @@
   line-height: 1.45;
   color: var(--secondary);
 }
+.institution-track .institution-logo-dark {
+  background: #000;
+  border-radius: 7px;
+  padding: 7px 10px;
+}
 .stats-section .stats-grid {
   padding-block: 25px;
 }
