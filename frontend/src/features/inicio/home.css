@@ -24,6 +24,22 @@
   font-size: 1.04rem;
   margin-top: 20px;
 }
+.hero-cta {
+  font-size: 0.95rem;
+  padding: 14px 24px;
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.15s ease;
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(29, 78, 216, 0.38);
+}
+.hero-cta .hero-cta-arrow {
+  transition: transform 0.2s ease;
+}
+.hero-cta:hover .hero-cta-arrow {
+  transform: translateX(4px);
+}
 .hero .hero-art {
   padding: 0;
   isolation: isolate;
