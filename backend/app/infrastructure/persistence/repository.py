@@ -95,6 +95,22 @@ class InsforgeCatalog:
             for table, select, order in definitions.values()
         ])
         result = {key: response.json() for key, response in zip(definitions, responses, strict=True)}
+        # Only public relation IDs are needed for cascading filters, never full offers.
+        relations = []
+        offset = 0
+        while True:
+            response = await self.records("orienta_catalogo", {
+                "select": "tipo_id,institucion_id,carrera_id,area_id,modalidad_id,distrito_id",
+                "order": "oferta_id.asc", "limit": "500", "offset": str(offset),
+            })
+            batch = response.json()
+            relations.extend(batch)
+            if len(batch) < 500:
+                break
+            offset += 500
+        result["relaciones"] = [dict(values) for values in dict.fromkeys(
+            tuple(sorted(relation.items())) for relation in relations
+        )]
         page = await self.search(CatalogFilters(page_size=1))
         result["resumen"] = {"ofertas": page.total, "carreras": len(result["carreras"]),
                              "instituciones": len(result["instituciones"]), "distritos": len(result["distritos"])}

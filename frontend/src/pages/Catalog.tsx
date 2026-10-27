@@ -1,3 +1,20 @@
+import { useEffect } from "react";
+import {
+  Building2,
+  GraduationCap,
+  BookOpen,
+  Monitor,
+  MapPin,
+  Layers,
+  ChevronDown,
+  ArrowDownAZ,
+} from "lucide-react";
+import {
+  compatibleRows,
+  normalizeFilters,
+  filterOrder,
+  type FilterKey,
+} from "../features/catalogo/filters";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,55 +31,69 @@ import type { CatalogPage, Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
 export function Catalog() {
-  const [params, setParams] = useSearchParams();
+  const [rawParams, setParams] = useSearchParams();
   const facets = useApi<Facets>("/api/filtros");
+  const params = facets.data
+    ? normalizeFilters(facets.data, rawParams)
+    : rawParams;
+  const canonical = params.toString();
+  useEffect(() => {
+    if (facets.data && canonical !== rawParams.toString())
+      setParams(canonical, { replace: true });
+  }, [canonical, rawParams, setParams, facets.data]);
   const result = useApi<CatalogPage>(`/api/ofertas?${params.toString()}`);
   function change(key: string, value: string) {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);
     else next.delete(key);
     if (key !== "page") next.delete("page");
-    setParams(next);
+    setParams(facets.data ? normalizeFilters(facets.data, next) : next);
   }
   const filters = facets.data
     ? [
         {
-          key: "tipo_id",
+          key: "tipo_id" as FilterKey,
+          icon: GraduationCap,
           label: "Tipo de institución",
           options: facets.data.tipos.map(
             (v) => [v.codigo_id, v.etiqueta] as const,
           ),
         },
         {
-          key: "institucion_id",
+          key: "institucion_id" as FilterKey,
+          icon: Building2,
           label: "Institución",
           options: facets.data.instituciones.map(
             (v) => [v.institucion_id, v.nombre] as const,
           ),
         },
         {
-          key: "carrera_id",
+          key: "carrera_id" as FilterKey,
+          icon: BookOpen,
           label: "Carrera",
           options: facets.data.carreras.map(
             (v) => [v.carrera_id, v.nombre_catalogado] as const,
           ),
         },
         {
-          key: "modalidad_id",
+          key: "modalidad_id" as FilterKey,
+          icon: Monitor,
           label: "Modalidad",
           options: facets.data.modalidades.map(
             (v) => [v.codigo_id, v.etiqueta] as const,
           ),
         },
         {
-          key: "distrito_id",
+          key: "distrito_id" as FilterKey,
+          icon: MapPin,
           label: "Distrito",
           options: facets.data.distritos.map(
             (v) => [v.distrito_id, v.distrito] as const,
           ),
         },
         {
-          key: "area_id",
+          key: "area_id" as FilterKey,
+          icon: Layers,
           label: "Área académica",
           options: facets.data.areas.map(
             (v) => [v.area_id, v.nombre_area] as const,
@@ -70,6 +101,19 @@ export function Catalog() {
         },
       ]
     : [];
+  filters.sort(
+    (a, b) => filterOrder.indexOf(a.key) - filterOrder.indexOf(b.key),
+  );
+  const available = filters.map((filter) => ({
+    ...filter,
+    options: filter.options.filter(
+      ([id]) =>
+        facets.data &&
+        compatibleRows(facets.data, params, filter.key).some(
+          (row) => row[filter.key] === id,
+        ),
+    ),
+  }));
   const active = filters.filter((filter) => params.has(filter.key));
   const pages = result.data
     ? Math.max(1, Math.ceil(result.data.total / result.data.page_size))
@@ -122,30 +166,53 @@ export function Catalog() {
               <Failure message={facets.error} retry={facets.retry} />
             ) : (
               <div className="filters-fields">
-                {filters.map((filter) => (
+                {available.map((filter) => (
                   <label key={filter.key} htmlFor={filter.key}>
                     {filter.label}
-                    <select
-                      id={filter.key}
-                      aria-label={filter.label}
-                      value={params.get(filter.key) ?? ""}
-                      onChange={(event) =>
-                        change(filter.key, event.target.value)
-                      }
-                    >
-                      <option value="">Todas las opciones</option>
-                      {filter.options.map(([id, label]) => (
-                        <option key={id} value={id}>
-                          {label}
+                    <span className="filter-select">
+                      <filter.icon
+                        className="filter-icon"
+                        size={18}
+                        aria-hidden="true"
+                      />
+                      <select
+                        id={filter.key}
+                        aria-label={filter.label}
+                        title={
+                          filter.options.find(
+                            ([id]) => String(id) === params.get(filter.key),
+                          )?.[1] ??
+                          `Sin restricción: ${filter.label.toLowerCase()}`
+                        }
+                        value={params.get(filter.key) ?? ""}
+                        onChange={(event) =>
+                          change(filter.key, event.target.value)
+                        }
+                      >
+                        <option value="">
+                          {["tipo_id", "distrito_id"].includes(filter.key)
+                            ? "Todos"
+                            : "Todas"}
                         </option>
-                      ))}
-                    </select>
+                        {filter.options.map(([id, label]) => (
+                          <option key={id} value={id}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        className="select-chevron"
+                        size={16}
+                        aria-hidden="true"
+                      />
+                    </span>
                   </label>
                 ))}
               </div>
             )}
             <p className="filters-help">
-              Combina los filtros para acercarte a lo que buscas.
+              Cada filtro muestra las alternativas compatibles con los
+              anteriores.
             </p>
           </details>
         </aside>
@@ -166,13 +233,25 @@ export function Catalog() {
             </div>
             <label className="sort-label">
               Ordenar por
-              <select
-                value={params.get("order") ?? "nombre"}
-                onChange={(event) => change("order", event.target.value)}
-              >
-                <option value="nombre">Carrera</option>
-                <option value="institucion">Institución</option>
-              </select>
+              <span className="filter-select sort-select">
+                <ArrowDownAZ
+                  className="filter-icon"
+                  size={16}
+                  aria-hidden="true"
+                />
+                <select
+                  value={params.get("order") ?? "nombre"}
+                  onChange={(event) => change("order", event.target.value)}
+                >
+                  <option value="nombre">Carrera</option>
+                  <option value="institucion">Institución</option>
+                </select>
+                <ChevronDown
+                  className="select-chevron"
+                  size={16}
+                  aria-hidden="true"
+                />
+              </span>
             </label>
           </div>
           {(active.length > 0 || params.get("q")) && (
