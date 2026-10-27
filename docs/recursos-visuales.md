@@ -18,3 +18,27 @@ Prompt del hero (herramienta integrada, sin CLI):
 Playwright: navegación móvil, cierre con Escape, modo ligero, ruta inexistente
 y ausencia de desbordamiento verificados en 360, 390, 768, 1024 y 1440 px.
 Capturas revisadas visualmente y conservadas en docs/evidencias/.
+
+## Banners del catálogo
+
+Diez escenas editoriales generadas con ImageGen integrado, convertidas a WebP
+640×400, calidad 70: tecnologia, ingenieria, negocios, salud, derecho,
+educacion, creatividad, turismo, ambiente y humanidades. Están en
+frontend/public/images/. Se seleccionan por área académica, no por institución.
+
+Plantilla del prompt: "Use case: photorealistic-natural. Asset type: ORIENTA
+career card banner, wide horizontal editorial photograph. Scene: [escena].
+Natural daylight, professional composition, realistic details, warm neutral
+colors with blue and teal accents. No text, no brand, no watermark, no
+institution identity. Illustrative academic scene, not documentation of a real campus."
+
+Escenas: desarrollo de software en laboratorio; ingeniería en taller industrial;
+estudiantes revisando finanzas; estudiante de salud con modelo anatómico;
+estudiante de derecho en biblioteca; docente preparando materiales sin niños;
+estudiantes de diseño con bocetos; cocina de enseñanza con plato peruano;
+estudiante ambiental examinando plantas; investigación social en biblioteca.
+
+Iconos institucionales: 19 descargados desde sitios oficiales indicados por el
+Excel. Procedencia exacta en frontend/public/images/instituciones.json.
+Si no hay un recurso disponible se muestran iniciales de texto como respaldo,
+sin inventar un logo ni establecer asociación institucional con ORIENTA.
