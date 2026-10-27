@@ -278,7 +278,17 @@ input[type="checkbox"] {
   flex-direction: column;
   gap: 6px;
 }
-.criterion-title > strong {
+.criterion-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.criterion-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.criterion-title > strong,
+.criterion-header > strong {
   font-size: 0.75rem;
   color: #405570;
   line-height: 1.6;
@@ -488,7 +498,8 @@ input[type="checkbox"] {
     gap: 9px;
     flex-wrap: wrap;
   }
-  .criterion-title > strong {
+  .criterion-title > strong,
+  .criterion-header > strong {
     font-size: 0.7rem;
   }
   .criterion-title > small {
