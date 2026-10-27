@@ -1561,5 +1561,550 @@
       ],
       "tarifas": []
     }
+  },
+  "comparisons": {
+    "10,110": {
+      "opciones": [
+        {
+          "oferta_id": 10,
+          "carrera_id": 2,
+          "institucion_id": 1,
+          "sede_id": 1,
+          "carrera_oficial": "Ingeniería de Software",
+          "institucion": "Universidad Tecnológica del Perú",
+          "tipo": "Universidad",
+          "distrito": "Los Olivos",
+          "modalidad": "Presencial",
+          "area": "Tecnología e informática",
+          "sede": "Lima Norte",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Alfredo Mendiola 6377",
+          "duracion_valor": 5.0,
+          "duracion_unidad": "años",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+          "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 1,
+          "fuente_ficha_id": 36,
+          "tipo_id": 1,
+          "area_id": 1,
+          "modalidad_id": 1,
+          "distrito_id": 5,
+          "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+        },
+        {
+          "oferta_id": 110,
+          "carrera_id": 1,
+          "institucion_id": 3,
+          "sede_id": 4,
+          "carrera_oficial": "Ingeniería de Sistemas",
+          "institucion": "Universidad César Vallejo",
+          "tipo": "Universidad",
+          "distrito": "Los Olivos",
+          "modalidad": "Presencial",
+          "area": "Tecnología e informática",
+          "sede": "Lima Norte",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Alfredo Mendiola 6232",
+          "duracion_valor": 10.0,
+          "duracion_unidad": "ciclos",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.ucv.edu.pe/pregrado-presencial/ingenieria-de-sistemas",
+          "fuente_oferta_url": "https://www.ucv.edu.pe/lima-norte",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 3,
+          "fuente_ficha_id": 124,
+          "tipo_id": 1,
+          "area_id": 1,
+          "modalidad_id": 1,
+          "distrito_id": 5,
+          "evidencia_sede": "Listado del campus Lima Norte; la página repite programas entre pestañas, por lo que la modalidad se consulta por programa"
+        }
+      ],
+      "criterios": [
+        {
+          "key": "carrera_oficial",
+          "title": "Carrera",
+          "a": "Ingeniería de Software",
+          "b": "Ingeniería de Sistemas",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "enfoque_editorial",
+          "title": "Enfoque de estudio",
+          "a": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "b": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "ambitos_editoriales",
+          "title": "Ámbitos de actividad",
+          "a": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "b": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "duracion",
+          "title": "Duración publicada",
+          "a": "5 años",
+          "b": "10 ciclos",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "costos",
+          "title": "Costo de enseñanza",
+          "a": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "b": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "modalidad",
+          "title": "Modalidad",
+          "a": "Presencial",
+          "b": "Presencial",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "distrito",
+          "title": "Distrito",
+          "a": "Los Olivos",
+          "b": "Los Olivos",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "institucion",
+          "title": "Institución",
+          "a": "Universidad Tecnológica del Perú",
+          "b": "Universidad César Vallejo",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "tipo",
+          "title": "Tipo de institución",
+          "a": "Universidad",
+          "b": "Universidad",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "sede",
+          "title": "Sede",
+          "a": "Lima Norte",
+          "b": "Lima Norte",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "nivel",
+          "title": "Nivel formativo",
+          "a": "Pregrado universitario",
+          "b": "Pregrado universitario",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "gestion",
+          "title": "Gestión",
+          "a": "Privada",
+          "b": "Privada",
+          "different": false,
+          "editorial": false
+        }
+      ],
+      "misma_carrera": false,
+      "explicacion": "Comparas carreras distintas: empieza por su enfoque y luego revisa cómo se ofrece cada una.",
+      "diferencia_duracion": null,
+      "pendientes": [
+        "Requisitos de admisión",
+        "Malla curricular",
+        "Perfil de egreso",
+        "Prácticas",
+        "Acreditaciones",
+        "Convenios",
+        "Horarios",
+        "Bolsa laboral y empleabilidad"
+      ]
+    },
+    "33,66": {
+      "opciones": [
+        {
+          "oferta_id": 33,
+          "carrera_id": 34,
+          "institucion_id": 2,
+          "sede_id": 2,
+          "carrera_oficial": "Administración",
+          "institucion": "Universidad Privada del Norte",
+          "tipo": "Universidad",
+          "distrito": "Los Olivos",
+          "modalidad": "Consultar modalidad del programa y convocatoria",
+          "area": "Negocios, economía y gestión",
+          "sede": "Los Olivos",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+          "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Alfredo Mendiola 6062",
+          "duracion_valor": 5.0,
+          "duracion_unidad": "años",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+          "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 2,
+          "fuente_ficha_id": 59,
+          "tipo_id": 1,
+          "area_id": 3,
+          "modalidad_id": 4,
+          "distrito_id": 5,
+          "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+        },
+        {
+          "oferta_id": 66,
+          "carrera_id": 34,
+          "institucion_id": 2,
+          "sede_id": 3,
+          "carrera_oficial": "Administración",
+          "institucion": "Universidad Privada del Norte",
+          "tipo": "Universidad",
+          "distrito": "Comas",
+          "modalidad": "Consultar modalidad del programa y convocatoria",
+          "area": "Negocios, economía y gestión",
+          "sede": "Comas",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+          "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Héroes del Alto Cenepa 2000",
+          "duracion_valor": 5.0,
+          "duracion_unidad": "años",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+          "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-comas",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 23,
+          "fuente_ficha_id": 59,
+          "tipo_id": 1,
+          "area_id": 3,
+          "modalidad_id": 4,
+          "distrito_id": 3,
+          "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+        }
+      ],
+      "criterios": [
+        {
+          "key": "carrera_oficial",
+          "title": "Carrera",
+          "a": "Administración",
+          "b": "Administración",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "enfoque_editorial",
+          "title": "Enfoque de estudio",
+          "a": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+          "b": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "ambitos_editoriales",
+          "title": "Ámbitos de actividad",
+          "a": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+          "b": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "duracion",
+          "title": "Duración publicada",
+          "a": "5 años",
+          "b": "5 años",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "costos",
+          "title": "Costo de enseñanza",
+          "a": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "b": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "modalidad",
+          "title": "Modalidad",
+          "a": "Consultar modalidad del programa y convocatoria",
+          "b": "Consultar modalidad del programa y convocatoria",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "distrito",
+          "title": "Distrito",
+          "a": "Los Olivos",
+          "b": "Comas",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "institucion",
+          "title": "Institución",
+          "a": "Universidad Privada del Norte",
+          "b": "Universidad Privada del Norte",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "tipo",
+          "title": "Tipo de institución",
+          "a": "Universidad",
+          "b": "Universidad",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "sede",
+          "title": "Sede",
+          "a": "Los Olivos",
+          "b": "Comas",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "nivel",
+          "title": "Nivel formativo",
+          "a": "Pregrado universitario",
+          "b": "Pregrado universitario",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "gestion",
+          "title": "Gestión",
+          "a": "Privada",
+          "b": "Privada",
+          "different": false,
+          "editorial": false
+        }
+      ],
+      "misma_carrera": true,
+      "explicacion": "Comparas dos ofertas de la misma carrera: revisa institución, distrito, modalidad y duración.",
+      "diferencia_duracion": "Las duraciones publicadas coinciden.",
+      "pendientes": [
+        "Requisitos de admisión",
+        "Malla curricular",
+        "Perfil de egreso",
+        "Prácticas",
+        "Acreditaciones",
+        "Convenios",
+        "Horarios",
+        "Bolsa laboral y empleabilidad"
+      ]
+    },
+    "10,54": {
+      "opciones": [
+        {
+          "oferta_id": 10,
+          "carrera_id": 2,
+          "institucion_id": 1,
+          "sede_id": 1,
+          "carrera_oficial": "Ingeniería de Software",
+          "institucion": "Universidad Tecnológica del Perú",
+          "tipo": "Universidad",
+          "distrito": "Los Olivos",
+          "modalidad": "Presencial",
+          "area": "Tecnología e informática",
+          "sede": "Lima Norte",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Alfredo Mendiola 6377",
+          "duracion_valor": 5.0,
+          "duracion_unidad": "años",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+          "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 1,
+          "fuente_ficha_id": 36,
+          "tipo_id": 1,
+          "area_id": 1,
+          "modalidad_id": 1,
+          "distrito_id": 5,
+          "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+        },
+        {
+          "oferta_id": 54,
+          "carrera_id": 2,
+          "institucion_id": 2,
+          "sede_id": 2,
+          "carrera_oficial": "Ingeniería de Software",
+          "institucion": "Universidad Privada del Norte",
+          "tipo": "Universidad",
+          "distrito": "Los Olivos",
+          "modalidad": "Consultar modalidad del programa y convocatoria",
+          "area": "Tecnología e informática",
+          "sede": "Los Olivos",
+          "nivel": "Pregrado universitario",
+          "gestion": "Privada",
+          "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+          "direccion": "Av. Alfredo Mendiola 6062",
+          "duracion_valor": 5.0,
+          "duracion_unidad": "años",
+          "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "ficha_url": "https://www.upn.edu.pe/pregrado/ingenieria/ingenieria-de-software",
+          "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+          "periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26",
+          "fuente_oferta_id": 2,
+          "fuente_ficha_id": 80,
+          "tipo_id": 1,
+          "area_id": 1,
+          "modalidad_id": 4,
+          "distrito_id": 5,
+          "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+        }
+      ],
+      "criterios": [
+        {
+          "key": "carrera_oficial",
+          "title": "Carrera",
+          "a": "Ingeniería de Software",
+          "b": "Ingeniería de Software",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "enfoque_editorial",
+          "title": "Enfoque de estudio",
+          "a": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "b": "Soluciones digitales, sistemas de información y tecnologías de computación",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "ambitos_editoriales",
+          "title": "Ámbitos de actividad",
+          "a": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "b": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+          "different": false,
+          "editorial": true
+        },
+        {
+          "key": "duracion",
+          "title": "Duración publicada",
+          "a": "5 años",
+          "b": "5 años",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "costos",
+          "title": "Costo de enseñanza",
+          "a": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "b": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "modalidad",
+          "title": "Modalidad",
+          "a": "Presencial",
+          "b": "Consultar modalidad del programa y convocatoria",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "distrito",
+          "title": "Distrito",
+          "a": "Los Olivos",
+          "b": "Los Olivos",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "institucion",
+          "title": "Institución",
+          "a": "Universidad Tecnológica del Perú",
+          "b": "Universidad Privada del Norte",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "tipo",
+          "title": "Tipo de institución",
+          "a": "Universidad",
+          "b": "Universidad",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "sede",
+          "title": "Sede",
+          "a": "Lima Norte",
+          "b": "Los Olivos",
+          "different": true,
+          "editorial": false
+        },
+        {
+          "key": "nivel",
+          "title": "Nivel formativo",
+          "a": "Pregrado universitario",
+          "b": "Pregrado universitario",
+          "different": false,
+          "editorial": false
+        },
+        {
+          "key": "gestion",
+          "title": "Gestión",
+          "a": "Privada",
+          "b": "Privada",
+          "different": false,
+          "editorial": false
+        }
+      ],
+      "misma_carrera": true,
+      "explicacion": "Comparas dos ofertas de la misma carrera: revisa institución, distrito, modalidad y duración.",
+      "diferencia_duracion": "Las duraciones publicadas coinciden.",
+      "pendientes": [
+        "Requisitos de admisión",
+        "Malla curricular",
+        "Perfil de egreso",
+        "Prácticas",
+        "Acreditaciones",
+        "Convenios",
+        "Horarios",
+        "Bolsa laboral y empleabilidad"
+      ]
+    }
   }
 }

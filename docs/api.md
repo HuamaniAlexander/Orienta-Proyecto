@@ -7,6 +7,9 @@
   Búsqueda sin tildes; cada palabra debe coincidir. Orden estable por oferta_id.
 - GET /api/ofertas/{oferta_id}: oferta concreta y fuentes documentadas.
 - GET /api/filtros: catálogos de filtros y conteos reales; caché de cinco minutos.
+- POST /api/comparaciones: {"oferta_ids":[10,110]}. Exige dos IDs positivos
+  distintos. Devuelve opciones frescas, criterios, diferencias documentadas,
+  estado de misma carrera, pendientes y diferencia de duración solo si es homogénea.
 
 El recurso se llama oferta para no confundir oferta_id con carrera_id.
 Errores: 404 opción inexistente, 422 parámetros inválidos, 503 persistencia
