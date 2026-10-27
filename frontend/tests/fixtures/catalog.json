@@ -1,0 +1,1407 @@
+{
+  "facets": {
+    "carreras": [
+      {
+        "carrera_id": 34,
+        "nombre_catalogado": "Administración"
+      },
+      {
+        "carrera_id": 35,
+        "nombre_catalogado": "Administración Bancaria y Financiera"
+      },
+      {
+        "carrera_id": 14,
+        "nombre_catalogado": "Administración Banca y Finanzas"
+      },
+      {
+        "carrera_id": 15,
+        "nombre_catalogado": "Administración de Empresas"
+      },
+      {
+        "carrera_id": 120,
+        "nombre_catalogado": "Administración de Empresas - Gestión Administrativa"
+      },
+      {
+        "carrera_id": 144,
+        "nombre_catalogado": "Administración de Hoteles y Restaurantes"
+      },
+      {
+        "carrera_id": 125,
+        "nombre_catalogado": "Administración de Negocios"
+      },
+      {
+        "carrera_id": 105,
+        "nombre_catalogado": "Administración de Negocios Bancarios y Financieros"
+      },
+      {
+        "carrera_id": 16,
+        "nombre_catalogado": "Administración de Negocios Internacionales"
+      },
+      {
+        "carrera_id": 106,
+        "nombre_catalogado": "Administración de Redes & Comunicaciones"
+      },
+      {
+        "carrera_id": 142,
+        "nombre_catalogado": "Administración de Redes y Comunicaciones"
+      },
+      {
+        "carrera_id": 118,
+        "nombre_catalogado": "Administración de Servicios de Hostelería y Restaurantes"
+      },
+      {
+        "carrera_id": 123,
+        "nombre_catalogado": "Administración de Sistemas para la Transformación Digital"
+      },
+      {
+        "carrera_id": 168,
+        "nombre_catalogado": "Administración en Salud"
+      },
+      {
+        "carrera_id": 54,
+        "nombre_catalogado": "Administración en Turismo y Hotelería"
+      },
+      {
+        "carrera_id": 154,
+        "nombre_catalogado": "Administración Hotelera y Turismo"
+      },
+      {
+        "carrera_id": 87,
+        "nombre_catalogado": "Administración y Dirección de Empresas"
+      },
+      {
+        "carrera_id": 92,
+        "nombre_catalogado": "Administración y Finanzas"
+      },
+      {
+        "carrera_id": 122,
+        "nombre_catalogado": "Administración y Gestión Comercial"
+      },
+      {
+        "carrera_id": 93,
+        "nombre_catalogado": "Administración y Gestión del Talento Humano"
+      },
+      {
+        "carrera_id": 56,
+        "nombre_catalogado": "Administración y Gestión Pública"
+      },
+      {
+        "carrera_id": 17,
+        "nombre_catalogado": "Administración y Marketing"
+      },
+      {
+        "carrera_id": 94,
+        "nombre_catalogado": "Administración y Negocios Digitales"
+      },
+      {
+        "carrera_id": 36,
+        "nombre_catalogado": "Administración y Negocios Internacionales"
+      },
+      {
+        "carrera_id": 37,
+        "nombre_catalogado": "Administración y Servicios Turísticos"
+      },
+      {
+        "carrera_id": 80,
+        "nombre_catalogado": "Agronomía"
+      },
+      {
+        "carrera_id": 167,
+        "nombre_catalogado": "Agronomía y Negocios"
+      },
+      {
+        "carrera_id": 107,
+        "nombre_catalogado": "Animación Digital"
+      },
+      {
+        "carrera_id": 76,
+        "nombre_catalogado": "Archivística y Gestión Documental"
+      },
+      {
+        "carrera_id": 31,
+        "nombre_catalogado": "Arquitectura"
+      },
+      {
+        "carrera_id": 155,
+        "nombre_catalogado": "Arquitectura de Interiores"
+      },
+      {
+        "carrera_id": 130,
+        "nombre_catalogado": "Arquitectura de Plataformas y Servicios de Tecnologías de Información"
+      },
+      {
+        "carrera_id": 38,
+        "nombre_catalogado": "Arquitectura y Diseño de Interiores"
+      },
+      {
+        "carrera_id": 39,
+        "nombre_catalogado": "Arquitectura y Urbanismo"
+      },
+      {
+        "carrera_id": 166,
+        "nombre_catalogado": "Arquitectura y Urbanismo Ambiental"
+      },
+      {
+        "carrera_id": 163,
+        "nombre_catalogado": "Artes Escénicas"
+      },
+      {
+        "carrera_id": 57,
+        "nombre_catalogado": "Arte y Diseño Gráfico Empresarial"
+      },
+      {
+        "carrera_id": 145,
+        "nombre_catalogado": "Asistencia Administrativa"
+      },
+      {
+        "carrera_id": 148,
+        "nombre_catalogado": "Biología"
+      },
+      {
+        "carrera_id": 164,
+        "nombre_catalogado": "Biología Marina"
+      },
+      {
+        "carrera_id": 146,
+        "nombre_catalogado": "Ciberseguridad"
+      },
+      {
+        "carrera_id": 95,
+        "nombre_catalogado": "Ciencia de la Computación"
+      },
+      {
+        "carrera_id": 21,
+        "nombre_catalogado": "Ciencias de la Comunicación"
+      },
+      {
+        "carrera_id": 58,
+        "nombre_catalogado": "Ciencias del Deporte"
+      },
+      {
+        "carrera_id": 162,
+        "nombre_catalogado": "Ciencias Políticas y Relaciones Internacionales"
+      },
+      {
+        "carrera_id": 104,
+        "nombre_catalogado": "Computación e Informática"
+      },
+      {
+        "carrera_id": 140,
+        "nombre_catalogado": "Comunicación Audiovisual"
+      },
+      {
+        "carrera_id": 40,
+        "nombre_catalogado": "Comunicación Audiovisual en Medios Digitales"
+      },
+      {
+        "carrera_id": 88,
+        "nombre_catalogado": "Comunicación en Medios Digitales"
+      },
+      {
+        "carrera_id": 152,
+        "nombre_catalogado": "Comunicación Estratégica y Publicidad Digital"
+      },
+      {
+        "carrera_id": 108,
+        "nombre_catalogado": "Comunicación y Arte Digital"
+      },
+      {
+        "carrera_id": 52,
+        "nombre_catalogado": "Comunicación y Diseño Gráfico"
+      },
+      {
+        "carrera_id": 156,
+        "nombre_catalogado": "Comunicación y Marketing"
+      },
+      {
+        "carrera_id": 41,
+        "nombre_catalogado": "Comunicación y marketing digital"
+      },
+      {
+        "carrera_id": 69,
+        "nombre_catalogado": "Comunicación y Medios digitales"
+      },
+      {
+        "carrera_id": 42,
+        "nombre_catalogado": "Comunicación y Periodismo"
+      },
+      {
+        "carrera_id": 43,
+        "nombre_catalogado": "Comunicación y Publicidad"
+      },
+      {
+        "carrera_id": 18,
+        "nombre_catalogado": "Contabilidad"
+      },
+      {
+        "carrera_id": 71,
+        "nombre_catalogado": "Contabilidad con mención en Finanzas"
+      },
+      {
+        "carrera_id": 161,
+        "nombre_catalogado": "Contabilidad Empresarial"
+      },
+      {
+        "carrera_id": 86,
+        "nombre_catalogado": "Contabilidad y Auditoría"
+      },
+      {
+        "carrera_id": 44,
+        "nombre_catalogado": "Contabilidad y Finanzas"
+      },
+      {
+        "carrera_id": 129,
+        "nombre_catalogado": "Cosmiatría"
+      },
+      {
+        "carrera_id": 33,
+        "nombre_catalogado": "Derecho"
+      },
+      {
+        "carrera_id": 85,
+        "nombre_catalogado": "Derecho y Ciencia Política"
+      },
+      {
+        "carrera_id": 143,
+        "nombre_catalogado": "Desarrollo de Sistemas de Información"
+      },
+      {
+        "carrera_id": 109,
+        "nombre_catalogado": "Diseño de Interiores"
+      },
+      {
+        "carrera_id": 138,
+        "nombre_catalogado": "Diseño de Modas"
+      },
+      {
+        "carrera_id": 103,
+        "nombre_catalogado": "Diseño Gráfico"
+      },
+      {
+        "carrera_id": 53,
+        "nombre_catalogado": "Diseño Industrial"
+      },
+      {
+        "carrera_id": 32,
+        "nombre_catalogado": "Diseño Profesional de Interiores"
+      },
+      {
+        "carrera_id": 22,
+        "nombre_catalogado": "Diseño Profesional Gráfico"
+      },
+      {
+        "carrera_id": 124,
+        "nombre_catalogado": "Diseño y Desarrollo de Software"
+      },
+      {
+        "carrera_id": 19,
+        "nombre_catalogado": "Economía"
+      },
+      {
+        "carrera_id": 55,
+        "nombre_catalogado": "Economía y Finanzas"
+      },
+      {
+        "carrera_id": 45,
+        "nombre_catalogado": "Economía y Negocios Internacionales"
+      },
+      {
+        "carrera_id": 151,
+        "nombre_catalogado": "Educación"
+      },
+      {
+        "carrera_id": 96,
+        "nombre_catalogado": "Educación con especialidad en innovación y aprendizaje digital"
+      },
+      {
+        "carrera_id": 59,
+        "nombre_catalogado": "Educación en Idiomas – Inglés"
+      },
+      {
+        "carrera_id": 73,
+        "nombre_catalogado": "Educación Especial"
+      },
+      {
+        "carrera_id": 60,
+        "nombre_catalogado": "Educación Física y Psicomotricidad"
+      },
+      {
+        "carrera_id": 23,
+        "nombre_catalogado": "Educación Inicial"
+      },
+      {
+        "carrera_id": 24,
+        "nombre_catalogado": "Educación Primaria"
+      },
+      {
+        "carrera_id": 68,
+        "nombre_catalogado": "Educación Primaria e Interculturalidad"
+      },
+      {
+        "carrera_id": 74,
+        "nombre_catalogado": "Educación Secundaria Filosofía y Religión"
+      },
+      {
+        "carrera_id": 75,
+        "nombre_catalogado": "Educación Secundaria Lengua Inglesa"
+      },
+      {
+        "carrera_id": 110,
+        "nombre_catalogado": "Electricidad Industrial"
+      },
+      {
+        "carrera_id": 131,
+        "nombre_catalogado": "Electrónica Industrial"
+      },
+      {
+        "carrera_id": 25,
+        "nombre_catalogado": "Enfermería"
+      },
+      {
+        "carrera_id": 111,
+        "nombre_catalogado": "Enfermería Técnica"
+      },
+      {
+        "carrera_id": 63,
+        "nombre_catalogado": "Estomatología"
+      },
+      {
+        "carrera_id": 165,
+        "nombre_catalogado": "Estomatología / Odontología"
+      },
+      {
+        "carrera_id": 128,
+        "nombre_catalogado": "Farmacia Técnica"
+      },
+      {
+        "carrera_id": 29,
+        "nombre_catalogado": "Farmacia y Bioquímica"
+      },
+      {
+        "carrera_id": 112,
+        "nombre_catalogado": "Fisioterapia y Rehabilitación"
+      },
+      {
+        "carrera_id": 119,
+        "nombre_catalogado": "Gastronomía"
+      },
+      {
+        "carrera_id": 132,
+        "nombre_catalogado": "Gestión Administrativa"
+      },
+      {
+        "carrera_id": 169,
+        "nombre_catalogado": "Gestión de Desarrollo Global"
+      },
+      {
+        "carrera_id": 113,
+        "nombre_catalogado": "Gestión de la Construcción Civil"
+      },
+      {
+        "carrera_id": 72,
+        "nombre_catalogado": "Gestión de Operaciones y Logística Internacional"
+      },
+      {
+        "carrera_id": 139,
+        "nombre_catalogado": "Gestión Logística"
+      },
+      {
+        "carrera_id": 137,
+        "nombre_catalogado": "Industrias Alimentarias"
+      },
+      {
+        "carrera_id": 12,
+        "nombre_catalogado": "Ingeniería Ambiental"
+      },
+      {
+        "carrera_id": 3,
+        "nombre_catalogado": "Ingeniería Automotriz"
+      },
+      {
+        "carrera_id": 46,
+        "nombre_catalogado": "Ingeniería Biomédica"
+      },
+      {
+        "carrera_id": 4,
+        "nombre_catalogado": "Ingeniería Civil"
+      },
+      {
+        "carrera_id": 13,
+        "nombre_catalogado": "Ingeniería de Ciberseguridad"
+      },
+      {
+        "carrera_id": 97,
+        "nombre_catalogado": "Ingeniería de Computación y Sistemas"
+      },
+      {
+        "carrera_id": 153,
+        "nombre_catalogado": "Ingeniería de Minas"
+      },
+      {
+        "carrera_id": 1,
+        "nombre_catalogado": "Ingeniería de Sistemas"
+      },
+      {
+        "carrera_id": 47,
+        "nombre_catalogado": "Ingeniería de Sistemas Computacionales"
+      },
+      {
+        "carrera_id": 150,
+        "nombre_catalogado": "Ingeniería de Sistemas de Información"
+      },
+      {
+        "carrera_id": 11,
+        "nombre_catalogado": "Ingeniería de Sistemas e Informática"
+      },
+      {
+        "carrera_id": 2,
+        "nombre_catalogado": "Ingeniería de Software"
+      },
+      {
+        "carrera_id": 159,
+        "nombre_catalogado": "Ingeniería Económica y de Negocios"
+      },
+      {
+        "carrera_id": 6,
+        "nombre_catalogado": "Ingeniería Eléctrica y de Potencia"
+      },
+      {
+        "carrera_id": 5,
+        "nombre_catalogado": "Ingeniería Electrónica"
+      },
+      {
+        "carrera_id": 67,
+        "nombre_catalogado": "Ingeniería Electrónica con mención en Telecomunicaciones"
+      },
+      {
+        "carrera_id": 7,
+        "nombre_catalogado": "Ingeniería Empresarial"
+      },
+      {
+        "carrera_id": 160,
+        "nombre_catalogado": "Ingeniería Empresarial y de Sistemas"
+      },
+      {
+        "carrera_id": 48,
+        "nombre_catalogado": "Ingeniería en Ciberseguridad"
+      },
+      {
+        "carrera_id": 99,
+        "nombre_catalogado": "Ingeniería en Ciberseguridad y Análisis Forense Digital"
+      },
+      {
+        "carrera_id": 66,
+        "nombre_catalogado": "Ingeniería en Ciencia de Datos"
+      },
+      {
+        "carrera_id": 100,
+        "nombre_catalogado": "Ingeniería en Ciencias de Datos"
+      },
+      {
+        "carrera_id": 84,
+        "nombre_catalogado": "Ingeniería en Inteligencia Artificial"
+      },
+      {
+        "carrera_id": 98,
+        "nombre_catalogado": "Ingeniería en Inteligencia Artificial y Robótica"
+      },
+      {
+        "carrera_id": 8,
+        "nombre_catalogado": "Ingeniería Industrial"
+      },
+      {
+        "carrera_id": 83,
+        "nombre_catalogado": "Ingeniería Industrial y de Gestión Empresarial"
+      },
+      {
+        "carrera_id": 79,
+        "nombre_catalogado": "Ingeniería Informática"
+      },
+      {
+        "carrera_id": 10,
+        "nombre_catalogado": "Ingeniería Mecánica"
+      },
+      {
+        "carrera_id": 65,
+        "nombre_catalogado": "Ingeniería Mecánica Eléctrica"
+      },
+      {
+        "carrera_id": 9,
+        "nombre_catalogado": "Ingeniería Mecatrónica"
+      },
+      {
+        "carrera_id": 49,
+        "nombre_catalogado": "Laboratorio Clínico y Anatomía Patológica"
+      },
+      {
+        "carrera_id": 102,
+        "nombre_catalogado": "Marketing"
+      },
+      {
+        "carrera_id": 158,
+        "nombre_catalogado": "Marketing y Administración"
+      },
+      {
+        "carrera_id": 70,
+        "nombre_catalogado": "Marketing y Negocios Internacionales"
+      },
+      {
+        "carrera_id": 135,
+        "nombre_catalogado": "Mecánica Automotriz"
+      },
+      {
+        "carrera_id": 114,
+        "nombre_catalogado": "Mecánica Automotriz y Autotrónica"
+      },
+      {
+        "carrera_id": 136,
+        "nombre_catalogado": "Mecánica de Producción"
+      },
+      {
+        "carrera_id": 133,
+        "nombre_catalogado": "Mecánica de Producción Industrial"
+      },
+      {
+        "carrera_id": 115,
+        "nombre_catalogado": "Mecatrónica Automotriz"
+      },
+      {
+        "carrera_id": 116,
+        "nombre_catalogado": "Mecatrónica Industrial"
+      },
+      {
+        "carrera_id": 170,
+        "nombre_catalogado": "Medicina"
+      },
+      {
+        "carrera_id": 50,
+        "nombre_catalogado": "Medicina Humana"
+      },
+      {
+        "carrera_id": 82,
+        "nombre_catalogado": "Medicina Veterinaria"
+      },
+      {
+        "carrera_id": 157,
+        "nombre_catalogado": "Medicina Veterinaria y Zootecnia"
+      },
+      {
+        "carrera_id": 121,
+        "nombre_catalogado": "Medios Digitales y Publicidad"
+      },
+      {
+        "carrera_id": 134,
+        "nombre_catalogado": "Metalurgia"
+      },
+      {
+        "carrera_id": 101,
+        "nombre_catalogado": "Negocios Internacionales"
+      },
+      {
+        "carrera_id": 64,
+        "nombre_catalogado": "Nutrición"
+      },
+      {
+        "carrera_id": 26,
+        "nombre_catalogado": "Nutrición y Dietética"
+      },
+      {
+        "carrera_id": 27,
+        "nombre_catalogado": "Obstetricia"
+      },
+      {
+        "carrera_id": 81,
+        "nombre_catalogado": "Odontología"
+      },
+      {
+        "carrera_id": 127,
+        "nombre_catalogado": "Optometría"
+      },
+      {
+        "carrera_id": 147,
+        "nombre_catalogado": "Prótesis Dental"
+      },
+      {
+        "carrera_id": 20,
+        "nombre_catalogado": "Psicología"
+      },
+      {
+        "carrera_id": 141,
+        "nombre_catalogado": "Publicidad y Medios Digitales"
+      },
+      {
+        "carrera_id": 149,
+        "nombre_catalogado": "Química"
+      },
+      {
+        "carrera_id": 126,
+        "nombre_catalogado": "Recursos Humanos"
+      },
+      {
+        "carrera_id": 117,
+        "nombre_catalogado": "Seguridad y Prevención de Riesgos"
+      },
+      {
+        "carrera_id": 30,
+        "nombre_catalogado": "Tecnología Médica en Laboratorio Clínico y Anatomía Patológica"
+      },
+      {
+        "carrera_id": 28,
+        "nombre_catalogado": "Tecnología Médica en Terapia Física y Rehabilitación"
+      },
+      {
+        "carrera_id": 89,
+        "nombre_catalogado": "Tecnología Médica – Especialidad en Terapia Física y Rehabilitación"
+      },
+      {
+        "carrera_id": 90,
+        "nombre_catalogado": "Tecnología Médica – Laboratorio Clínico y Anatomía Patológica"
+      },
+      {
+        "carrera_id": 91,
+        "nombre_catalogado": "Tecnología Médica - Radiología"
+      },
+      {
+        "carrera_id": 78,
+        "nombre_catalogado": "Tecnología Médica - Terapia Física y Rehabilitación"
+      },
+      {
+        "carrera_id": 62,
+        "nombre_catalogado": "Teología"
+      },
+      {
+        "carrera_id": 51,
+        "nombre_catalogado": "Terapia Física y Rehabilitación"
+      },
+      {
+        "carrera_id": 61,
+        "nombre_catalogado": "Traducción e Interpretación"
+      },
+      {
+        "carrera_id": 77,
+        "nombre_catalogado": "Turismo y Patrimonio Cultural"
+      }
+    ],
+    "instituciones": [
+      {
+        "institucion_id": 13,
+        "nombre": "Escuela de Educación Superior Certus"
+      },
+      {
+        "institucion_id": 14,
+        "nombre": "Escuela de Educación Superior Zegel"
+      },
+      {
+        "institucion_id": 17,
+        "nombre": "IESTP Carlos Cueto Fernandini"
+      },
+      {
+        "institucion_id": 18,
+        "nombre": "IESTP Luis Negreiros Vega"
+      },
+      {
+        "institucion_id": 19,
+        "nombre": "IESTP Manuel Arévalo Cáceres"
+      },
+      {
+        "institucion_id": 11,
+        "nombre": "Instituto de Educación Superior Cibertec"
+      },
+      {
+        "institucion_id": 20,
+        "nombre": "Instituto de Educación Superior Complejo Hospitalario San Pablo"
+      },
+      {
+        "institucion_id": 16,
+        "nombre": "Instituto de Educación Superior Daniel Alcides Carrión"
+      },
+      {
+        "institucion_id": 9,
+        "nombre": "Instituto de Educación Superior IDAT"
+      },
+      {
+        "institucion_id": 15,
+        "nombre": "Instituto de Educación Superior San Fernando"
+      },
+      {
+        "institucion_id": 12,
+        "nombre": "Instituto de Emprendedores USIL"
+      },
+      {
+        "institucion_id": 10,
+        "nombre": "Instituto Superior SISE"
+      },
+      {
+        "institucion_id": 23,
+        "nombre": "Servicio Nacional de Adiestramiento en Trabajo Industrial - SENATI"
+      },
+      {
+        "institucion_id": 5,
+        "nombre": "Universidad Católica Sedes Sapientiae"
+      },
+      {
+        "institucion_id": 3,
+        "nombre": "Universidad César Vallejo"
+      },
+      {
+        "institucion_id": 22,
+        "nombre": "Universidad Científica del Sur"
+      },
+      {
+        "institucion_id": 7,
+        "nombre": "Universidad Continental"
+      },
+      {
+        "institucion_id": 4,
+        "nombre": "Universidad de Ciencias y Humanidades"
+      },
+      {
+        "institucion_id": 8,
+        "nombre": "Universidad de San Martín de Porres"
+      },
+      {
+        "institucion_id": 21,
+        "nombre": "Universidad Peruana Cayetano Heredia"
+      },
+      {
+        "institucion_id": 2,
+        "nombre": "Universidad Privada del Norte"
+      },
+      {
+        "institucion_id": 6,
+        "nombre": "Universidad Privada Norbert Wiener"
+      },
+      {
+        "institucion_id": 1,
+        "nombre": "Universidad Tecnológica del Perú"
+      }
+    ],
+    "distritos": [
+      {
+        "distrito_id": 1,
+        "distrito": "Ancón"
+      },
+      {
+        "distrito_id": 2,
+        "distrito": "Carabayllo"
+      },
+      {
+        "distrito_id": 3,
+        "distrito": "Comas"
+      },
+      {
+        "distrito_id": 4,
+        "distrito": "Independencia"
+      },
+      {
+        "distrito_id": 5,
+        "distrito": "Los Olivos"
+      },
+      {
+        "distrito_id": 6,
+        "distrito": "Puente Piedra"
+      },
+      {
+        "distrito_id": 7,
+        "distrito": "San Martín de Porres"
+      },
+      {
+        "distrito_id": 8,
+        "distrito": "Santa Rosa"
+      }
+    ],
+    "areas": [
+      {
+        "area_id": 9,
+        "nombre_area": "Ciencias naturales, ambiente y agro"
+      },
+      {
+        "area_id": 7,
+        "nombre_area": "Comunicación, diseño y creatividad"
+      },
+      {
+        "area_id": 5,
+        "nombre_area": "Derecho y ciencias políticas"
+      },
+      {
+        "area_id": 6,
+        "nombre_area": "Educación"
+      },
+      {
+        "area_id": 10,
+        "nombre_area": "Humanidades y ciencias sociales"
+      },
+      {
+        "area_id": 2,
+        "nombre_area": "Ingeniería y producción"
+      },
+      {
+        "area_id": 3,
+        "nombre_area": "Negocios, economía y gestión"
+      },
+      {
+        "area_id": 4,
+        "nombre_area": "Salud y bienestar"
+      },
+      {
+        "area_id": 1,
+        "nombre_area": "Tecnología e informática"
+      },
+      {
+        "area_id": 8,
+        "nombre_area": "Turismo, hotelería y gastronomía"
+      }
+    ],
+    "modalidades": [
+      {
+        "codigo_id": 1,
+        "etiqueta": "Presencial"
+      },
+      {
+        "codigo_id": 2,
+        "etiqueta": "Semipresencial"
+      },
+      {
+        "codigo_id": 3,
+        "etiqueta": "A distancia"
+      },
+      {
+        "codigo_id": 4,
+        "etiqueta": "Consultar modalidad del programa y convocatoria"
+      }
+    ],
+    "tipos": [
+      {
+        "codigo_id": 1,
+        "etiqueta": "Universidad"
+      },
+      {
+        "codigo_id": 2,
+        "etiqueta": "Instituto de educación superior"
+      },
+      {
+        "codigo_id": 3,
+        "etiqueta": "Escuela de educación superior"
+      },
+      {
+        "codigo_id": 4,
+        "etiqueta": "Institución de formación de régimen especial"
+      }
+    ],
+    "resumen": {
+      "ofertas": 414,
+      "carreras": 170,
+      "instituciones": 23,
+      "distritos": 8
+    }
+  },
+  "default": {
+    "items": [
+      {
+        "oferta_id": 33,
+        "carrera_id": 34,
+        "institucion_id": 2,
+        "sede_id": 2,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Privada del Norte",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6062",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+        "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 2,
+        "fuente_ficha_id": 59,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+      },
+      {
+        "oferta_id": 66,
+        "carrera_id": 34,
+        "institucion_id": 2,
+        "sede_id": 3,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Privada del Norte",
+        "tipo": "Universidad",
+        "distrito": "Comas",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Comas",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Héroes del Alto Cenepa 2000",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+        "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-comas",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 23,
+        "fuente_ficha_id": 59,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 3,
+        "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+      },
+      {
+        "oferta_id": 128,
+        "carrera_id": 34,
+        "institucion_id": 4,
+        "sede_id": 5,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad de Ciencias y Humanidades",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Universitaria 5175",
+        "duracion_valor": null,
+        "duracion_unidad": null,
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.uch.edu.pe/facultades/ciencias-contables-economicas-y-financieras/administracion",
+        "fuente_oferta_url": "https://www.uch.edu.pe/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 4,
+        "fuente_ficha_id": 142,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Oferta de pregrado del sitio institucional; campus Los Olivos"
+      },
+      {
+        "oferta_id": 130,
+        "carrera_id": 34,
+        "institucion_id": 5,
+        "sede_id": 6,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Católica Sedes Sapientiae",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Sede Lima",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Esquina Constelaciones y Sol de Oro s/n",
+        "duracion_valor": null,
+        "duracion_unidad": null,
+        "consulta_costos": "Ver Tarifas_UCSS: costo por crédito y matrícula 2026-II; aplicar créditos y categoría que correspondan",
+        "ficha_url": "https://www.ucss.edu.pe/carreras-profesionales/administracion",
+        "fuente_oferta_url": "https://www.ucss.edu.pe/carreras-profesionales",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 5,
+        "fuente_ficha_id": 144,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Carrera bajo el encabezado Sede Lima en el directorio institucional"
+      },
+      {
+        "oferta_id": 187,
+        "carrera_id": 34,
+        "institucion_id": 7,
+        "sede_id": 8,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Continental",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Semipresencial",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola, altura del óvalo Naranjal",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://ucontinental.edu.pe/carrera/administracion/",
+        "fuente_oferta_url": "https://ucontinental.edu.pe/campus/los-olivos/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 7,
+        "fuente_ficha_id": 179,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 2,
+        "distrito_id": 5,
+        "evidencia_sede": "Listado de carreras del campus agrupado por modalidad en la página institucional"
+      },
+      {
+        "oferta_id": 193,
+        "carrera_id": 34,
+        "institucion_id": 7,
+        "sede_id": 8,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Continental",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "A distancia",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola, altura del óvalo Naranjal",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://ucontinental.edu.pe/carrera/administracion/",
+        "fuente_oferta_url": "https://ucontinental.edu.pe/campus/los-olivos/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 7,
+        "fuente_ficha_id": 179,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 3,
+        "distrito_id": 5,
+        "evidencia_sede": "Listado de carreras del campus agrupado por modalidad en la página institucional"
+      },
+      {
+        "oferta_id": 209,
+        "carrera_id": 34,
+        "institucion_id": 8,
+        "sede_id": 9,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad de San Martín de Porres",
+        "tipo": "Universidad",
+        "distrito": "Comas",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Micaela Bastidas esquina Av. República de Israel",
+        "duracion_valor": null,
+        "duracion_unidad": null,
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://admision.usmp.edu.pe/usmp-lima-norte/",
+        "fuente_oferta_url": "https://admision.usmp.edu.pe/usmp-lima-norte/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 8,
+        "fuente_ficha_id": 8,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 3,
+        "evidencia_sede": "Listado de carreras publicado por la institución para esta sede"
+      },
+      {
+        "oferta_id": 404,
+        "carrera_id": 34,
+        "institucion_id": 21,
+        "sede_id": 25,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Peruana Cayetano Heredia",
+        "tipo": "Universidad",
+        "distrito": "San Martín de Porres",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "San Martín de Porres",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Honorio Delgado 430",
+        "duracion_valor": null,
+        "duracion_unidad": null,
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://cayetano.edu.pe/pregrado/carreras/administracion/",
+        "fuente_oferta_url": "https://cayetano.edu.pe/sobre-cayetano/sedes/campus-central/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 20,
+        "fuente_ficha_id": 331,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 7,
+        "evidencia_sede": "Directorio pregrado y campus central desde segundo año; primer año en La Molina"
+      },
+      {
+        "oferta_id": 34,
+        "carrera_id": 35,
+        "institucion_id": 2,
+        "sede_id": 2,
+        "carrera_oficial": "Administración Bancaria y Financiera",
+        "institucion": "Universidad Privada del Norte",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6062",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion-bancaria-y-financiera",
+        "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 2,
+        "fuente_ficha_id": 60,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+      },
+      {
+        "oferta_id": 13,
+        "carrera_id": 14,
+        "institucion_id": 1,
+        "sede_id": 1,
+        "carrera_oficial": "Administración Banca y Finanzas",
+        "institucion": "Universidad Tecnológica del Perú",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Negocios, economía y gestión",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6377",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-negocios/administracion-banca-y-finanzas",
+        "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 1,
+        "fuente_ficha_id": 39,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+      },
+      {
+        "oferta_id": 14,
+        "carrera_id": 15,
+        "institucion_id": 1,
+        "sede_id": 1,
+        "carrera_oficial": "Administración de Empresas",
+        "institucion": "Universidad Tecnológica del Perú",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Negocios, economía y gestión",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6377",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-negocios/administracion-de-empresas",
+        "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 1,
+        "fuente_ficha_id": 40,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+      },
+      {
+        "oferta_id": 80,
+        "carrera_id": 15,
+        "institucion_id": 3,
+        "sede_id": 4,
+        "carrera_oficial": "Administración de Empresas",
+        "institucion": "Universidad César Vallejo",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Negocios, economía y gestión",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6232",
+        "duracion_valor": 10.0,
+        "duracion_unidad": "ciclos",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.ucv.edu.pe/pregrado-presencial/administracion",
+        "fuente_oferta_url": "https://www.ucv.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 3,
+        "fuente_ficha_id": 94,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Listado del campus Lima Norte; la página repite programas entre pestañas, por lo que la modalidad se consulta por programa"
+      }
+    ],
+    "total": 414,
+    "page": 1,
+    "page_size": 12
+  },
+  "software": {
+    "items": [
+      {
+        "oferta_id": 10,
+        "carrera_id": 2,
+        "institucion_id": 1,
+        "sede_id": 1,
+        "carrera_oficial": "Ingeniería de Software",
+        "institucion": "Universidad Tecnológica del Perú",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Tecnología e informática",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+        "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6377",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+        "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 1,
+        "fuente_ficha_id": 36,
+        "tipo_id": 1,
+        "area_id": 1,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+      },
+      {
+        "oferta_id": 54,
+        "carrera_id": 2,
+        "institucion_id": 2,
+        "sede_id": 2,
+        "carrera_oficial": "Ingeniería de Software",
+        "institucion": "Universidad Privada del Norte",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Tecnología e informática",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+        "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6062",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.upn.edu.pe/pregrado/ingenieria/ingenieria-de-software",
+        "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 2,
+        "fuente_ficha_id": 80,
+        "tipo_id": 1,
+        "area_id": 1,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+      },
+      {
+        "oferta_id": 370,
+        "carrera_id": 2,
+        "institucion_id": 22,
+        "sede_id": 26,
+        "carrera_oficial": "Ingeniería de Software",
+        "institucion": "Universidad Científica del Sur",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Tecnología e informática",
+        "sede": "Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+        "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Cruce Av. Alfredo Mendiola y Av. 2 de Octubre",
+        "duracion_valor": null,
+        "duracion_unidad": null,
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.cientifica.edu.pe/carreras/ingenieria-de-software/",
+        "fuente_oferta_url": "https://www.cientifica.edu.pe/campus/campus-norte/",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 21,
+        "fuente_ficha_id": 297,
+        "tipo_id": 1,
+        "area_id": 1,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Ficha de carrera oficial enumera Campus Norte"
+      }
+    ],
+    "total": 3,
+    "page": 1,
+    "page_size": 12
+  }
+}
