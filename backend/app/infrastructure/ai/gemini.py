@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import json
 import time
+from functools import partial
 from typing import Any
 
 import httpx
@@ -52,6 +53,7 @@ class GeminiExplanation:
             if len(self.pending) >= 8 or len(self.cache) >= 128:
                 raise ServiceUnavailable('Hay varias consultas en curso. Intenta nuevamente en un momento.')
             self.pending[key] = asyncio.create_task(self._generate(body))
+            self.pending[key].add_done_callback(partial(self._complete, key))
         task = self.pending[key]
         try:
             result = await asyncio.shield(task)
@@ -63,6 +65,20 @@ class GeminiExplanation:
         finally:
             if task.done():
                 self.pending.pop(key, None)
+
+    def _complete(self, key: str, task: asyncio.Task[Explanation]) -> None:
+        self.pending.pop(key, None)
+        if task.cancelled():
+            return
+        try:
+            result = task.result()
+        except ServiceUnavailable as error:
+            self.failures[key] = (time.monotonic() + 10, str(error))
+        except Exception:
+            # Retrieving the exception avoids an orphan-task warning; the awaiting call still fails.
+            return
+        else:
+            self.cache[key] = (time.monotonic() + 600, result)
 
     async def _generate(self, body: str) -> Explanation:
         payload = {

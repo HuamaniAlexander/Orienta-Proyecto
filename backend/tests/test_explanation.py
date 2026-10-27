@@ -70,6 +70,29 @@ def test_coalesces_concurrent_requests_and_caches_result():
     asyncio.run(run())
 
 
+def test_navigation_cancellation_does_not_leave_a_pending_slot_or_repeat_generation():
+    async def run():
+        release = asyncio.Event()
+        calls = []
+        async def handle(request):
+            calls.append(request)
+            await release.wait()
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output())}]}}]})
+        async with httpx.AsyncClient(base_url='https://test.invalid',transport=httpx.MockTransport(handle)) as client:
+            provider = GeminiExplanation(client,'test-model')
+            request = asyncio.create_task(provider.explain({'test':'navigation'}))
+            await asyncio.sleep(.02)
+            request.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await request
+            release.set()
+            await asyncio.sleep(.02)
+            assert not provider.pending
+            await provider.explain({'test':'navigation'})
+            assert len(calls) == 1
+    asyncio.run(run())
+
+
 def test_timeout_never_becomes_a_fake_generated_answer():
     async def handle(request):
         raise httpx.ReadTimeout('ambiguous',request=request)
