@@ -47,6 +47,14 @@ def test_rejects_invented_prices_even_with_an_allowed_source_id():
         Explanation.model_validate(value).validate_evidence([10,110],{1})
 
 
+def test_editorial_summary_does_not_inherit_institutional_citations():
+    value = output()
+    value['coincidencias'] = [{'texto':'Síntesis editorial de ORIENTA.','naturaleza':'editorial','fuente_ids':[1]}]
+    explanation = Explanation.model_validate(value)
+    explanation.validate_evidence([10,110],{1})
+    assert explanation.coincidencias[0].fuente_ids == []
+
+
 def test_coalesces_concurrent_requests_and_caches_result():
     calls=[]
     async def handle(request):

@@ -47,6 +47,10 @@ class Explanation(BaseModel):
                 raise ValueError('Un hecho documentado necesita una fuente del contexto.')
         if not references.issubset(source_ids):
             raise ValueError('La explicación usa fuentes fuera del contexto.')
+        for point in points:
+            if point.naturaleza == 'editorial':
+                # Institutional documents do not substantiate ORIENTA editorial summaries.
+                point.fuente_ids = []
         if self.sugerencia.oferta_id is not None and not self.sugerencia.fuente_ids:
             raise ValueError('Una sugerencia específica necesita evidencia documentada.')
         texts = [point.texto for point in points] + [self.sugerencia.motivo, *self.limites]
