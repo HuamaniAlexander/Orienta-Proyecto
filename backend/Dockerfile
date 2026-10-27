@@ -5,6 +5,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 RUN useradd --create-home orienta
 COPY --chown=orienta:orienta app ./app
+COPY --chown=orienta:orienta ml_artifacts ./ml_artifacts
 USER orienta
 ENV PATH="/app/.venv/bin:$PATH"
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
