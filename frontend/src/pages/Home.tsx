@@ -2,7 +2,6 @@ import {
   ArrowRight,
   BookOpen,
   Building2,
-  ChartNoAxesColumnIncreasing,
   Check,
   ChevronRight,
   GraduationCap,
@@ -68,34 +67,6 @@ export function Home() {
                 fetchPriority="high"
                 alt="Ilustración de jóvenes estudiantes conversando en un campus"
               />
-            </div>
-            <div className="floating-card compare-preview">
-              <strong>Compara 2 carreras</strong>
-              <Link to="/carreras?q=ingenieria%20de%20sistemas">
-                <GraduationCap size={20} />
-                <span>Ingeniería de Sistemas</span>
-                <ChevronRight size={14} />
-              </Link>
-              <Link to="/carreras?q=administracion">
-                <ChartNoAxesColumnIncreasing size={20} />
-                <span>Administración</span>
-                <ChevronRight size={14} />
-              </Link>
-            </div>
-            <div className="floating-card ai-preview">
-              <Sparkles size={24} />
-              <div>
-                <strong>
-                  Explicaciones claras
-                  <br />
-                  con IA
-                </strong>
-                <div className="preview-lines" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
             </div>
           </div>
         </div>

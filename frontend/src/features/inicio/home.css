@@ -46,63 +46,6 @@
   height: 400px;
   object-position: center;
 }
-.hero .compare-preview {
-  top: 18px;
-  bottom: auto;
-  left: -32px;
-  display: grid;
-  gap: 10px;
-  padding: 17px;
-  width: 240px;
-}
-.hero .compare-preview > strong {
-  font-size: 0.8rem;
-}
-.compare-preview > a {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.67rem;
-  color: var(--secondary);
-}
-.compare-preview > a > svg:first-child {
-  color: var(--primary);
-  background: #edf4ff;
-  width: 29px;
-  height: 29px;
-  padding: 5px;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-.compare-preview > a:nth-of-type(2) > svg:first-child {
-  color: var(--accent);
-  background: #e8f5f2;
-}
-.compare-preview > a > span {
-  flex: 1;
-  padding-block: 8px;
-}
-.hero .ai-preview {
-  top: 105px;
-  right: -12px;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 17px;
-}
-.preview-lines {
-  width: 118px;
-  display: grid;
-  gap: 5px;
-  margin-top: 13px;
-}
-.preview-lines i {
-  height: 5px;
-  background: #dfe5ee;
-  border-radius: 8px;
-}
-.preview-lines i:last-child {
-  width: 64%;
-}
 .institutions-section {
   background: white;
   padding-block: 26px 18px;
@@ -235,17 +178,6 @@
   .hero .hero-photo img {
     height: 375px;
   }
-  .hero .compare-preview {
-    width: 210px;
-    left: -15px;
-    padding: 12px;
-  }
-  .hero .ai-preview {
-    right: -6px;
-    top: auto;
-    bottom: 20px;
-    padding: 12px;
-  }
   .institution-track > li {
     flex-basis: 33.333%;
     padding-inline: 15px;
@@ -289,36 +221,6 @@
   .hero .hero-photo {
     clip-path: none;
     border-radius: 20px;
-  }
-  .hero .compare-preview {
-    top: 14px;
-    left: -7px;
-    width: 196px;
-    padding: 12px;
-    gap: 6px;
-  }
-  .hero .compare-preview > strong {
-    font-size: 0.7rem;
-  }
-  .compare-preview > a {
-    font-size: 0.57rem;
-    gap: 5px;
-  }
-  .compare-preview > a > span {
-    padding-block: 3px;
-  }
-  .hero .ai-preview {
-    top: auto;
-    bottom: 13px;
-    right: -7px;
-    padding: 12px;
-  }
-  .hero .ai-preview strong {
-    font-size: 0.65rem;
-  }
-  .preview-lines {
-    width: 94px;
-    margin-top: 8px;
   }
   .institutions-section {
     padding-block: 22px 12px;
