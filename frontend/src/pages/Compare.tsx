@@ -1,3 +1,4 @@
+import { offerLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
   ArrowRight,
@@ -138,7 +139,7 @@ export function Compare() {
       ) : (
         <>
           <div className="compare-options">
-            {selected.map((offer, index) => (
+            {selected.map((offer) => (
               <article className="comparison-option" key={offer.oferta_id}>
                 <div className="comparison-option-image illustration">
                   <img
@@ -147,14 +148,14 @@ export function Compare() {
                     width="640"
                     height="400"
                   />
-                  <span>OPCIÓN {index === 0 ? "A" : "B"}</span>
+                  <span>{offer.institucion}</span>
                 </div>
                 <div>
                   <div className="option-heading">
                     <h2>{offer.carrera_oficial}</h2>
                     <button
                       onClick={() => change(offer)}
-                      aria-label={`Quitar opción ${index === 0 ? "A" : "B"}`}
+                      aria-label={`Quitar ${offerLabel(offer)}`}
                     >
                       <X size={18} />
                     </button>
@@ -174,7 +175,7 @@ export function Compare() {
                       );
                     }}
                   >
-                    Cambiar esta opción <ArrowRight size={15} />
+                    Cambiar carrera <ArrowRight size={15} />
                   </Link>
                 </div>
               </article>
@@ -222,8 +223,9 @@ export function Compare() {
               >
                 <div className="comparison-table-head">
                   <span>Criterio</span>
-                  <strong>Opción A</strong>
-                  <strong>Opción B</strong>
+                  {state.data.opciones.map((offer) => (
+                    <strong key={offer.oferta_id}>{offerLabel(offer)}</strong>
+                  ))}
                 </div>
                 {state.data.criterios
                   .filter((row) => !onlyDifferent || row.different)
@@ -266,7 +268,7 @@ export function Compare() {
                   editoriales no sustituyen esos documentos.
                 </p>
                 <div>
-                  {state.data.opciones.map((offer, index) => (
+                  {state.data.opciones.map((offer) => (
                     <a
                       className="button secondary"
                       key={offer.oferta_id}
@@ -274,7 +276,7 @@ export function Compare() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Fuente oficial · Opción {index === 0 ? "A" : "B"}
+                      Programa de {offerLabel(offer)}
                       <ExternalLink size={15} />
                     </a>
                   ))}

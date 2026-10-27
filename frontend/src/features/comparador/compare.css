@@ -568,3 +568,13 @@ input[type="checkbox"] {
     padding-bottom: 155px;
   }
 }
+
+.comparison-table-head > strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.comparison-option-image > span {
+  right: 13px;
+  width: fit-content;
+  max-width: calc(100% - 28px);
+}
