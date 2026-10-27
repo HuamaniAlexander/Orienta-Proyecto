@@ -1,3 +1,4 @@
+import { sourceLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
   ArrowRight,
@@ -226,9 +227,7 @@ export function Detail() {
                     <ExternalLink size={19} />
                   </span>
                   <div>
-                    <strong>
-                      Fuente {source.fuente_id} · {source.emisor_tipo}
-                    </strong>
+                    <strong>{sourceLabel(source, [offer])}</strong>
                     <span>{source.url}</span>
                     <small>
                       <CalendarDays size={12} />

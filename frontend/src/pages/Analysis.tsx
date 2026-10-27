@@ -1,3 +1,4 @@
+import { readableText, sourceLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
   ArrowRight,
@@ -156,6 +157,7 @@ function AnalysisContent({ ids }: { ids: string }) {
         <Loading text="Recuperando tus dos opciones…" />
       </div>
     );
+  const offers = comparison.opciones;
   function points(title: string, items: Point[]) {
     return (
       items.length > 0 && (
@@ -164,7 +166,9 @@ function AnalysisContent({ ids }: { ids: string }) {
           <ul>
             {items.map((item, index) => (
               <li key={index}>
-                <span>{item.texto}</span>
+                <span>
+                  {readableText(item.texto, offers, result?.fuentes ?? [])}
+                </span>
                 <div className="point-references">
                   {item.naturaleza !== "documentado" && (
                     <small>
@@ -179,7 +183,12 @@ function AnalysisContent({ ids }: { ids: string }) {
                   )}
                   {item.fuente_ids.map((id) => (
                     <a key={id} href={`#fuente-ia-${id}`}>
-                      Fuente {id}
+                      {sourceLabel(
+                        result?.fuentes.find(
+                          (source) => source.fuente_id === id,
+                        ),
+                        offers,
+                      )}
                     </a>
                   ))}
                 </div>
@@ -211,7 +220,7 @@ function AnalysisContent({ ids }: { ids: string }) {
         </p>
       </div>
       <div className="analysis-selected">
-        {comparison.opciones.map((offer, index) => (
+        {comparison.opciones.map((offer) => (
           <div key={offer.oferta_id}>
             <img
               className="illustration"
@@ -221,7 +230,7 @@ function AnalysisContent({ ids }: { ids: string }) {
               alt=""
             />
             <div>
-              <span>OPCIÓN {index === 0 ? "A" : "B"}</span>
+              <span>{offer.institucion}</span>
               <strong>{offer.carrera_oficial}</strong>
               <small>
                 {offer.institucion} · {offer.distrito}
@@ -420,11 +429,20 @@ function AnalysisContent({ ids }: { ids: string }) {
                   ? "Una orientación para seguir explorando"
                   : "Sin una preferencia concluyente"}
               </h3>
-              <p>{result.explicacion.sugerencia.motivo}</p>
+              <p>
+                {readableText(
+                  result.explicacion.sugerencia.motivo,
+                  offers,
+                  result.fuentes,
+                )}
+              </p>
               <div className="point-references">
                 {result.explicacion.sugerencia.fuente_ids.map((id) => (
                   <a href={`#fuente-ia-${id}`} key={id}>
-                    Fuente {id}
+                    {sourceLabel(
+                      result?.fuentes.find((source) => source.fuente_id === id),
+                      offers,
+                    )}
                   </a>
                 ))}
               </div>
@@ -434,7 +452,9 @@ function AnalysisContent({ ids }: { ids: string }) {
             <h3>Ten en cuenta</h3>
             <ul>
               {result.explicacion.limites.map((limit, index) => (
-                <li key={index}>{limit}</li>
+                <li key={index}>
+                  {readableText(limit, offers, result.fuentes)}
+                </li>
               ))}
             </ul>
           </section>
@@ -472,9 +492,7 @@ function AnalysisContent({ ids }: { ids: string }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span>
-                    Fuente {source.fuente_id} · {source.emisor_tipo}
-                  </span>
+                  <span>{sourceLabel(source, comparison.opciones)}</span>
                   <small>{source.url}</small>
                   <ExternalLink size={15} />
                 </a>
