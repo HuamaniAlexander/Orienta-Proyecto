@@ -31,7 +31,10 @@ test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
       exact: false,
     }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Quitar opción A" }).click();
+  await page
+    .getByRole("button", { name: /^Quitar / })
+    .first()
+    .click();
   await expect(
     page.getByRole("heading", { name: "Completa tu comparación" }),
   ).toBeVisible();

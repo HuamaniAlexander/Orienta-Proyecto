@@ -2,6 +2,28 @@ import { expect, test } from "./fixtures/test";
 import response from "./fixtures/analysis.json" with { type: "json" };
 import AxeBuilder from "@axe-core/playwright";
 
+test("referencias y prosa identifican las carreras e instituciones", async ({
+  page,
+}) => {
+  const labeled = structuredClone(response);
+  labeled.explicacion.sugerencia.motivo =
+    "La opción A y la oferta 110 se documentan en la fuente 1.";
+  await page.route("**/api/explicaciones", (route) =>
+    route.fulfill({ json: labeled }),
+  );
+  await page.goto("/analisis?opciones=10,110");
+  await page
+    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .click();
+  const suggestion = page.locator(".suggestion-panel");
+  await expect(suggestion).toContainText("Universidad Tecnológica del Perú");
+  await expect(suggestion).toContainText("Universidad César Vallejo");
+  await expect(suggestion).not.toContainText(/opción A|oferta 110|fuente 1/i);
+  await expect(page.locator(".analysis-sources")).not.toContainText(
+    /Fuente \d+/,
+  );
+});
+
 for (const width of [360, 390, 768, 1024, 1440])
   test(`resultado IA legible ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
