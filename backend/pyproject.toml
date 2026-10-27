@@ -6,10 +6,18 @@ dependencies = [
   "fastapi>=0.115.12",
   "uvicorn>=0.34.2",
   "pydantic-settings>=2.9.1",
+  "httpx>=0.28.1",
+  "openpyxl>=3.1.5",
 ]
 
 [dependency-groups]
-dev = ["pytest==8.3.5", "httpx==0.28.1", "ruff==0.11.8", "mypy==1.15.0"]
+dev = [
+    "pytest==8.3.5",
+    "httpx==0.28.1",
+    "ruff==0.11.8",
+    "mypy==1.15.0",
+    "types-openpyxl>=3.1.5.20261017",
+]
 
 [tool.ruff]
 target-version = "py313"
@@ -17,10 +25,12 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+ignore = ["E501"]
 
 [tool.mypy]
 python_version = "3.13"
 strict = true
+plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
