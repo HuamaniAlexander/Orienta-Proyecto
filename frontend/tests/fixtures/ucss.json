@@ -1,0 +1,93 @@
+{
+  "oferta": {
+    "oferta_id": 130,
+    "carrera_id": 34,
+    "institucion_id": 5,
+    "sede_id": 6,
+    "carrera_oficial": "Administración",
+    "institucion": "Universidad Católica Sedes Sapientiae",
+    "tipo": "Universidad",
+    "distrito": "Los Olivos",
+    "modalidad": "Consultar modalidad del programa y convocatoria",
+    "area": "Negocios, economía y gestión",
+    "sede": "Sede Lima",
+    "nivel": "Pregrado universitario",
+    "gestion": "Privada",
+    "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+    "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+    "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+    "direccion": "Esquina Constelaciones y Sol de Oro s/n",
+    "duracion_valor": null,
+    "duracion_unidad": null,
+    "consulta_costos": "Ver Tarifas_UCSS: costo por crédito y matrícula 2026-II; aplicar créditos y categoría que correspondan",
+    "ficha_url": "https://www.ucss.edu.pe/carreras-profesionales/administracion",
+    "fuente_oferta_url": "https://www.ucss.edu.pe/carreras-profesionales",
+    "periodo_fuente": "Consulta 2026-10-26",
+    "fecha_consulta": "2026-10-26",
+    "fuente_oferta_id": 5,
+    "fuente_ficha_id": 144,
+    "tipo_id": 1,
+    "area_id": 3,
+    "modalidad_id": 4,
+    "distrito_id": 5,
+    "evidencia_sede": "Carrera bajo el encabezado Sede Lima en el directorio institucional"
+  },
+  "fuentes": [
+    {
+      "fuente_id": 144,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucss.edu.pe/carreras-profesionales/administracion",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 344,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucss.edu.pe/cuentas-corrientes/costos-de-credito-y-matricula",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 5,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucss.edu.pe/carreras-profesionales",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    }
+  ],
+  "tarifas": [
+    {
+      "categoria": "A",
+      "creditos_matriculados": 20,
+      "tarifa_por_credito_pen": 38.5,
+      "cuotas_por_semestre": 5,
+      "matricula_pen": 350,
+      "periodo": "2026-II",
+      "moneda": "PEN",
+      "aplicacion": "Cálculo orientativo sujeto a categoría, créditos, carrera y cohorte aplicables",
+      "fuente_id": 344
+    },
+    {
+      "categoria": "B",
+      "creditos_matriculados": 20,
+      "tarifa_por_credito_pen": 36.5,
+      "cuotas_por_semestre": 5,
+      "matricula_pen": 350,
+      "periodo": "2026-II",
+      "moneda": "PEN",
+      "aplicacion": "Cálculo orientativo sujeto a categoría, créditos, carrera y cohorte aplicables",
+      "fuente_id": 344
+    },
+    {
+      "categoria": "C",
+      "creditos_matriculados": 20,
+      "tarifa_por_credito_pen": 34.5,
+      "cuotas_por_semestre": 5,
+      "matricula_pen": 350,
+      "periodo": "2026-II",
+      "moneda": "PEN",
+      "aplicacion": "Cálculo orientativo sujeto a categoría, créditos, carrera y cohorte aplicables",
+      "fuente_id": 344
+    }
+  ]
+}
