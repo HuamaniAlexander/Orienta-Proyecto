@@ -63,11 +63,7 @@ class InsforgeCatalog:
 
     async def detail(self, offer_id: int) -> OfferDetail:
         offer = await self.get(offer_id)
-        source_ids = sorted({offer.fuente_oferta_id, offer.fuente_ficha_id})
-        source = await self.records("orienta_fuentes", {
-            "select": "fuente_id,emisor_tipo,url,fecha_o_periodo_fuente,fecha_consulta",
-            "fuente_id": "in.(" + ",".join(map(str, source_ids)) + ")", "limit": "10",
-        })
+        source_ids = {offer.fuente_oferta_id, offer.fuente_ficha_id}
         # Only this institution has a documented tariff table in the supplied workbook.
         tariffs: list[dict[str, Any]] = []
         if "Universidad Católica Sedes Sapientiae" == offer.institucion:
@@ -76,6 +72,11 @@ class InsforgeCatalog:
                 "creditos_matriculados": "eq.20", "order": "categoria.asc", "limit": "10",
             })
             tariffs = response.json()
+            source_ids.update(int(row["fuente_id"]) for row in tariffs)
+        source = await self.records("orienta_fuentes", {
+            "select": "fuente_id,emisor_tipo,url,fecha_o_periodo_fuente,fecha_consulta",
+            "fuente_id": "in.(" + ",".join(map(str, sorted(source_ids))) + ")", "limit": "10",
+        })
         return OfferDetail(offer, source.json(), tariffs)
 
     async def facets(self) -> dict[str, Any]:
