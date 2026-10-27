@@ -1,5 +1,8 @@
 import {
   ArrowRight,
+  BookOpen,
+  Building2,
+  ChartNoAxesColumnIncreasing,
   Check,
   ChevronRight,
   GraduationCap,
@@ -13,6 +16,10 @@ import {
 import { Link } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import type { Facets } from "../shared/types/catalog";
+import { AnimatedCount } from "../features/inicio/AnimatedCount";
+import { InstitutionCarousel } from "../features/inicio/InstitutionCarousel";
+import "../features/inicio/home.css";
+
 export function Home() {
   const { data } = useApi<Facets>("/api/filtros");
   return (
@@ -26,14 +33,11 @@ export function Home() {
             <h1>
               Compara carreras.
               <br />
-              <span>
-                Elige con
-                <br className="desktop-break" /> información.
-              </span>
+              <span>Elige con información.</span>
             </h1>
             <p className="hero-description">
-              Descubre opciones de estudio en Lima Norte y entiende sus
-              diferencias. Da el siguiente paso con más confianza.
+              Explora opciones de estudio en Lima Norte y comprende sus
+              diferencias en un solo lugar.
             </p>
             <div className="hero-buttons">
               <Link className="button" to="/carreras">
@@ -66,42 +70,71 @@ export function Home() {
               />
             </div>
             <div className="floating-card compare-preview">
-              <span className="mini-icon">
-                <Scale size={20} />
-              </span>
-              <div>
-                <strong>Dos opciones. Más claridad.</strong>
-                <small>Encuentra las diferencias que importan.</small>
-              </div>
-              <Check className="check-round" size={21} />
+              <strong>Compara 2 carreras</strong>
+              <Link to="/carreras?q=ingenieria%20de%20sistemas">
+                <GraduationCap size={20} />
+                <span>Ingeniería de Sistemas</span>
+                <ChevronRight size={14} />
+              </Link>
+              <Link to="/carreras?q=administracion">
+                <ChartNoAxesColumnIncreasing size={20} />
+                <span>Administración</span>
+                <ChevronRight size={14} />
+              </Link>
             </div>
             <div className="floating-card ai-preview">
-              <Sparkles size={22} />
+              <Sparkles size={24} />
               <div>
-                <strong>Comprende tus opciones</strong>
-                <small>Con ayuda de la IA</small>
+                <strong>
+                  Explicaciones claras
+                  <br />
+                  con IA
+                </strong>
+                <div className="preview-lines" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section className="stats-section">
+      {data && <InstitutionCarousel institutions={data.instituciones} />}
+      <section className="stats-section" aria-label="El catálogo en cifras">
         <div className="container stats-grid">
           {[
-            { value: data?.resumen.carreras, label: "carreras por descubrir" },
-            { value: data?.resumen.ofertas, label: "opciones académicas" },
+            {
+              value: data?.resumen.carreras,
+              label: "carreras por descubrir",
+              icon: GraduationCap,
+            },
+            {
+              value: data?.resumen.ofertas,
+              label: "opciones académicas",
+              icon: BookOpen,
+            },
             {
               value: data?.resumen.instituciones,
               label: "instituciones en el catálogo",
+              icon: Building2,
             },
             {
               value: data?.resumen.distritos,
               label: "distritos de Lima Norte",
+              icon: MapPin,
             },
-          ].map((item) => (
+          ].map(({ icon: Icon, ...item }) => (
             <div className="stat" key={item.label}>
-              <strong>{item.value ?? "—"}</strong>
-              <span>{item.label}</span>
+              <span className="stat-icon" aria-hidden="true">
+                <Icon size={21} />
+              </span>
+              <div>
+                <strong>
+                  <AnimatedCount value={item.value} />
+                </strong>
+                <span>{item.label}</span>
+              </div>
             </div>
           ))}
         </div>
