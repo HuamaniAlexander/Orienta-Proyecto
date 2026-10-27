@@ -455,3 +455,31 @@ select {
     font-size: 0.61rem;
   }
 }
+
+.filter-select {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+.filter-select select {
+  width: 100%;
+  appearance: none;
+  padding-left: 38px;
+  padding-right: 34px;
+}
+.filter-select > svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted);
+}
+.filter-select .filter-icon {
+  left: 12px;
+}
+.filter-select .select-chevron {
+  right: 12px;
+}
+.sort-select {
+  min-width: 145px;
+}

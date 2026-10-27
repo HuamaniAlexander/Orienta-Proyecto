@@ -38,6 +38,15 @@ export interface CatalogPage {
   page_size: number;
 }
 export interface Facets {
+  relaciones: Record<
+    | "tipo_id"
+    | "institucion_id"
+    | "carrera_id"
+    | "area_id"
+    | "modalidad_id"
+    | "distrito_id",
+    number
+  >[];
   carreras: { carrera_id: number; nombre_catalogado: string }[];
   instituciones: { institucion_id: number; nombre: string }[];
   distritos: { distrito_id: number; distrito: string }[];
