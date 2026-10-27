@@ -49,7 +49,7 @@ export function Institution({ offer }: { offer: Offer }) {
         <img
           width="32"
           height="32"
-          src={`/images/institucion-${offer.institucion_id}.webp${[4, 7].includes(offer.institucion_id) ? "?v=20261026" : ""}`}
+          src={`/images/institucion-${offer.institucion_id}.webp${[4, 7, 8].includes(offer.institucion_id) ? "?v=20261026" : ""}`}
           alt=""
           onError={() => setFailed(true)}
         />
