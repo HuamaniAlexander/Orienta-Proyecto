@@ -323,13 +323,7 @@ a:hover {
 .ai-preview > svg {
   color: var(--accent);
 }
-.image-disclaimer {
-  font-size: 0.53rem;
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  color: #59687f;
-}
+
 .stats-section {
   background: #fff;
   border-bottom: 1px solid var(--border);
@@ -770,10 +764,7 @@ a:hover {
   .mini-icon {
     padding: 8px;
   }
-  .image-disclaimer {
-    bottom: 5px;
-    font-size: 0.44rem;
-  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     row-gap: 20px;

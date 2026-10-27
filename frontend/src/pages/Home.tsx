@@ -82,9 +82,6 @@ export function Home() {
                 <small>Con ayuda de la IA</small>
               </div>
             </div>
-            <span className="image-disclaimer">
-              Imagen ilustrativa generada con IA
-            </span>
           </div>
         </div>
       </section>
