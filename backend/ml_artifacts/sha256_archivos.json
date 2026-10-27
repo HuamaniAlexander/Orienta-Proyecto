@@ -1,0 +1,23 @@
+{
+  "clasificador_area.joblib": "1d9c3845a1b5ffce115edf4f30813ec65c294a8b09510597da935c36c251d5af",
+  "contexto_comparacion.json": "06a41042d884a1b320433c96e6d3ac4b6ba8ddc5ecd0bd67d2ee07ef1f921b47",
+  "datos_para_importacion/Areas.json": "42002f8a644b0a309c6e9e0b12949b035b0f22324440c5ec9cd1171bfd1e18d8",
+  "datos_para_importacion/Carreras.json": "431a2138d0acbef00d9daf863d933a56835ce7566fea03c9ec2c6ecf79507279",
+  "datos_para_importacion/Catalogo.json": "568744dbf53ee7603d8cd3d0f89d3cca99f200d4e9b1ebdc520c1f198bc18d4e",
+  "datos_para_importacion/Codigos.json": "bf838f36ff3fe1742e73b6d49cd637dd52229787026b91c880fc2a7ed124cccd",
+  "datos_para_importacion/Distritos.json": "7807286a341c448ca0ae82620a17637c5c0a4a682ed7d1552e6a00c4b26aa77c",
+  "datos_para_importacion/Duraciones.json": "e394b18c37298e43d8a84c7267a3c1c96e716fede3d74cf1cfa1b8a8bd125e86",
+  "datos_para_importacion/Fuentes.json": "7b532533a7ba87cb35d24fbe8607d309f37cf5237978191e8a797c09c8233a5e",
+  "datos_para_importacion/Instituciones.json": "13989b546b073f8a0d3d5eefe3c97f0a4f7f5d96644b5d3dba763a1c2cd5d005",
+  "datos_para_importacion/Ofertas.json": "22116f9345a274dbf09b310bf4c92d2c6ea674190a8a128898d3d3ad1e41d7b0",
+  "datos_para_importacion/Sedes.json": "643bbf199c3f50d1dc5745bffeb3ad04bfc6286930c0f3dd52f74f3a24a4c7aa",
+  "documentos_contenido.json": "df85db261b20b58fa77a61df226bc699eb5e1ca4ae28eeac59865e70e0d2f9a5",
+  "errores_clasificacion.csv": "3af4c89ef6e2e069b534f21e7049dd1da6b1e80767c209a3553a2724ed29469f",
+  "indice_contenido.joblib": "cf00a926b5d6da01c856b282dc12c51cc48da8b59a48c2f48cc55d8e8b0ce8fc",
+  "matriz_confusion.png": "b8c6b1e50e321562daf3c256db168e52f7f6f463a4429361b2cc30fa0869b472",
+  "metadatos.json": "e5f8fd37183ac7c9464680640f06b90d79ec1474e0e9365e28dfcafe28b9ea1e",
+  "metricas.json": "5c0228e0fc632c847e954df12afe93aa9d788b76ee591711c7e39497b203406a",
+  "particiones_por_carrera.csv": "7386992aacd75f44ef9ebf8f9677fadc96396faea60a2924ed684677817c2fd9",
+  "reporte_clasificacion.csv": "dc850ae9d3498fd4b9fc0845ccf6a30fa56151364bba1bf4c87bfeb7889b5a44",
+  "requirements_modelo.txt": "f5f6954bd32f8d4674ed81080e48100b932f4e07a60c1b0985ace6b6bbce42cf"
+}

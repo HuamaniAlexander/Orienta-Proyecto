@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -9,10 +10,12 @@ from fastapi.responses import JSONResponse
 
 from app.domain.catalog import OfferNotFound, ServiceUnavailable
 from app.domain.comparison import InvalidComparison
+from app.infrastructure.ml.content import SklearnContent
 from app.infrastructure.persistence.repository import InsforgeCatalog
 from app.infrastructure.settings import Settings
 from app.interfaces.http.catalog import router
 from app.interfaces.http.comparison import router as comparison_router
+from app.interfaces.http.ml import router as ml_router
 
 
 def create_app(settings: Settings | None = None, repository: Any = None) -> FastAPI:
@@ -27,6 +30,11 @@ def create_app(settings: Settings | None = None, repository: Any = None) -> Fast
             timeout=httpx.Timeout(20, connect=5),
         ) as client:
             api.state.repository = repository or InsforgeCatalog(client)
+            try:
+                api.state.content = SklearnContent(config.ml_artifacts_path)
+            except Exception as error:
+                logging.getLogger('orienta').warning('ML no disponible: %s', type(error).__name__)
+                api.state.content = None
             yield
 
     api = FastAPI(title="ORIENTA", version="0.1.0", lifespan=lifespan)
@@ -38,6 +46,7 @@ def create_app(settings: Settings | None = None, repository: Any = None) -> Fast
     )
     api.include_router(router)
     api.include_router(comparison_router)
+    api.include_router(ml_router)
 
     @api.exception_handler(InvalidComparison)
     async def invalid_comparison(request: Request, error: InvalidComparison) -> JSONResponse:

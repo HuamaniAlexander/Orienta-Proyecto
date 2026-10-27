@@ -1,0 +1,38 @@
+{
+  "proyecto": "ORIENTA MVP 1",
+  "creado_utc": "2026-10-26T23:54:33.688697+00:00",
+  "excel_sha256": "4842f5bf7637b7fb7c102687ada4934633d2389e34d3828f230afdec50fe0d60",
+  "python": "3.13.16",
+  "dependencias": {
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.16.3",
+    "joblib": "1.6.0",
+    "openpyxl": "3.1.5",
+    "matplotlib": "3.10.0"
+  },
+  "n_carreras": 170,
+  "n_ofertas": 414,
+  "etiquetas": {
+    "1": "Tecnología e informática",
+    "2": "Ingeniería y producción",
+    "3": "Negocios, economía y gestión",
+    "4": "Salud y bienestar",
+    "5": "Derecho y ciencias políticas",
+    "6": "Educación",
+    "7": "Comunicación, diseño y creatividad",
+    "8": "Turismo, hotelería y gastronomía",
+    "9": "Ciencias naturales, ambiente y agro",
+    "10": "Humanidades y ciencias sociales"
+  },
+  "entrada_clasificador": "Nombre de carrera normalizado, sin área ni síntesis derivadas de la etiqueta.",
+  "origen_objetivo": "Áreas editoriales del Excel. Requieren revisión especializada.",
+  "agrupacion_evaluacion": {
+    "metodo": "SequenceMatcher y componentes conexas",
+    "umbral": 0.88,
+    "semilla": 42
+  },
+  "modelo_final": "Ajustado con todo el catálogo después de validación cruzada exploratoria.",
+  "alcance": "Clasificación de áreas y coincidencia léxica. No predictor de éxito vocacional."
+}
