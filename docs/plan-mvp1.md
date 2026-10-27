@@ -1,59 +1,56 @@
-# Plan MVP 1
+# Entrega y trazabilidad MVP 1
 
-## Diagnóstico inicial — 2026-10-26
+## Estado
 
-Repositorio con un commit inicial y README; sin aplicación ni AGENTS.md. Se establece
-`dev` local desde `main` y la rama `chore/ori-004-configuracion-base`.
-No se modifica main. La publicación está bloqueada por permisos GitHub:
-Git local se autentica como AlexHC21 (403); la integración HuamaniAlexander
-devuelve Resource not accessible by integration al crear dev.
+MVP implementado por etapas y publicado mediante PR hacia dev. El usuario
+autorizó expresamente integrar en dev después de verificar CI. main y los
+servicios de producción no se promovieron. No se reescribió historial compartido
+ni se usó squash: los commits lógicos quedan visibles en cada PR.
 
-Se revisaron Excel, notebook y manifiestos del ZIP de Colab. Se localizaron
-prototipos PC/tablet/celular y logo oficial en Descargas. Su revisión visual
-corresponde a la etapa de interfaz. InsForge responde y no tiene tablas.
+El repositorio inicialmente solo contenía README. Se revisaron Excel, notebook,
+artefactos ML, identidad y prototipos. La integración GitHub permitió publicar
+ramas aunque Git local conserva otra identidad sin permisos; se verificaron
+los commits remotos y se sincronizó el checkout con dev.
 
-## Trazabilidad propuesta
+## Relación propuesta con el CSV Trello
 
-El archivo ORIENTA_MVP1_Trello_80_tareas.csv aporta identificadores propuestos;
-no acredita que las tarjetas existan en un tablero. No hay conexión Trello disponible.
-El pedido actual usa `dev`; prevalece sobre `develop` mencionado en el CSV.
+No se pudo verificar un tablero Trello real. Los identificadores siguientes
+proceden de ORIENTA_MVP1_Trello_80_tareas.csv, no acreditan tarjetas existentes
+y no tienen enlaces inventados. No se alteraron estados de un tablero externo.
 
-| Etapa | Referencia CSV | Entrega y dependencia |
-|---|---|---|
-| Configuración inicial | ORI-004, ORI-006, ORI-012 | Variables, CI, contratos de salud, plantillas y diagnóstico |
-| Arquitectura y contratos | ORI-008, ORI-010 | Puertos y contratos HTTP; depende de base integrada |
-| PostgreSQL e importación | ORI-009; resto por mapear | Migraciones, validación, idempotencia y rollback |
-| Sistema visual e inicio | Por mapear | Logo oficial, tokens, responsive, inicio |
-| Catálogo y detalle | Por mapear | Datos PostgreSQL, filtros URL y paginación |
-| Comparador | Por mapear | Dos ofertas, diferencias y fuentes |
-| Adaptador ML | Por mapear | Validación de artefactos y carga única por proceso |
-| Gemini | Por mapear | Contexto acotado y respuesta validada, sin bloquear comparador |
-| Verificación integrada | Por mapear | Responsive, accesibilidad, despliegue preparado |
+| Entrega | Referencias CSV propuestas | PR | Estado |
+|---|---|---|---|
+| Base React/FastAPI, CI, secretos | ORI-004/006/012 | [1](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/1) | Integrado tras CI |
+| Esquema e importación | ORI-009/014/016/017/018/020 | [2](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/2) | Integrado tras CI |
+| Puertos, API y filtros | ORI-021 a ORI-027/034 a ORI-038 | [3](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/3) | Integrado tras CI |
+| Inicio e identidad | ORI-028/029/051/052/053 | [4](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/4) | Integrado tras CI |
+| Catálogo visual | ORI-030 a ORI-038 | [5](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/5) | Integrado tras CI |
+| Detalle y fuentes | ORI-039 a ORI-043 | [6](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/6) | Integrado tras CI |
+| Comparador | ORI-044 a ORI-050 | [7](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/7) | Integrado tras CI |
+| Artefactos y adaptador ML | ORI-056 a ORI-060 | [8](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/8) | Integrado tras CI |
+| Explicación Gemini | ORI-061 a ORI-065 | [9](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/9) | Integrado tras CI |
+| Verificación integrada | ORI-053/055/063/065/067 a ORI-070/075/076 | [10](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/10) | Integrado tras CI |
 
-Cada etapa usa rama y PR propios hacia dev. Un PR abierto queda en revisión;
-ningún PR se fusiona automáticamente. No se agrupan funcionalidades posteriores
-en la rama de configuración para evitar dependencias de PR no integrados.
+Cada PR documenta criterios, dependencias, cambios, validaciones y límites.
+La implementación distingue tareas técnicas delimitadas de funcionalidades
+de producto; su recorrido se completa con datos, API e interfaz en etapas
+consecutivas sobre dev integrado.
 
-## Recursos y límites
+## Ajustes al CSV frente al pedido actual
 
-- Excel: 170 carreras, 414 ofertas, 23 instituciones, 27 sedes.
-- Tarifas UCSS, registros MINEDU y BecaTEC requieren tratamiento separado.
-- El logo se conserva; imágenes editoriales podrán ser WebP en el frontend.
-  InsForge se reserva para PostgreSQL según el pedido; no se guardan binarios
-  de imagen en tablas ni se configura Storage sin aclarar el alcance.
-- Modelos, catálogo funcional, interfaz final, importación y Gemini aún pendientes.
-- Las claves permanecen locales; el frontend solo tendrá VITE_API_BASE_URL.
+- Se usa dev, no develop. El repositorio real es Orienta-Proyecto.
+- No se adoptó SQLAlchemy: las migraciones SQL de InsForge CLI satisfacen el
+  pedido sin inventar una cadena de conexión ni incluir Alembic sin usarlo.
+- Se reutiliza el modelo real de Colab; no se inventan estudiantes o resultados
+  para entrenar un recomendador ni se prometen métricas de afinidad.
+- El documento de requisitos prevalece sobre ejemplos históricos del CSV.
+  No se amplía el MVP con cuentas, pagos o un test vocacional completo.
+- La información del Excel se conserva sin convertir datos ausentes en cero.
+- Ilustraciones WebP se sirven con el frontend. InsForge se reserva para PostgreSQL.
 
-## Evidencia de configuración
+## Cierre
 
-- Rama: chore/ori-004-configuracion-base; referencias CSV ORI-004/006/012.
-- Frontend: lint, tipos y build ejecutados correctamente con Vite 6.4.5.
-- npm audit tras corregir dependencias: cero vulnerabilidades reportadas.
-- Backend: Ruff y mypy correctos; dos pruebas de salud/CORS correctas.
-- Auditoría ML: dos pruebas negativas correctas y 21 archivos verificados.
-- Docker no está instalado en el entorno; la imagen no fue construida localmente.
-  GitHub Actions incluye su construcción, pendiente de publicación y ejecución.
-- No se ejecutó QA responsive del producto: la pantalla actual es solo un
-  marcador del entorno, no el diseño de inicio del MVP.
-- PR pendiente: recuperar permisos de escritura del repositorio, publicar dev
-  y la rama de configuración y abrir PR. No hay enlace de PR creado.
+La aplicación queda disponible localmente y el despliegue está preparado y
+documentado. Ver verificacion.md para resultados, capturas, PDCA y validaciones
+externas que no se inventaron. Los siguientes cambios de producto deben partir
+de dev actualizado y mantener PR y commits por tarea.

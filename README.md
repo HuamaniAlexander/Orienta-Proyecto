@@ -1,28 +1,61 @@
 # ORIENTA
 
-MVP para explorar y comparar opciones académicas de Lima Norte. El alcance
-previsto incluye inicio, catálogo, filtros, detalle, comparación de dos ofertas
-y explicación contextual con Gemini; no incluye cuentas ni test vocacional.
+Explora y compara opciones académicas de Lima Norte. MVP 1 con inicio, catálogo,
+búsqueda y filtros combinables, detalle, comparación de dos ofertas y explicación
+con Gemini según prioridades declaradas. No requiere cuenta ni incluye un test
+vocacional completo.
 
-## Estado actual
+## Estado y datos
 
-Base de desarrollo React + TypeScript y FastAPI + Python, configuración de CI,
-Docker y variables. Endpoint `GET /health`. El catálogo, PostgreSQL, ML y Gemini
-están pendientes. No hay despliegue publicado.
+Implementado y ejecutándose localmente: React + TypeScript, FastAPI + Python y
+PostgreSQL administrado en InsForge. El libro entregado contiene 414 ofertas,
+170 carreras, 23 instituciones y 27 sedes. La aplicación consulta PostgreSQL;
+el Excel es una entrada de importación, no la base de datos del sitio.
 
-La revisión inicial de Colab está en [docs/auditoria-ml.md](docs/auditoria-ml.md).
-El orden de entrega y los bloqueos están en [docs/plan-mvp1.md](docs/plan-mvp1.md).
+Gemini Flash-Lite fue probado con una respuesta real, fuentes válidas y empate
+permitido. La comparación básica funciona cuando Gemini falla. El índice ML
+mide coincidencia léxica y el clasificador propone áreas editoriales; ninguno
+predice éxito ni compatibilidad vocacional.
 
-## Ejecución
+## Arquitectura y estructura
 
-Requisitos: Node 22.12+, Python 3.13, uv 0.11.0.
+```mermaid
+flowchart LR
+  React --> HTTP[FastAPI: contratos HTTP]
+  HTTP --> Aplicacion[Casos de uso y puertos]
+  Aplicacion --> Dominio[Reglas de catálogo y comparación]
+  PostgreSQL[Adaptador InsForge REST / PostgreSQL] -. implementa .-> Aplicacion
+  Gemini[Adaptador Gemini] -. implementa .-> Aplicacion
+  ML[Adaptador scikit-learn] -. implementa .-> Aplicacion
+```
+
+Frontend por páginas, funcionalidades y recursos compartidos. Backend separa
+dominio, aplicación, persistencia, ML, IA e interfaces HTTP; la fábrica compone
+dependencias y clientes una vez por proceso.
+
+```text
+frontend/src/{app,pages,features,shared}/
+frontend/public/images/          WebP e identidad oficial
+backend/app/{domain,application,infrastructure,interfaces}/
+backend/ml_artifacts/            modelos y manifiestos revisados
+backend/tests/                   pruebas unitarias, HTTP e integración opt-in
+migrations/                      SQL versionado para InsForge CLI
+ml/notebooks/                    notebook original de Colab
+scripts/                         auditoría y ejecución local
+docs/                            decisiones, datos y evidencias
+.github/                         CI y plantilla de PR
+```
+
+## Requisitos e instalación
+
+Node 22.12+ y Python 3.13; uv 0.11.0 para resolver el entorno y Docker para
+verificar la imagen. En esta PC los entornos ya están instalados.
 
 ```powershell
 Copy-Item .env.example .env
 Copy-Item frontend/.env.example frontend/.env
 cd backend
 uv sync --frozen
-uv run uvicorn app.main:app --reload
 ```
 
 En otra terminal:
@@ -30,16 +63,97 @@ En otra terminal:
 ```powershell
 cd frontend
 npm ci
-npm run dev
+npx playwright install chromium
 ```
 
-## Verificación
+No sobrescribas un .env que ya contenga tus credenciales. Completa las variables
+en archivos locales o en el gestor de secretos del servicio de despliegue.
+
+## Variables
+
+| Variable | Uso |
+|---|---|
+| APP_ENV | development o production |
+| CORS_ORIGINS | Array JSON con orígenes concretos permitidos |
+| INSFORGE_BASE_URL | URL real de la instancia PostgreSQL/REST |
+| INSFORGE_API_KEY | Clave administrativa, exclusivamente en backend |
+| GEMINI_API_KEY | Clave de Google, exclusivamente en backend |
+| GEMINI_MODEL | Predeterminado probado: gemini-3.5-flash-lite |
+| ML_ARTIFACTS_PATH | ml_artifacts desde backend |
+| VITE_API_BASE_URL | Única variable pública del frontend: URL de FastAPI |
+
+DATABASE_URL no se usa con este adaptador; no se deduce desde la API key.
+Los secretos y la configuración local de InsForge están ignorados por Git.
+
+## Migraciones e importación
+
+Con InsForge CLI vinculado a la instancia, desde la raíz:
+
+```powershell
+npx -y @insforge/cli db migrations up --all
+```
+
+Desde backend, validar primero y aplicar después:
+
+```powershell
+uv run python -m app.infrastructure.persistence.import_excel RUTA_AL_EXCEL
+uv run python -m app.infrastructure.persistence.import_excel RUTA_AL_EXCEL --apply
+```
+
+Cada lote se ejecuta en una transacción, con upsert por ID, validación de claves
+y rollback ante error. No hay borrados masivos. Tarifas e históricos permanecen
+separados de ofertas actuales. No se usa SQLAlchemy, por lo que las migraciones
+son SQL de InsForge CLI y no Alembic. Detalles en [datos](docs/datos.md).
+
+## Ejecutar localmente
+
+Desde la raíz en Windows, después de instalar dependencias y configurar .env:
+
+```powershell
+.\scripts\start-local.ps1
+```
+
+Abre http://127.0.0.1:5173 y mantiene los procesos ocultos en segundo plano.
+La opción -NoBrowser solo inicia/verifica servicios. Conserva procesos que ya
+usen los puertos y confirma que respondan ORIENTA y su API. Logs locales en
+frontend/local-frontend*.log y backend/local-backend*.log, ignorados por Git.
+
+Alternativa con terminales visibles:
 
 ```powershell
 cd backend
-uv run ruff check .
+uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+```powershell
+cd frontend
+npm run dev
+```
+
+Frontend: http://127.0.0.1:5173. OpenAPI: http://127.0.0.1:8000/docs.
+/health comprueba el proceso; /ready comprueba PostgreSQL y reporta ML y
+configuración IA sin realizar llamadas de pago.
+
+## Modelos y explicación
+
+El notebook de ml/notebooks/ prepara y evalúa etiquetas editoriales por grupos,
+entrena el clasificador y exporta un índice TF-IDF. Se reutiliza la exportación
+real del usuario sin reentrenarla. El backend verifica hashes y versiones antes
+de cargar objetos joblib de procedencia controlada, una vez por proceso.
+
+La explicación Gemini cita fuentes del contexto, distingue datos editoriales,
+permite ausencia de ganador y conserva la comparación ante errores. Las
+preferencias se envían a Google cuando se solicita el análisis y no se guardan
+en PostgreSQL. Ver [ML](ml/README.md), [auditoría](docs/auditoria-ml.md) e [IA](docs/ia.md).
+
+## Pruebas y CI
+
+```powershell
+cd backend
+uv run ruff check . ../scripts
 uv run mypy app
 uv run pytest
+uv run python -m unittest discover -s ../scripts -p "test_*.py"
 ```
 
 ```powershell
@@ -47,26 +161,33 @@ cd frontend
 npm run lint
 npm run typecheck
 npm run build
+npm run test:e2e
 ```
 
-## Estructura y decisiones
+Las pruebas UI usan fixtures públicas y dobles explícitos de IA, ajenos al
+runtime. La integración real de importación es opt-in con ORIENTA_EXCEL apuntando
+al libro entregado. CI ejecuta lint, tipos, pruebas, build frontend, navegador
+y construcción Docker. [Resultados y límites](docs/verificacion.md).
 
-- frontend/: React; organización por funcionalidades al implementarlas.
-- backend/: FastAPI; dominio y casos de uso independientes de proveedores.
-- ml/: instrucciones de artefactos; scripts/audit_ml.py valida el paquete recibido.
-- docs/: [arquitectura](docs/arquitectura.md), [plan](docs/plan-mvp1.md),
-  [despliegue](docs/despliegue.md) y [auditoría ML](docs/auditoria-ml.md).
-- .github/: CI y plantilla de PR.
+## Despliegue y contribución
 
-InsForge alojará PostgreSQL. No se deduce DATABASE_URL desde una API key.
-El frontend solo conoce VITE_API_BASE_URL. Gemini se consumirá desde el backend.
-Las migraciones e importación transaccional del Excel están pendientes.
-El entrenamiento se realiza en Colab; no es un servidor para la aplicación.
-El clasificador usa etiquetas editoriales y no predice éxito vocacional.
+Frontend preparado para Vercel (raíz frontend, salida dist, rutas SPA). Backend
+preparado para Render con Docker, usuario sin privilegios y puerto PORT.
+No se publicaron servicios ni se modificó main. [Pasos de despliegue](docs/despliegue.md).
 
-## Flujo de contribución
+Ramas por funcionalidad desde dev, commits Conventional Commits y PR hacia dev.
+Las integraciones en dev fueron autorizadas por el usuario después de comprobar
+CI; se conservan los commits mediante merge. [Plan y PR](docs/plan-mvp1.md).
+El CSV de Trello se usa como referencia propuesta; no hay tablero real verificado.
 
-Ramas por tarea desde dev, commits Conventional Commits y PR hacia dev.
-No se hacen cambios funcionales directos en main/dev ni se fusionan PR sin
-autorización. Los identificadores del CSV Trello son referencias propuestas
-hasta poder contrastarlos con el tablero real.
+## Fuentes y límites
+
+Excel, notebook, logo y prototipos entregados por el usuario. La información
+académica conserva las fechas y fuentes del libro; no se afirma haber auditado
+de nuevo todas sus páginas. No se inventan montos, mallas, salarios, horarios o
+empleabilidad. Las duraciones conservan su unidad; los costos no se comparan
+como mensualidades cuando sus conceptos y condiciones son distintos.
+
+Las imágenes generadas son ilustrativas. El logo oficial se conserva y los
+iconos institucionales provienen de sus sitios. Recursos WebP servidos con el
+frontend; InsForge se reserva para PostgreSQL. [Procedencia visual](docs/recursos-visuales.md).
