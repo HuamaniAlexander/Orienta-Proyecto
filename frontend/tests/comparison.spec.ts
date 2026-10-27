@@ -1,4 +1,23 @@
 import { expect, test } from "./fixtures/test";
+test("footer compacto fuera del catálogo aunque existan selecciones", async ({
+  page,
+}) => {
+  await page.goto("/carreras");
+  await page
+    .getByTestId("offer-card")
+    .first()
+    .getByRole("button", { name: "Comparar", exact: true })
+    .click();
+  await expect(
+    page.getByRole("complementary", { name: "Opciones seleccionadas" }),
+  ).toBeVisible();
+  await page.goto("/");
+  await expect(
+    page.getByRole("complementary", { name: "Opciones seleccionadas" }),
+  ).toHaveCount(0);
+  const footer = await page.locator(".site-footer").boundingBox();
+  expect(footer?.height).toBeLessThan(200);
+});
 test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
   page,
 }) => {
