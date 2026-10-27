@@ -5,6 +5,7 @@ import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
 import { Compare } from "../pages/Compare";
+import { Analysis } from "../pages/Analysis";
 import { SelectionTray } from "../features/comparador/Selection";
 function ScrollReset() {
   const { pathname, hash } = useLocation();
@@ -116,6 +117,7 @@ export function App() {
           <Route path="/carreras" element={<Catalog />} />
           <Route path="/carreras/:id" element={<Detail />} />
           <Route path="/comparar" element={<Compare />} />
+          <Route path="/analisis" element={<Analysis />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
