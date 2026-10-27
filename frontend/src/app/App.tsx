@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
+import { Detail } from "../pages/Detail";
 function ScrollReset() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -111,6 +112,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/carreras" element={<Catalog />} />
+          <Route path="/carreras/:id" element={<Detail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
