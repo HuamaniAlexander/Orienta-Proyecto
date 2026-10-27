@@ -1,5 +1,33 @@
 import { expect, test } from "./fixtures/test";
 import response from "./fixtures/analysis.json" with { type: "json" };
+import AxeBuilder from "@axe-core/playwright";
+
+for (const width of [360, 390, 768, 1024, 1440])
+  test(`resultado IA legible ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.route("**/api/explicaciones", (route) =>
+      route.fulfill({ json: response }),
+    );
+    await page.goto("/analisis?opciones=10,110");
+    await page
+      .getByRole("button", { name: "Explorar diferencias con IA" })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
+    ).toBeVisible();
+    await expect
+      .poll(() =>
+        page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      )
+      .toBe(true);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+  });
 test("explicacion se solicita una vez y muestra sus limites", async ({
   page,
 }) => {

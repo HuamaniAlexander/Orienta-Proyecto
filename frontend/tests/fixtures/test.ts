@@ -9,6 +9,20 @@ export const test = base.extend<{ catalogApi: void }>({
         route.fulfill({ json: dataset.facets }),
       );
       await page.route("**/api/comparaciones", (route) => {
+        if (route.request().method() === "OPTIONS")
+          return route.fulfill({
+            status: 204,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST,OPTIONS",
+              "Access-Control-Allow-Headers": "content-type",
+            },
+          });
+        if (!route.request().postData())
+          return route.fulfill({
+            status: 422,
+            json: { detail: "Solicitud sin opciones" },
+          });
         const body = route.request().postDataJSON() as { oferta_ids: number[] };
         const key = body.oferta_ids.join(",");
         const comparisons: Record<string, unknown> = dataset.comparisons;
