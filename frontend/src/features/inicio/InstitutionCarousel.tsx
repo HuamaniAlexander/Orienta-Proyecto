@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import type { Facets } from "../../shared/types/catalog";
 import logos from "../../../public/images/instituciones-horizontal/procedencia.json";
 
-const horizontal: Record<string, { archivo: string }> = logos;
+const horizontal: Record<string, { archivo: string; fondo?: string }> = logos;
 
 function InstitutionLogo({ id, name }: { id: number; name: string }) {
   const [failed, setFailed] = useState(false);
@@ -14,6 +14,11 @@ function InstitutionLogo({ id, name }: { id: number; name: string }) {
       {!failed && (
         <img
           src={official ?? `/images/institucion-${id}.webp`}
+          className={
+            horizontal[id]?.fondo === "oscuro"
+              ? "institution-logo-dark"
+              : undefined
+          }
           alt=""
           loading="lazy"
           width={official ? 210 : 40}
