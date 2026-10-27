@@ -271,6 +271,7 @@ input[type="checkbox"] {
   overflow-wrap: anywhere;
 }
 .criterion-title {
+  --muted: var(--muted-on-tint);
   padding: 20px 22px;
   display: flex;
   align-items: flex-start;

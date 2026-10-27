@@ -10,6 +10,7 @@
   --surface: #fff;
   --text: #1f2937;
   --muted: #6b7280;
+  --muted-on-tint: #596579;
   --border: #e5e7eb;
   --success: #15803d;
   --warning: #d97706;
@@ -405,7 +406,7 @@ a:hover {
   color: var(--accent);
 }
 .step-number {
-  color: #8593a7;
+  color: #64748b;
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -415,6 +416,7 @@ a:hover {
   margin-top: 9px;
 }
 .areas-section {
+  --muted: var(--muted-on-tint);
   background: #f0f5fb;
   border-block: 1px solid #e8eef5;
 }
