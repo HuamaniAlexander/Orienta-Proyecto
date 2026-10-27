@@ -4,6 +4,8 @@
 .insforge/
 .tools/
 *.tsbuildinfo
+test-results/
+playwright-report/
 node_modules/
 dist/
 .venv/
