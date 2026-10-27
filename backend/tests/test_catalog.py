@@ -32,6 +32,33 @@ def test_repository_does_not_expose_upstream_errors():
     asyncio.run(run())
 
 
+def test_facets_include_complete_deduplicated_relations_and_cache():
+    calls = []
+    relation = {"tipo_id": 1, "institucion_id": 7, "carrera_id": 10,
+                "area_id": 1, "modalidad_id": 1, "distrito_id": 5}
+
+    def handle(request):
+        calls.append(request)
+        if request.url.path.endswith("orienta_catalogo"):
+            if request.url.params["select"].startswith("tipo_id"):
+                assert "carrera_oficial" not in request.url.params["select"]
+                offset = int(request.url.params["offset"])
+                return httpx.Response(200, json=[relation] * 500 if offset == 0 else [dict(relation, tipo_id=2)])
+            return httpx.Response(200, json=[], headers={"content-range": "*/501"})
+        return httpx.Response(200, json=[])
+
+    async def run():
+        async with httpx.AsyncClient(base_url="https://test.invalid", transport=httpx.MockTransport(handle)) as client:
+            repository = InsforgeCatalog(client)
+            result = await repository.facets()
+            assert result["relaciones"] == [relation, dict(relation, tipo_id=2)]
+            assert result["resumen"]["ofertas"] == 501
+            count = len(calls)
+            assert await repository.facets() == result
+            assert len(calls) == count
+    asyncio.run(run())
+
+
 class EmptyCatalog:
     async def search(self, filters):
         return CatalogPage([], 0, filters.page, filters.page_size)
