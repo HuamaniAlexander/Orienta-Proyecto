@@ -1,0 +1,53 @@
+{
+  "explicacion": {
+    "oferta_ids": [10, 110],
+    "diferencias_principales": [
+      {
+        "texto": "Respuesta simulada para pruebas de interfaz: las denominaciones académicas son distintas.",
+        "naturaleza": "documentado",
+        "fuente_ids": [1, 3]
+      }
+    ],
+    "coincidencias": [
+      {
+        "texto": "Ambas ofertas están documentadas en Los Olivos.",
+        "naturaleza": "documentado",
+        "fuente_ids": [1, 3]
+      }
+    ],
+    "relacion_preferencias": [
+      {
+        "texto": "Revisa los programas oficiales según tus intereses declarados.",
+        "naturaleza": "preferencia",
+        "fuente_ids": []
+      }
+    ],
+    "ventajas_condicionadas": [],
+    "sugerencia": {
+      "oferta_id": null,
+      "motivo": "Este doble de pruebas no propone una opción.",
+      "fuente_ids": []
+    },
+    "limites": [
+      "Respuesta simulada exclusiva de pruebas; no se sirve en la aplicación."
+    ]
+  },
+  "fuentes": [
+    {
+      "fuente_id": 1,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.utp.edu.pe/lima-norte",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 3,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucv.edu.pe/lima-norte",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    }
+  ],
+  "contenido": { "estado": "sin_terminos_compartidos", "opciones": [] },
+  "modelo": "doble-de-pruebas"
+}

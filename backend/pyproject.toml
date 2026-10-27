@@ -1,0 +1,45 @@
+[project]
+name = "orienta-backend"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi>=0.115.12",
+  "uvicorn>=0.34.2",
+  "pydantic-settings>=2.9.1",
+  "httpx>=0.28.1",
+  "openpyxl>=3.1.5",
+  "numpy==2.1.3",
+  "scipy==1.16.3",
+  "scikit-learn==1.6.1",
+  "joblib==1.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==8.3.5",
+    "httpx==0.28.1",
+    "ruff==0.11.8",
+    "mypy==1.15.0",
+    "types-openpyxl>=3.1.5.20261017",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*", "joblib"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
