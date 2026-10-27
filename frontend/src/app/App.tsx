@@ -4,6 +4,8 @@ import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
+import { Compare } from "../pages/Compare";
+import { SelectionTray } from "../features/comparador/Selection";
 function ScrollReset() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -113,9 +115,11 @@ export function App() {
           <Route path="/" element={<Home />} />
           <Route path="/carreras" element={<Catalog />} />
           <Route path="/carreras/:id" element={<Detail />} />
+          <Route path="/comparar" element={<Compare />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <SelectionTray />
       <footer className="site-footer">
         <div className="container footer-top">
           <Link to="/" className="brand">
