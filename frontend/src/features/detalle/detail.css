@@ -65,12 +65,7 @@
   object-fit: cover;
   border-radius: 18px;
 }
-.detail-image figcaption {
-  text-align: right;
-  color: var(--muted);
-  font-size: 0.6rem;
-  margin-top: 8px;
-}
+
 .detail-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;

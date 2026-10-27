@@ -101,7 +101,6 @@ export function Detail() {
             width="640"
             height="400"
           />
-          <figcaption>Imagen ilustrativa generada con IA</figcaption>
         </figure>
       </section>
       <div className="detail-layout">

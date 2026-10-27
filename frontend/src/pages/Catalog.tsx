@@ -325,8 +325,7 @@ export function Catalog() {
             </div>
           )}
           <p className="catalog-caption">
-            Las imágenes son ilustraciones generadas con IA. La información
-            académica conserva sus fuentes y fechas de consulta.
+            La información académica conserva sus fuentes y fechas de consulta.
           </p>
         </section>
       </div>
