@@ -21,7 +21,7 @@
   },
   "7": {
     "nombre": "Universidad Continental",
-    "origen": "https://ucontinental.edu.pe/images/img/favicon.png"
+    "origen": "Logo proporcionado por el usuario: Universidad Continental"
   },
   "9": {
     "nombre": "Instituto de Educación Superior IDAT",
@@ -74,5 +74,9 @@
   "23": {
     "nombre": "Servicio Nacional de Adiestramiento en Trabajo Industrial - SENATI",
     "origen": "https://www.senati.edu.pe/sites/all/themes/senati_theme/favicon/favicon.ico"
+  },
+  "4": {
+    "nombre": "Universidad de Ciencias y Humanidades",
+    "origen": "Logo proporcionado por el usuario: UCH"
   }
 }
