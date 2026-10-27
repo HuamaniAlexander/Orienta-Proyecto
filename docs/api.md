@@ -10,6 +10,8 @@
 - POST /api/comparaciones: {"oferta_ids":[10,110]}. Exige dos IDs positivos
   distintos. Devuelve opciones frescas, criterios, diferencias documentadas,
   estado de misma carrera, pendientes y diferencia de duración solo si es homogénea.
+- GET /api/ml/estado: disponibilidad, procedencia y alcance editorial.
+- GET /api/ml/clasificar?nombre=...: clasificación auxiliar o abstención.
 
 El recurso se llama oferta para no confundir oferta_id con carrera_id.
 Errores: 404 opción inexistente, 422 parámetros inválidos, 503 persistencia

@@ -13,7 +13,8 @@ Excel de referencia: Orienta_MVP1_Lima_Norte.xlsx.
   344 fuentes, 224 duraciones y 14 códigos en los JSON de importación.
 - Incluye clasificador_area.joblib, indice_contenido.joblib, métricas,
   errores, particiones por carrera y matriz de confusión.
-- No se han cargado los objetos joblib ni comprobado inferencias todavía.
+- Se cargaron los dos objetos después de verificar hashes y dependencias.
+  Inferencia, abstención, simetría y equivalencia con el ejemplo de Colab comprobadas.
 
 | Validación cruzada exploratoria | Accuracy | F1 macro |
 |---|---:|---:|
@@ -25,13 +26,15 @@ El notebook agrupa nombres similares antes de evaluar, usa nombres sin síntesis
 derivadas de la etiqueta para el clasificador y ajusta el modelo final después
 de la evaluación. Requiere revisar etiquetas y agrupaciones manualmente.
 
-## Compatibilidad pendiente
+## Compatibilidad comprobada
 
 El exportador declara Python 3.13.16, numpy 2.1.3, pandas 2.2.3,
 scikit-learn 1.6.1, scipy 1.16.3, joblib 1.6.0 y openpyxl 3.1.5.
-Antes de inferir: resolver estas versiones en un entorno compatible, revisar
-las estructuras esperadas según las celdas del notebook, cargar solo este
-artefacto aprobado y comprobar abstención, carreras desconocidas y empates.
+El entorno usa Python 3.13.12 (misma versión mayor/menor), con las cuatro
+dependencias del modelo en sus versiones exactas. Pandas y matplotlib son
+herramientas del entrenamiento y no se necesitan para inferir estos objetos.
+Los binarios y manifiestos se empaquetan con el backend; no hay un endpoint
+que acepte modelos subidos por visitantes. Un fallo ML conserva el comparador.
 
 El contexto de comparación incluido es un ejemplo, no una respuesta Gemini
 ni un resultado que se deba mostrar a todos los usuarios. Sus textos se tratan
