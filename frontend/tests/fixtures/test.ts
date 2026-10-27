@@ -8,6 +8,17 @@ export const test = base.extend<{ catalogApi: void }>({
       await page.route("**/api/filtros", (route) =>
         route.fulfill({ json: dataset.facets }),
       );
+      await page.route("**/api/ofertas/*", (route) => {
+        const id =
+          new URL(route.request().url()).pathname.split("/").pop() ?? "";
+        const details: Record<string, unknown> = dataset.details;
+        return details[id]
+          ? route.fulfill({ json: details[id] })
+          : route.fulfill({
+              status: 404,
+              json: { detail: "Esta opción no está en el catálogo." },
+            });
+      });
       await page.route("**/api/ofertas?**", (route) => {
         const params = new URL(route.request().url()).searchParams;
         const q = params.get("q") ?? "";
