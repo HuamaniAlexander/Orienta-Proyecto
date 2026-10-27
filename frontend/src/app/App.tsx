@@ -111,7 +111,7 @@ export function App() {
           </div>
         </div>
       </header>
-      <main id="contenido">
+      <main id="contenido" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/carreras" element={<Catalog />} />

@@ -47,6 +47,10 @@ class Explanation(BaseModel):
                 raise ValueError('Un hecho documentado necesita una fuente del contexto.')
         if not references.issubset(source_ids):
             raise ValueError('La explicación usa fuentes fuera del contexto.')
+        for point in points:
+            if point.naturaleza == 'editorial':
+                # Institutional documents do not substantiate ORIENTA editorial summaries.
+                point.fuente_ids = []
         if self.sugerencia.oferta_id is not None and not self.sugerencia.fuente_ids:
             raise ValueError('Una sugerencia específica necesita evidencia documentada.')
         texts = [point.texto for point in points] + [self.sugerencia.motivo, *self.limites]
@@ -70,6 +74,7 @@ class Explain:
         comparison = await Compare(self.repository).execute(*ids)
         details = await asyncio.gather(*[self.repository.detail(ident) for ident in ids])
         sources = {int(source['fuente_id']): source for detail in details for source in detail.fuentes}
+        source_rows = [sources[ident] for ident in sorted(sources)]
         matches = {}
         for field in ['distrito_id', 'modalidad_id']:
             desired = preferences.get(field)
@@ -78,7 +83,7 @@ class Explain:
         analysis = self.content.compare(comparison.opciones[0].carrera_id, comparison.opciones[1].carrera_id,
                                         preferences.get('intereses', '')) if self.content else {'estado': 'no_disponible', 'opciones': []}
         context = {'comparacion': asdict(comparison), 'preferencias_declaradas': preferences,
-                   'restricciones_comprobadas': matches, 'fuentes': list(sources.values()),
+                   'restricciones_comprobadas': matches, 'fuentes': source_rows,
                    'coincidencia_lexica': analysis,
                    'datos_ausentes': comparison.pendientes,
                    'regla_costos': 'No hay costos de enseñanza homogéneos para ordenar estas ofertas.'}
@@ -87,5 +92,5 @@ class Explain:
             explanation.validate_evidence(ids, set(sources))
         except (ValueError, KeyError) as error:
             raise ServiceUnavailable('La respuesta de IA no superó la validación. Tu comparación sigue disponible.') from error
-        return {'explicacion': explanation.model_dump(), 'fuentes': list(sources.values()),
+        return {'explicacion': explanation.model_dump(), 'fuentes': source_rows,
                 'contenido': analysis, 'restricciones_comprobadas': matches}

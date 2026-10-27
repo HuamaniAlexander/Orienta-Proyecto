@@ -1,0 +1,169 @@
+{
+  "explicacion": {
+    "oferta_ids": [
+      10,
+      110
+    ],
+    "diferencias_principales": [
+      {
+        "texto": "La oferta 10 corresponde a la carrera de Ingeniería de Software en la Universidad Tecnológica del Perú, con una duración publicada de 5 años. La oferta 110 corresponde a la carrera de Ingeniería de Sistemas en la Universidad César Vallejo, con una duración publicada de 10 ciclos.",
+        "naturaleza": "documentado",
+        "fuente_ids": [
+          1,
+          36,
+          3,
+          124
+        ]
+      },
+      {
+        "texto": "Las instituciones varían: la oferta 10 pertenece a la Universidad Tecnológica del Perú y la oferta 110 a la Universidad César Vallejo, ubicadas en direcciones distintas dentro del distrito de Los Olivos.",
+        "naturaleza": "documentado",
+        "fuente_ids": [
+          1,
+          36,
+          3,
+          124
+        ]
+      }
+    ],
+    "coincidencias": [
+      {
+        "texto": "Ambas ofertas pertenecen al sector de gestión privada, nivel de pregrado universitario, modalidad presencial y se ubican en el distrito de Los Olivos, Lima Norte.",
+        "naturaleza": "documentado",
+        "fuente_ids": [
+          1,
+          36,
+          3,
+          124
+        ]
+      },
+      {
+        "texto": "Ambas comparten un enfoque editorial orientado a soluciones digitales, sistemas de información y tecnologías de computación, además de ámbitos de actividad centrados en el desarrollo e integración de soluciones tecnológicas.",
+        "naturaleza": "editorial",
+        "fuente_ids": []
+      }
+    ],
+    "relacion_preferencias": [
+      {
+        "texto": "Ambas opciones cumplen con la modalidad presencial preferida y se ubican en el distrito de Los Olivos, coincidiendo con las preferencias declaradas.",
+        "naturaleza": "preferencia",
+        "fuente_ids": [
+          1,
+          36,
+          3,
+          124
+        ]
+      }
+    ],
+    "ventajas_condicionadas": [
+      {
+        "texto": "Si se prioriza una denominación específica en ingeniería de software junto con la modalidad presencial en Los Olivos, la oferta 10 resulta adecuada.",
+        "naturaleza": "preferencia",
+        "fuente_ids": [
+          1,
+          36
+        ]
+      },
+      {
+        "texto": "Si se prefiere la carrera de ingeniería de sistemas bajo la misma modalidad presencial en el mismo distrito, la oferta 110 se alinea a dicha preferencia.",
+        "naturaleza": "preferencia",
+        "fuente_ids": [
+          3,
+          124
+        ]
+      }
+    ],
+    "sugerencia": {
+      "oferta_id": null,
+      "motivo": "No existe un elemento técnico en el contexto para declarar una superioridad general entre ambas opciones; la elección depende de si el estudiante prefiere cursar Ingeniería de Software en la Universidad Tecnológica del Perú o Ingeniería de Sistemas en la Universidad César Vallejo, considerando que ambas se dictan de forma presencial en Los Olivos.",
+      "fuente_ids": [
+        1,
+        36,
+        3,
+        124
+      ]
+    },
+    "limites": [
+      "No se dispone de información sobre requisitos de admisión, malla curricular, perfil de egreso, prácticas, acreditaciones, convenios, horarios, bolsa laboral ni empleabilidad.",
+      "No hay costos de enseñanza homogéneos publicados para ordenar las ofertas.",
+      "La similitud léxica corresponde únicamente a una comparación de catálogo y no constituye una evaluación de éxito vocacional."
+    ]
+  },
+  "fuentes": [
+    {
+      "fuente_id": 1,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.utp.edu.pe/lima-norte",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 36,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 3,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucv.edu.pe/lima-norte",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    },
+    {
+      "fuente_id": 124,
+      "emisor_tipo": "Institucional",
+      "url": "https://www.ucv.edu.pe/pregrado-presencial/ingenieria-de-sistemas",
+      "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+      "fecha_consulta": "2026-10-26"
+    }
+  ],
+  "contenido": {
+    "estado": "comparacion_textual",
+    "opciones": [
+      {
+        "carrera_id": 2,
+        "similitud_coseno": 0.4049667354891362,
+        "terminos_compartidos": [
+          "software",
+          "sistemas de",
+          "informacion",
+          "de informacion",
+          "sistemas",
+          "de"
+        ]
+      },
+      {
+        "carrera_id": 1,
+        "similitud_coseno": 0.2851214482875146,
+        "terminos_compartidos": [
+          "sistemas",
+          "sistemas de",
+          "informacion",
+          "de informacion",
+          "de"
+        ]
+      }
+    ],
+    "interpretacion": "Coincidencia léxica del catálogo, sin interpretación vocacional."
+  },
+  "restricciones_comprobadas": {
+    "distrito_id": [
+      10,
+      110
+    ],
+    "modalidad_id": [
+      10,
+      110
+    ]
+  },
+  "modelo": "gemini-3.5-flash-lite",
+  "_evidencia": {
+    "origen": "Respuesta real autorizada de Google Gemini",
+    "modelo": "gemini-3.5-flash-lite",
+    "fecha_local": "2026-10-26",
+    "uso": "Evidencia revisable; no es un fallback ni se sirve en la aplicación",
+    "normalizacion": "Referencias institucionales retiradas de puntos editoriales"
+  }
+}

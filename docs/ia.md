@@ -22,9 +22,10 @@ como instrucciones. No se ejecuta HTML ni Markdown del modelo en el frontend.
 
 ## Configuración y operación
 
-GEMINI_API_KEY y GEMINI_MODEL en backend. Modelo inicial actualizado a
-gemini-3.8-flash: la API rechazó 2.5 Flash para usuarios nuevos, aunque lo
-mostraba en ListModels. El adaptador usa el formato JSON del REST documentado:
+GEMINI_API_KEY y GEMINI_MODEL en backend. Predeterminado: gemini-3.5-flash-lite,
+con generación real y referencias validadas. La API rechazó 2.5 Flash para
+usuarios nuevos aunque lo mostraba en ListModels. 3.8 Flash devolvió 503 y
+timeout durante las pruebas. El adaptador usa el formato JSON del REST documentado:
 [salida estructurada](https://ai.google.dev/gemini-api/docs/generate-content/structured-output).
 
 Timeout de 40 segundos por intento, un reintento en 429/503. No se reintenta
@@ -43,5 +44,7 @@ a Gemini. /ready verifica PostgreSQL y reporta la carga ML y configuración IA.
 Dobles del proveedor prueban fuente/ID inválido, precio inventado, timeout,
 coalescencia y caché. Las pruebas de interfaz usan una respuesta marcada
 explícitamente como simulada, exclusiva de tests; no es un fallback del producto.
-La prueba real fue autorizada por el usuario: Google devolvió 503 por alta demanda.
-No se afirma haber recibido una explicación real válida hasta verificarla.
+La prueba real fue autorizada por el usuario. Flash-Lite devolvió JSON válido
+para las ofertas 10 y 110, cuatro fuentes del contexto y una sugerencia sin
+ganador. Se revisó el contenido y se eliminan referencias institucionales de
+los puntos editoriales para evitar atribuirlos a las instituciones.

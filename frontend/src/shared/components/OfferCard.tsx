@@ -16,6 +16,17 @@ const AREA_IMAGES = [
   "humanidades",
 ];
 export function careerImage(offer: Offer) {
+  const name = offer.carrera_oficial
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+  if (/contab|tribut|auditor/.test(name)) return "/images/contabilidad.webp";
+  if (
+    offer.area_id === 1 &&
+    !/software|programacion|desarrollo/.test(name) &&
+    /sistemas|redes|ciberseguridad/.test(name)
+  )
+    return "/images/redes.webp";
   return `/images/${AREA_IMAGES[offer.area_id - 1] ?? "estudiantes"}.webp`;
 }
 

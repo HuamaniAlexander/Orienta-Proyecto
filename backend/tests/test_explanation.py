@@ -47,6 +47,14 @@ def test_rejects_invented_prices_even_with_an_allowed_source_id():
         Explanation.model_validate(value).validate_evidence([10,110],{1})
 
 
+def test_editorial_summary_does_not_inherit_institutional_citations():
+    value = output()
+    value['coincidencias'] = [{'texto':'Síntesis editorial de ORIENTA.','naturaleza':'editorial','fuente_ids':[1]}]
+    explanation = Explanation.model_validate(value)
+    explanation.validate_evidence([10,110],{1})
+    assert explanation.coincidencias[0].fuente_ids == []
+
+
 def test_coalesces_concurrent_requests_and_caches_result():
     calls=[]
     async def handle(request):
@@ -59,6 +67,29 @@ def test_coalesces_concurrent_requests_and_caches_result():
             await asyncio.gather(provider.explain({'test':1}),provider.explain({'test':1}))
             await provider.explain({'test':1})
             assert len(calls)==1
+    asyncio.run(run())
+
+
+def test_navigation_cancellation_does_not_leave_a_pending_slot_or_repeat_generation():
+    async def run():
+        release = asyncio.Event()
+        calls = []
+        async def handle(request):
+            calls.append(request)
+            await release.wait()
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output())}]}}]})
+        async with httpx.AsyncClient(base_url='https://test.invalid',transport=httpx.MockTransport(handle)) as client:
+            provider = GeminiExplanation(client,'test-model')
+            request = asyncio.create_task(provider.explain({'test':'navigation'}))
+            await asyncio.sleep(.02)
+            request.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await request
+            release.set()
+            await asyncio.sleep(.02)
+            assert not provider.pending
+            await provider.explain({'test':'navigation'})
+            assert len(calls) == 1
     asyncio.run(run())
 
 

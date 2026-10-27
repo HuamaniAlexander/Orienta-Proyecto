@@ -254,6 +254,7 @@
   font-size: 0.75rem;
 }
 .aside-blue {
+  --muted: var(--muted-on-tint);
   background: #eef4ff;
   border-color: #dbe7fb;
   color: var(--primary);
