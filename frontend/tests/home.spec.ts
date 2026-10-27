@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures/test";
 for (const width of [360, 390, 768, 1024, 1440]) {
   test(`inicio accesible y sin desbordamiento a ${width}px`, async ({
     page,
