@@ -9,6 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
+import { SelectButton } from "../features/comparador/Selection";
 import type { CatalogPage, Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
@@ -202,7 +203,11 @@ export function Catalog() {
             <>
               <div className="offer-grid">
                 {result.data.items.map((offer) => (
-                  <OfferCard key={offer.oferta_id} offer={offer} />
+                  <OfferCard
+                    key={offer.oferta_id}
+                    offer={offer}
+                    action={<SelectButton offer={offer} />}
+                  />
                 ))}
               </div>
               <nav className="pagination" aria-label="Páginas del catálogo">

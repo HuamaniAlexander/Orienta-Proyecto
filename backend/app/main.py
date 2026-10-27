@@ -8,9 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.domain.catalog import OfferNotFound, ServiceUnavailable
+from app.domain.comparison import InvalidComparison
 from app.infrastructure.persistence.repository import InsforgeCatalog
 from app.infrastructure.settings import Settings
 from app.interfaces.http.catalog import router
+from app.interfaces.http.comparison import router as comparison_router
 
 
 def create_app(settings: Settings | None = None, repository: Any = None) -> FastAPI:
@@ -35,6 +37,11 @@ def create_app(settings: Settings | None = None, repository: Any = None) -> Fast
         allow_headers=["Content-Type"],
     )
     api.include_router(router)
+    api.include_router(comparison_router)
+
+    @api.exception_handler(InvalidComparison)
+    async def invalid_comparison(request: Request, error: InvalidComparison) -> JSONResponse:
+        return JSONResponse(status_code=422, content={"detail": str(error)})
 
     @api.exception_handler(OfferNotFound)
     async def not_found(request: Request, error: OfferNotFound) -> JSONResponse:
