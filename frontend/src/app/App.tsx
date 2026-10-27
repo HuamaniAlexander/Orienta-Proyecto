@@ -2,6 +2,7 @@ import { ArrowRight, Compass, Leaf, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "../pages/Home";
+import { Catalog } from "../pages/Catalog";
 function ScrollReset() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -109,6 +110,7 @@ export function App() {
       <main id="contenido">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/carreras" element={<Catalog />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
