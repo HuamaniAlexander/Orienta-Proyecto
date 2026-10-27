@@ -888,6 +888,3288 @@
         "etiqueta": "Institución de formación de régimen especial"
       }
     ],
+    "relaciones": [
+      {
+        "area_id": 2,
+        "carrera_id": 3,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 5,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 6,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 7,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 9,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 10,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 11,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 2,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 13,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 14,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 19,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 21,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 22,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 23,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 24,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 27,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 28,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 30,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 31,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 32,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 1,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 35,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 37,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 38,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 39,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 40,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 41,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 42,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 43,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 44,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 19,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 45,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 46,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 47,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 2,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 5,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 7,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 48,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 9,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 49,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 27,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 51,
+        "distrito_id": 5,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 38,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 39,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 40,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 52,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 41,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 42,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 43,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 44,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 53,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 45,
+        "distrito_id": 3,
+        "institucion_id": 2,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 54,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 55,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 56,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 57,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 21,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 58,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 23,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 24,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 59,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 60,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 61,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 62,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 63,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 64,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 30,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 28,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 31,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 13,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 65,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 1,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 7,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 66,
+        "distrito_id": 5,
+        "institucion_id": 3,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 11,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 67,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 23,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 68,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 69,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 70,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 71,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 5,
+        "institucion_id": 4,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 72,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 19,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 23,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 24,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 73,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 74,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 75,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 76,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 77,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 78,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 79,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 1,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 80,
+        "distrito_id": 5,
+        "institucion_id": 5,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 81,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 27,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 28,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 30,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 82,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 83,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 11,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 84,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 48,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 31,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 85,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 86,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 87,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 88,
+        "distrito_id": 4,
+        "institucion_id": 6,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 31,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 11,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 89,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 90,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 91,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 2,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 92,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 93,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 56,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 17,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 94,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 36,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 95,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 44,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 96,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 11,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 7,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 7,
+        "modalidad_id": 3,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 31,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 44,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 97,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 98,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 99,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 100,
+        "distrito_id": 3,
+        "institucion_id": 8,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 101,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 104,
+        "distrito_id": 4,
+        "institucion_id": 9,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 105,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 106,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 107,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 104,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 108,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 109,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 110,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 112,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 113,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 114,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 115,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 116,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 117,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 61,
+        "distrito_id": 4,
+        "institucion_id": 11,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 118,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 119,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 120,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 3,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 3,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 3,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 3,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 121,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 51,
+        "distrito_id": 4,
+        "institucion_id": 12,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 4,
+        "institucion_id": 13,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 4,
+        "institucion_id": 13,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 122,
+        "distrito_id": 4,
+        "institucion_id": 13,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 123,
+        "distrito_id": 4,
+        "institucion_id": 13,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 124,
+        "distrito_id": 4,
+        "institucion_id": 13,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 125,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 101,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 126,
+        "distrito_id": 4,
+        "institucion_id": 14,
+        "modalidad_id": 4,
+        "tipo_id": 3
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 127,
+        "distrito_id": 4,
+        "institucion_id": 15,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 112,
+        "distrito_id": 4,
+        "institucion_id": 15,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 4,
+        "institucion_id": 15,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 128,
+        "distrito_id": 5,
+        "institucion_id": 16,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 5,
+        "institucion_id": 16,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 112,
+        "distrito_id": 5,
+        "institucion_id": 16,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 129,
+        "distrito_id": 5,
+        "institucion_id": 16,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 16,
+        "modalidad_id": 2,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 130,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 110,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 131,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 132,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 49,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 133,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 115,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 134,
+        "distrito_id": 3,
+        "institucion_id": 17,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 104,
+        "distrito_id": 7,
+        "institucion_id": 18,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 7,
+        "institucion_id": 18,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 131,
+        "distrito_id": 7,
+        "institucion_id": 18,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 135,
+        "distrito_id": 7,
+        "institucion_id": 18,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 136,
+        "distrito_id": 7,
+        "institucion_id": 18,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 104,
+        "distrito_id": 5,
+        "institucion_id": 19,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 5,
+        "institucion_id": 19,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 137,
+        "distrito_id": 5,
+        "institucion_id": 19,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 105,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 109,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 138,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 132,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 139,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 140,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 141,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 112,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 128,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 142,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 143,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 119,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 144,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 145,
+        "distrito_id": 4,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 105,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 138,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 109,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 132,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 139,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 144,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 119,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 140,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 141,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 112,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 128,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 142,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 143,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 146,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 145,
+        "distrito_id": 3,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 105,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 18,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 132,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 139,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 102,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 119,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 140,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 103,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 142,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 143,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 144,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 141,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 145,
+        "distrito_id": 6,
+        "institucion_id": 10,
+        "modalidad_id": 4,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 111,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 128,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 51,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 49,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 127,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 147,
+        "distrito_id": 4,
+        "institucion_id": 20,
+        "modalidad_id": 1,
+        "tipo_id": 2
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 148,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 149,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 64,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 46,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 79,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 50,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 15,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 16,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 150,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 2,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 5,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 151,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 152,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 153,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 61,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 46,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 20,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 27,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 26,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 8,
+        "carrera_id": 154,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 33,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 155,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 22,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 156,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 140,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 157,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 158,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 159,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 1,
+        "carrera_id": 160,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 161,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 45,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 5,
+        "carrera_id": 162,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 7,
+        "carrera_id": 163,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 164,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 165,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 29,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 55,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 4,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 166,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 167,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 2,
+        "carrera_id": 8,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 9,
+        "carrera_id": 12,
+        "distrito_id": 5,
+        "institucion_id": 22,
+        "modalidad_id": 1,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 34,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 168,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 151,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 23,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 6,
+        "carrera_id": 24,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 25,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 63,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 3,
+        "carrera_id": 169,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 10,
+        "carrera_id": 49,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 170,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      },
+      {
+        "area_id": 4,
+        "carrera_id": 157,
+        "distrito_id": 7,
+        "institucion_id": 21,
+        "modalidad_id": 4,
+        "tipo_id": 1
+      }
+    ],
     "resumen": {
       "ofertas": 414,
       "carreras": 170,
