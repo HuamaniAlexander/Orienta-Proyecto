@@ -352,8 +352,7 @@ input[type="checkbox"] {
   font-size: 0.76rem;
   white-space: nowrap;
 }
-[data-selected-items="1"] .site-footer,
-[data-selected-items="2"] .site-footer {
+.selection-tray ~ .site-footer {
   padding-bottom: 110px;
 }
 @media (max-width: 900px) {
@@ -563,8 +562,7 @@ input[type="checkbox"] {
     font-size: 0.72rem;
     min-height: 34px;
   }
-  [data-selected-items="1"] .site-footer,
-  [data-selected-items="2"] .site-footer {
+  .selection-tray ~ .site-footer {
     padding-bottom: 155px;
   }
 }
