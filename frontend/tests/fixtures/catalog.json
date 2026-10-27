@@ -1403,5 +1403,163 @@
     "total": 3,
     "page": 1,
     "page_size": 12
+  },
+  "details": {
+    "33": {
+      "oferta": {
+        "oferta_id": 33,
+        "carrera_id": 34,
+        "institucion_id": 2,
+        "sede_id": 2,
+        "carrera_oficial": "Administración",
+        "institucion": "Universidad Privada del Norte",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Consultar modalidad del programa y convocatoria",
+        "area": "Negocios, economía y gestión",
+        "sede": "Los Olivos",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Gestión de organizaciones, recursos, operaciones y decisiones económicas",
+        "ambitos_editoriales": "Gestión empresarial y servicios profesionales; revisar competencias específicas del plan",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6062",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+        "fuente_oferta_url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 2,
+        "fuente_ficha_id": 59,
+        "tipo_id": 1,
+        "area_id": 3,
+        "modalidad_id": 4,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector oficial de carreras con el identificador de esta sede; consultar modalidad en ficha"
+      },
+      "fuentes": [
+        {
+          "fuente_id": 2,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.upn.edu.pe/universidad-en-los-olivos",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        },
+        {
+          "fuente_id": 59,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.upn.edu.pe/pregrado/negocios/administracion",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        }
+      ],
+      "tarifas": []
+    },
+    "10": {
+      "oferta": {
+        "oferta_id": 10,
+        "carrera_id": 2,
+        "institucion_id": 1,
+        "sede_id": 1,
+        "carrera_oficial": "Ingeniería de Software",
+        "institucion": "Universidad Tecnológica del Perú",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Tecnología e informática",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+        "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6377",
+        "duracion_valor": 5.0,
+        "duracion_unidad": "años",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+        "fuente_oferta_url": "https://www.utp.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 1,
+        "fuente_ficha_id": 36,
+        "tipo_id": 1,
+        "area_id": 1,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Selector de admisión: data-campus incluye Lima Norte; modalidad PRESE"
+      },
+      "fuentes": [
+        {
+          "fuente_id": 1,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.utp.edu.pe/lima-norte",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        },
+        {
+          "fuente_id": 36,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.utp.edu.pe/pregrado/facultad-de-ingenieria/ingenieria-de-software",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        }
+      ],
+      "tarifas": []
+    },
+    "110": {
+      "oferta": {
+        "oferta_id": 110,
+        "carrera_id": 1,
+        "institucion_id": 3,
+        "sede_id": 4,
+        "carrera_oficial": "Ingeniería de Sistemas",
+        "institucion": "Universidad César Vallejo",
+        "tipo": "Universidad",
+        "distrito": "Los Olivos",
+        "modalidad": "Presencial",
+        "area": "Tecnología e informática",
+        "sede": "Lima Norte",
+        "nivel": "Pregrado universitario",
+        "gestion": "Privada",
+        "enfoque_editorial": "Soluciones digitales, sistemas de información y tecnologías de computación",
+        "ambitos_editoriales": "Desarrollo e integración de soluciones tecnológicas; los puestos concretos dependen del programa",
+        "criterio_clasificacion": "Clasificación y síntesis editorial ORIENTA; no equivale a malla curricular ni garantiza empleo",
+        "direccion": "Av. Alfredo Mendiola 6232",
+        "duracion_valor": 10.0,
+        "duracion_unidad": "ciclos",
+        "consulta_costos": "Consultar tarifas de matrícula, enseñanza y otros derechos según carrera, sede y convocatoria en Admisión",
+        "ficha_url": "https://www.ucv.edu.pe/pregrado-presencial/ingenieria-de-sistemas",
+        "fuente_oferta_url": "https://www.ucv.edu.pe/lima-norte",
+        "periodo_fuente": "Consulta 2026-10-26",
+        "fecha_consulta": "2026-10-26",
+        "fuente_oferta_id": 3,
+        "fuente_ficha_id": 124,
+        "tipo_id": 1,
+        "area_id": 1,
+        "modalidad_id": 1,
+        "distrito_id": 5,
+        "evidencia_sede": "Listado del campus Lima Norte; la página repite programas entre pestañas, por lo que la modalidad se consulta por programa"
+      },
+      "fuentes": [
+        {
+          "fuente_id": 3,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.ucv.edu.pe/lima-norte",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        },
+        {
+          "fuente_id": 124,
+          "emisor_tipo": "Institucional",
+          "url": "https://www.ucv.edu.pe/pregrado-presencial/ingenieria-de-sistemas",
+          "fecha_o_periodo_fuente": "Consulta 2026-10-26",
+          "fecha_consulta": "2026-10-26"
+        }
+      ],
+      "tarifas": []
+    }
   }
 }
