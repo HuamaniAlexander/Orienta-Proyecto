@@ -21,9 +21,9 @@ Capturas revisadas visualmente y conservadas en docs/evidencias/.
 
 ## Banners del catálogo
 
-Diez escenas editoriales generadas con ImageGen integrado, convertidas a WebP
+Doce escenas editoriales generadas con ImageGen integrado, convertidas a WebP
 640×400, calidad 70: tecnologia, ingenieria, negocios, salud, derecho,
-educacion, creatividad, turismo, ambiente y humanidades. Están en
+educacion, creatividad, turismo, ambiente, humanidades, redes y contabilidad. Están en
 frontend/public/images/. Se seleccionan por área académica, no por institución.
 
 Plantilla del prompt: "Use case: photorealistic-natural. Asset type: ORIENTA
@@ -36,7 +36,11 @@ Escenas: desarrollo de software en laboratorio; ingeniería en taller industrial
 estudiantes revisando finanzas; estudiante de salud con modelo anatómico;
 estudiante de derecho en biblioteca; docente preparando materiales sin niños;
 estudiantes de diseño con bocetos; cocina de enseñanza con plato peruano;
-estudiante ambiental examinando plantas; investigación social en biblioteca.
+estudiante ambiental examinando plantas; investigación social en biblioteca;
+estudiante de sistemas con laptop ante un rack de red; estudiante de contabilidad
+revisando registros, calculadora y hoja de cálculo. Estos dos últimos usan el
+mismo prompt, con esas escenas específicas, para distinguir campos de estudio
+de una misma área (por ejemplo, Software y Sistemas).
 
 Iconos institucionales: 19 descargados desde sitios oficiales indicados por el
 Excel. Procedencia exacta en frontend/public/images/instituciones.json.
