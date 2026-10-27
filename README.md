@@ -173,12 +173,20 @@ y construcción Docker. [Resultados y límites](docs/verificacion.md).
 
 Frontend preparado para Vercel (raíz frontend, salida dist, rutas SPA). Backend
 preparado para Render con Docker, usuario sin privilegios y puerto PORT.
-No se publicaron servicios ni se modificó main. [Pasos de despliegue](docs/despliegue.md).
+Los servicios no están publicados; `main` contiene el release v0.1.0.
+[Pasos de despliegue](docs/despliegue.md).
 
 Ramas por funcionalidad desde dev, commits Conventional Commits y PR hacia dev.
 Las integraciones en dev fueron autorizadas por el usuario después de comprobar
 CI; se conservan los commits mediante merge. [Plan y PR](docs/plan-mvp1.md).
-El CSV de Trello se usa como referencia propuesta; no hay tablero real verificado.
+El tablero oficial es [Orienta - PROYECTO](https://trello.com/b/rGV9WAdT/orienta-proyecto);
+sus tarjetas y checklists prevalecen sobre el CSV histórico.
+
+La versión [v0.1.0](https://github.com/HuamaniAlexander/Orienta-Proyecto/releases/tag/v0.1.0)
+se promovió a `main` mediante el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23);
+`dev` se sincronizó mediante el [PR #24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24).
+Los servicios de frontend y backend aún no están publicados. El [guion de demostración](docs/demo-mvp1.md)
+usa la ejecución local y no presenta una URL de producción inexistente.
 
 ## Fuentes y límites
 
