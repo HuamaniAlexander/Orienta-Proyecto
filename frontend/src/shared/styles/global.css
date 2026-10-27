@@ -279,50 +279,6 @@ a:hover {
   height: 425px;
   object-fit: cover;
 }
-.floating-card {
-  position: absolute;
-  background: #fff;
-  border: 1px solid #edf0f4;
-  box-shadow: 0 12px 40px #1e3a5f12;
-  border-radius: 12px;
-  padding: 15px 17px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.floating-card strong {
-  display: block;
-  color: var(--secondary);
-  font-size: 0.74rem;
-}
-.floating-card small {
-  display: block;
-  font-size: 0.62rem;
-  color: var(--muted);
-  margin-top: 5px;
-}
-.compare-preview {
-  bottom: 2px;
-  left: -30px;
-}
-.mini-icon {
-  padding: 10px;
-  border-radius: 9px;
-  background: #e8f5f2;
-  color: var(--accent);
-  display: flex;
-}
-.check-round {
-  color: var(--accent);
-  margin-left: 10px;
-}
-.ai-preview {
-  right: -15px;
-  top: 46px;
-}
-.ai-preview > svg {
-  color: var(--accent);
-}
 
 .stats-section {
   background: #fff;
@@ -629,9 +585,6 @@ a:hover {
   .hero-description {
     font-size: 0.9rem;
   }
-  .floating-card {
-    padding: 12px;
-  }
   .clarity-banner {
     flex-wrap: wrap;
   }
@@ -739,30 +692,6 @@ a:hover {
   .hero-photo img {
     height: 300px;
     object-position: 50% 45%;
-  }
-  .ai-preview {
-    right: -7px;
-    top: 27px;
-  }
-  .compare-preview {
-    left: -8px;
-    bottom: 0;
-  }
-  .floating-card {
-    gap: 9px;
-    padding: 11px;
-  }
-  .floating-card strong {
-    font-size: 0.66rem;
-  }
-  .floating-card small {
-    font-size: 0.56rem;
-  }
-  .ai-preview svg {
-    width: 19px;
-  }
-  .mini-icon {
-    padding: 8px;
   }
 
   .stats-grid {

@@ -2,7 +2,6 @@ import {
   ArrowRight,
   BookOpen,
   Building2,
-  ChartNoAxesColumnIncreasing,
   Check,
   ChevronRight,
   GraduationCap,
@@ -69,76 +68,10 @@ export function Home() {
                 alt="Ilustración de jóvenes estudiantes conversando en un campus"
               />
             </div>
-            <div className="floating-card compare-preview">
-              <strong>Compara 2 carreras</strong>
-              <Link to="/carreras?q=ingenieria%20de%20sistemas">
-                <GraduationCap size={20} />
-                <span>Ingeniería de Sistemas</span>
-                <ChevronRight size={14} />
-              </Link>
-              <Link to="/carreras?q=administracion">
-                <ChartNoAxesColumnIncreasing size={20} />
-                <span>Administración</span>
-                <ChevronRight size={14} />
-              </Link>
-            </div>
-            <div className="floating-card ai-preview">
-              <Sparkles size={24} />
-              <div>
-                <strong>
-                  Explicaciones claras
-                  <br />
-                  con IA
-                </strong>
-                <div className="preview-lines" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
       {data && <InstitutionCarousel institutions={data.instituciones} />}
-      <section className="stats-section" aria-label="El catálogo en cifras">
-        <div className="container stats-grid">
-          {[
-            {
-              value: data?.resumen.carreras,
-              label: "carreras por descubrir",
-              icon: GraduationCap,
-            },
-            {
-              value: data?.resumen.ofertas,
-              label: "opciones académicas",
-              icon: BookOpen,
-            },
-            {
-              value: data?.resumen.instituciones,
-              label: "instituciones en el catálogo",
-              icon: Building2,
-            },
-            {
-              value: data?.resumen.distritos,
-              label: "distritos de Lima Norte",
-              icon: MapPin,
-            },
-          ].map(({ icon: Icon, ...item }) => (
-            <div className="stat" key={item.label}>
-              <span className="stat-icon" aria-hidden="true">
-                <Icon size={21} />
-              </span>
-              <div>
-                <strong>
-                  <AnimatedCount value={item.value} />
-                </strong>
-                <span>{item.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
       <section className="section container" id="como-funciona">
         <div className="section-heading centered">
           <p className="eyebrow">UN CAMINO MÁS SIMPLE</p>
@@ -176,6 +109,44 @@ export function Home() {
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
+          ))}
+        </div>
+      </section>
+      <section className="stats-section" aria-label="El catálogo en cifras">
+        <div className="container stats-grid">
+          {[
+            {
+              value: data?.resumen.carreras,
+              label: "carreras por descubrir",
+              icon: GraduationCap,
+            },
+            {
+              value: data?.resumen.ofertas,
+              label: "opciones académicas",
+              icon: BookOpen,
+            },
+            {
+              value: data?.resumen.instituciones,
+              label: "instituciones en el catálogo",
+              icon: Building2,
+            },
+            {
+              value: data?.resumen.distritos,
+              label: "distritos de Lima Norte",
+              icon: MapPin,
+            },
+          ].map(({ icon: Icon, ...item }) => (
+            <div className="stat" key={item.label}>
+              <span className="stat-icon" aria-hidden="true">
+                <Icon size={21} />
+              </span>
+              <div>
+                <strong>
+                  <AnimatedCount value={item.value} />
+                </strong>
+                <span>{item.label}</span>
+              </div>
+            </div>
           ))}
         </div>
       </section>
