@@ -141,7 +141,9 @@ export function SelectionTray() {
             Comparar opciones
           </Link>
         ) : (
-          <span className="tray-prompt">Elige una segunda opción</span>
+          <span className="tray-prompt">
+            <Plus size={14} aria-hidden="true" /> Elige una segunda opción
+          </span>
         )}
       </div>
     </aside>
