@@ -108,8 +108,16 @@
   white-space: nowrap;
 }
 .tray-prompt {
-  color: var(--muted);
+  color: var(--primary);
   font-size: 0.75rem;
+  background: #eff6ff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  border: 1px solid #dbeafe;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .compare-page {
   padding-block: 25px 60px;
