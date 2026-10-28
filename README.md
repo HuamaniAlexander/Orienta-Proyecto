@@ -179,13 +179,10 @@ Render; el detalle y las limitaciones de esa comprobación están en
 [#50](https://github.com/HuamaniAlexander/Orienta-Proyecto/issues/50) conserva
 el error histórico de configuración y sigue abierto hasta revisar los registros
 y la configuración privada de Render.
-El release v0.1.0 se promovió a `main` mediante el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23).
 
 Ramas por funcionalidad desde dev, commits Conventional Commits y PR hacia dev.
 Las integraciones en dev fueron autorizadas por el usuario después de comprobar
 CI; se conservan los commits mediante merge. [Plan y PR](docs/plan-mvp1.md).
-El tablero oficial es [Orienta - PROYECTO](https://trello.com/b/rGV9WAdT/orienta-proyecto);
-sus tarjetas y checklists prevalecen sobre el CSV histórico.
 
 La versión [v0.1.0](https://github.com/HuamaniAlexander/Orienta-Proyecto/releases/tag/v0.1.0)
 se promovió a `main` mediante el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23);
@@ -195,7 +192,7 @@ orientación académica sigue pendiente. El [guion de demostración](docs/demo-m
 usa la ejecución local y no sustituye esa validación.
 Proyecto actual: [repositorio](https://github.com/HuamaniAlexander/Orienta-Proyecto)
 y [tablero oficial Orienta - PROYECTO](https://trello.com/b/rGV9WAdT/orienta-proyecto);
-sus tarjetas y checklists prevalecen sobre el CSV histórico.
+las tarjetas y checklists de ese tablero prevalecen sobre el CSV histórico.
 
 ## Fuentes y límites
 
@@ -218,8 +215,6 @@ entregas de catálogo y comparación. En este repositorio, los
 [#8](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/8),
 [#9](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/9) y
 [#10](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/10) registran
-comparación, ML, IA y QA; los [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23)
-y [#24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24), el release
-v0.1.0 y la sincronización de `dev`. No se encontró audio, transcripción ni otra
-fuente verificable de observaciones del profesor en los materiales consultados;
-no se atribuyen recomendaciones sin esa evidencia.
+comparación, ML, IA y QA. No se encontró audio, transcripción ni otra fuente
+verificable de observaciones del profesor en los materiales consultados; no se
+atribuyen recomendaciones sin esa evidencia.
