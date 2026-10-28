@@ -52,8 +52,8 @@ Node 22.12+ y Python 3.13; uv 0.11.0 para resolver el entorno y Docker para
 verificar la imagen. En esta PC los entornos ya están instalados.
 
 ```powershell
-Copy-Item .env.example .env
-Copy-Item frontend/.env.example frontend/.env
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+if (-not (Test-Path frontend/.env)) { Copy-Item frontend/.env.example frontend/.env }
 cd backend
 uv sync --frozen
 ```
