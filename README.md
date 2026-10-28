@@ -204,9 +204,12 @@ Como referencia del MVP 1 previo: [repositorio](https://github.com/MartinRojas0/
 y [Trello](https://trello.com/b/zENIbtAv/%F0%9F%8E%93-orienta-compara-mvp-1).
 Su README describe SQLite y los PR [#1](https://github.com/MartinRojas0/orienta-compara-mvp1/pull/1)
 y [#2](https://github.com/MartinRojas0/orienta-compara-mvp1/pull/2) documentan
-entregas de catálogo y comparación. En este repositorio, los PR
-[#7](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/7)–[#10](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/10)
-registran comparación, ML, IA y QA; los [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23)
+entregas de catálogo y comparación. En este repositorio, los
+[PR #7](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/7),
+[#8](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/8),
+[#9](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/9) y
+[#10](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/10) registran
+comparación, ML, IA y QA; los [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23)
 y [#24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24), el release
 v0.1.0 y la sincronización de `dev`. No se encontró audio, transcripción ni otra
 fuente verificable de observaciones del profesor en los materiales consultados;
