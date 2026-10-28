@@ -173,7 +173,13 @@ y construcción Docker. [Resultados y límites](docs/verificacion.md).
 
 Frontend preparado para Vercel (raíz frontend, salida dist, rutas SPA). Backend
 preparado para Render con Docker, usuario sin privilegios y puerto PORT.
-No se publicaron servicios ni se modificó main. [Pasos de despliegue](docs/despliegue.md).
+La interfaz responde en [Vercel](https://orienta-proyecto.vercel.app/), pero la
+ruta de ofertas probada devuelve el HTML de la SPA, no una respuesta JSON de
+FastAPI. El backend público no está verificado; el issue
+[#50](https://github.com/HuamaniAlexander/Orienta-Proyecto/issues/50) registra
+un fallo de configuración de Render que requiere corregirse y redesplegarse.
+El release v0.1.0 se promovió a `main` mediante el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23).
+[Pasos y estado de despliegue](docs/despliegue.md).
 
 Ramas por funcionalidad desde dev, commits Conventional Commits y PR hacia dev.
 Las integraciones en dev fueron autorizadas por el usuario después de comprobar
