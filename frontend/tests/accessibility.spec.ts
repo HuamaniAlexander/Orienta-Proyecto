@@ -7,6 +7,17 @@ const pages = [
   ["comparador", "/comparar?opciones=10,110", ".comparison-table"],
   ["preferencias", "/analisis?opciones=10,110", ".preferences-panel"],
 ];
+test("enlace para saltar al contenido tiene foco visible por teclado", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  const skipLink = page.getByRole("link", { name: "Saltar al contenido" });
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  await expect(skipLink).toHaveCSS("outline-style", "solid");
+  await expect(skipLink).toHaveCSS("outline-width", "3px");
+});
 for (const [name, url, ready] of pages)
   for (const width of [390, 1440])
     test(`accesibilidad ${name} ${width}`, async ({ page }) => {
