@@ -19,6 +19,10 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
   los orígenes concretos de cada frontend; no permitir cualquier dominio de Vercel.
 - Frontend publicado: https://orienta-proyecto.vercel.app.
 
+La ruta `/api/ofertas` del host Vercel responde con HTML de la SPA, no con JSON.
+La API está publicada por separado en Render; la comprobación pública del
+catálogo y del encabezado CORS se registra más abajo.
+
 ## Render Docker
 
 - Runtime Docker; contexto backend; Dockerfile backend/Dockerfile.
