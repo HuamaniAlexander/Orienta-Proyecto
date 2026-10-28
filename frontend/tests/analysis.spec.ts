@@ -99,6 +99,37 @@ test("Gemini no disponible conserva la comparacion", async ({ page }) => {
     page.getByRole("region", { name: "Criterios de comparación" }),
   ).toBeVisible();
 });
+test("explicacion permite reintentar tras un error temporal", async ({
+  page,
+}) => {
+  let calls = 0;
+  await page.route("**/api/explicaciones", async (route) => {
+    calls++;
+    if (calls === 1) {
+      await route.fulfill({
+        status: 503,
+        json: {
+          detail:
+            "Gemini no está disponible en este momento. Tu comparación sigue disponible.",
+        },
+      });
+      return;
+    }
+    await route.fulfill({ json: response });
+  });
+  await page.goto("/analisis?opciones=10,110");
+  await page
+    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Gemini no está disponible",
+  );
+  await page.getByRole("button", { name: "Volver a intentar" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
+  ).toBeVisible();
+  expect(calls).toBe(2);
+});
 for (const width of [360, 390, 768, 1024, 1440])
   test(`preferencias legibles ${width}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
