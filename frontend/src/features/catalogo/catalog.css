@@ -189,6 +189,16 @@ select {
   padding: 4px 7px;
   margin-bottom: 9px;
 }
+.type-badge.tipo-universidad {
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+.type-badge.tipo-instituto {
+  color: #0f766e;
+  background: #f0fdfa;
+  border: 1px solid #ccfbf1;
+}
 .offer-body h3 {
   font-size: 0.95rem;
   line-height: 1.4;

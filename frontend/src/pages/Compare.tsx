@@ -2,13 +2,40 @@ import { offerLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
   ArrowRight,
+  Award,
+  BookOpen,
+  Building,
+  Building2,
   Check,
+  Clock,
+  Coins,
   ExternalLink,
+  GraduationCap,
+  Landmark,
+  Laptop,
+  Lightbulb,
+  MapPin,
+  Navigation,
   Scale,
   Search,
   Sparkles,
   X,
 } from "lucide-react";
+
+const CRITERION_ICONS: Record<string, typeof Scale> = {
+  carrera_oficial: GraduationCap,
+  enfoque_editorial: Lightbulb,
+  ambitos_editoriales: BookOpen,
+  duracion: Clock,
+  costos: Coins,
+  modalidad: Laptop,
+  distrito: MapPin,
+  institucion: Building2,
+  tipo: Landmark,
+  sede: Navigation,
+  nivel: Award,
+  gestion: Building,
+};
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../shared/api/client";
@@ -229,26 +256,36 @@ export function Compare() {
                 </div>
                 {state.data.criterios
                   .filter((row) => !onlyDifferent || row.different)
-                  .map((row) => (
-                    <div
-                      className={
-                        row.different
-                          ? "comparison-row different"
-                          : "comparison-row"
-                      }
-                      key={row.key}
-                    >
-                      <div className="criterion-title">
-                        <strong>{row.title}</strong>
-                        {row.editorial && <small>Síntesis editorial</small>}
-                        {row.different && (
-                          <span className="difference-label">Diferencia</span>
-                        )}
+                  .map((row) => {
+                    const CriterionIcon = CRITERION_ICONS[row.key] ?? Scale;
+                    return (
+                      <div
+                        className={
+                          row.different
+                            ? "comparison-row different"
+                            : "comparison-row"
+                        }
+                        key={row.key}
+                      >
+                        <div className="criterion-title">
+                          <div className="criterion-header">
+                            <CriterionIcon
+                              size={15}
+                              className="criterion-icon"
+                              aria-hidden="true"
+                            />
+                            <strong>{row.title}</strong>
+                          </div>
+                          {row.editorial && <small>Síntesis editorial</small>}
+                          {row.different && (
+                            <span className="difference-label">Diferencia</span>
+                          )}
+                        </div>
+                        <p>{row.a ?? "Consulta este dato con la institución"}</p>
+                        <p>{row.b ?? "Consulta este dato con la institución"}</p>
                       </div>
-                      <p>{row.a ?? "Consulta este dato con la institución"}</p>
-                      <p>{row.b ?? "Consulta este dato con la institución"}</p>
-                    </div>
-                  ))}
+                    );
+                  })}
               </section>
               {state.data.diferencia_duracion && (
                 <p className="duration-note">

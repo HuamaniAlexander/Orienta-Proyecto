@@ -39,8 +39,8 @@ export function Home() {
               diferencias en un solo lugar.
             </p>
             <div className="hero-buttons">
-              <Link className="button" to="/carreras">
-                Explorar carreras <ArrowRight size={19} />
+              <Link className="button hero-cta" to="/carreras">
+                Explorar carreras <ArrowRight size={19} className="hero-cta-arrow" />
               </Link>
               <a className="button secondary" href="#como-funciona">
                 Cómo funciona

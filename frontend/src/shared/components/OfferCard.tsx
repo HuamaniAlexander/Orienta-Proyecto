@@ -80,7 +80,15 @@ export function OfferCard({
         <span className="area-badge">{offer.area}</span>
       </div>
       <div className="offer-body">
-        <span className="type-badge">{offer.tipo}</span>
+        <span
+          className={`type-badge ${
+            offer.tipo.toLowerCase().includes("universidad")
+              ? "tipo-universidad"
+              : "tipo-instituto"
+          }`}
+        >
+          {offer.tipo}
+        </span>
         <h3>
           <Link
             to={`/carreras/${offer.oferta_id}`}
