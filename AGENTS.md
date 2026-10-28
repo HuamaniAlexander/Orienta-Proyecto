@@ -27,5 +27,7 @@ Key patterns:
 - React + TypeScript, FastAPI + Python y arquitectura hexagonal.
 - Sin login ni registro; Gemini solo desde backend.
 - Ramas por tarea desde dev y PR hacia dev; no fusionar sin autorización.
-- CSV de Trello como referencia propuesta hasta verificar el tablero real.
+- Tablero Trello oficial: https://trello.com/b/rGV9WAdT/orienta-proyecto.
+  Usa el JSON exportado para comprobar tarjetas y checklists; no alteres estados
+  sin evidencia.
 - Preservar IDs y fuentes del Excel. No interpretar datos ausentes como cero.

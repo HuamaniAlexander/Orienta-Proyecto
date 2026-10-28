@@ -4,8 +4,9 @@
 
 MVP implementado por etapas y publicado mediante PR hacia dev. El usuario
 autorizó expresamente integrar en dev después de verificar CI. main y los
-servicios de producción no se promovieron. No se reescribió historial compartido
-ni se usó squash: los commits lógicos quedan visibles en cada PR.
+servicios de producción no se publicaron. El release v0.1.0 se promovió a main
+mediante el PR #23 y dev se sincronizó con el PR #24. No se reescribió historial
+compartido ni se usó squash: los commits lógicos quedan visibles en cada PR.
 
 El repositorio inicialmente solo contenía README. Se revisaron Excel, notebook,
 artefactos ML, identidad y prototipos. La integración GitHub permitió publicar
@@ -14,9 +15,11 @@ los commits remotos y se sincronizó el checkout con dev.
 
 ## Relación propuesta con el CSV Trello
 
-No se pudo verificar un tablero Trello real. Los identificadores siguientes
-proceden de ORIENTA_MVP1_Trello_80_tareas.csv, no acreditan tarjetas existentes
-y no tienen enlaces inventados. No se alteraron estados de un tablero externo.
+El tablero oficial vigente es [Orienta - PROYECTO](https://trello.com/b/rGV9WAdT/orienta-proyecto).
+El usuario proporcionó su exportación JSON para contrastar las tarjetas 11–18.
+La tabla siguiente conserva las referencias ORI históricas del CSV
+`ORIENTA_MVP1_Trello_80_tareas.csv`; no son números de tarjeta ni sustituyen
+los títulos, checklists o estados del tablero oficial.
 
 | Entrega | Referencias CSV propuestas | PR | Estado |
 |---|---|---|---|
@@ -50,7 +53,9 @@ consecutivas sobre dev integrado.
 
 ## Cierre
 
-La aplicación queda disponible localmente y el despliegue está preparado y
-documentado. Ver verificacion.md para resultados, capturas, PDCA y validaciones
-externas que no se inventaron. Los siguientes cambios de producto deben partir
-de dev actualizado y mantener PR y commits por tarea.
+La versión v0.1.0 se promovió a `main` mediante el
+[PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23), y `dev`
+se sincronizó mediante el [PR #24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24).
+Los servicios de frontend y backend siguen sin publicarse. Ver
+[verificación](verificacion.md) y el [guion de demostración](demo-mvp1.md);
+los siguientes cambios deben partir de `dev` y mantener PR y commits por tarea.

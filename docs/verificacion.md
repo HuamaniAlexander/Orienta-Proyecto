@@ -1,5 +1,13 @@
 # Verificación MVP 1 — 26 de octubre de 2026
 
+## Estado actualizado
+
+Después de esta verificación, el release v0.1.0 se promovió a `main` mediante
+el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23) y
+`dev` se sincronizó con el [PR #24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24).
+Los servicios siguen sin publicarse. La verificación de este documento y sus
+capturas son evidencia de pruebas locales/CI, no de un despliegue público.
+
 ## Evidencia ejecutada
 
 - Backend: Ruff, mypy y 25 pruebas correctas; integración de importación opt-in
@@ -60,7 +68,7 @@ IA y modelo Google disponible. Repetir los controles afectados.
 
 No se simularon entrevistas ni se inventaron tres participantes de usabilidad.
 Queda pendiente una sesión real con estudiantes y orientación académica para
-revisar lenguaje, taxonomía y decisiones. Tampoco se publicaron servicios,
-se promovió main ni se creó una versión estable: esas acciones requieren su
-instrucción específica. La información publicada mantiene el alcance y fecha
-del Excel; no se revalidaron todas las páginas institucionales externamente.
+revisar lenguaje, taxonomía y decisiones. Los servicios de frontend y backend
+no se publicaron; el release de GitHub no equivale a un despliegue. La
+información académica conserva el alcance y fecha del Excel; no se revalidaron
+todas las páginas institucionales externamente.
