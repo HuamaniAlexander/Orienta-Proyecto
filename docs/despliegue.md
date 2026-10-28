@@ -9,7 +9,7 @@ No sobrescribir archivos .env existentes. Los puertos son 127.0.0.1:5173 y :8000
 El script no detiene procesos ajenos: conserva puertos ocupados y verifica respuestas.
 Para detener una ejecución manual, usar Ctrl+C en cada terminal.
 
-## Vercel (preparado, sin publicar)
+## Vercel
 
 - Root directory: frontend.
 - Install: npm ci. Build: npm run build. Output: dist.
@@ -18,7 +18,13 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
 - Separar valores de preview y producción. En CORS_ORIGINS del backend registrar
   los orígenes concretos de cada frontend; no permitir cualquier dominio de Vercel.
 
-## Render Docker (preparado, sin publicar)
+La URL https://orienta-proyecto.vercel.app/ respondió con HTML de ORIENTA el
+27 de octubre de 2026. Esto confirma que la interfaz está publicada, no que el
+recorrido completo funcione: `/api/ofertas?page_size=1` en ese host devolvió el
+mismo HTML de la SPA en lugar de JSON de FastAPI. La conexión con el backend
+público sigue sin verificarse.
+
+## Render Docker (despliegue pendiente)
 
 - Runtime Docker; contexto backend; Dockerfile backend/Dockerfile.
 - Imagen ejecutada como usuario orienta sin privilegios. Uvicorn escucha
@@ -33,8 +39,12 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
   activar el servicio. No ejecutarlas en cada arranque o desde visitantes.
 
 Docker fue construido por GitHub Actions. No hay Docker instalado localmente,
-por lo que no se afirma haber ejecutado aquí la imagen. No hay servicios
-publicados ni credenciales de Vercel/Render configuradas por esta entrega.
+por lo que no se afirma haber ejecutado aquí la imagen. El
+[issue #50](https://github.com/HuamaniAlexander/Orienta-Proyecto/issues/50)
+registra que Render falló al resolver una ruta `backend/backend` y que falta
+corregir la configuración del servicio y verificar un nuevo despliegue con
+`/health`, `/ready` y acceso desde Vercel. No se ha confirmado un backend
+operativo ni se documenta aquí una URL oficial para ese servicio.
 
 ## Operación
 

@@ -173,12 +173,20 @@ y construcción Docker. [Resultados y límites](docs/verificacion.md).
 
 Frontend preparado para Vercel (raíz frontend, salida dist, rutas SPA). Backend
 preparado para Render con Docker, usuario sin privilegios y puerto PORT.
-No se publicaron servicios ni se modificó main. [Pasos de despliegue](docs/despliegue.md).
+La interfaz responde en [Vercel](https://orienta-proyecto.vercel.app/), pero la
+ruta de ofertas probada devuelve el HTML de la SPA, no una respuesta JSON de
+FastAPI. El backend público no está verificado; el issue
+[#50](https://github.com/HuamaniAlexander/Orienta-Proyecto/issues/50) registra
+un fallo de configuración de Render que requiere corregirse y redesplegarse.
+El release v0.1.0 se promovió a `main` mediante el [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23).
+[Pasos y estado de despliegue](docs/despliegue.md).
 
 Ramas por funcionalidad desde dev, commits Conventional Commits y PR hacia dev.
 Las integraciones en dev fueron autorizadas por el usuario después de comprobar
 CI; se conservan los commits mediante merge. [Plan y PR](docs/plan-mvp1.md).
-El CSV de Trello se usa como referencia propuesta; no hay tablero real verificado.
+Proyecto actual: [repositorio](https://github.com/HuamaniAlexander/Orienta-Proyecto)
+y [tablero oficial Orienta - PROYECTO](https://trello.com/b/rGV9WAdT/orienta-proyecto);
+sus tarjetas y checklists prevalecen sobre el CSV histórico.
 
 ## Fuentes y límites
 
@@ -191,3 +199,18 @@ como mensualidades cuando sus conceptos y condiciones son distintos.
 Las imágenes generadas son ilustrativas. El logo oficial se conserva y los
 iconos institucionales provienen de sus sitios. Recursos WebP servidos con el
 frontend; InsForge se reserva para PostgreSQL. [Procedencia visual](docs/recursos-visuales.md).
+
+Como referencia del MVP 1 previo: [repositorio](https://github.com/MartinRojas0/orienta-compara-mvp1)
+y [Trello](https://trello.com/b/zENIbtAv/%F0%9F%8E%93-orienta-compara-mvp-1).
+Su README describe SQLite y los PR [#1](https://github.com/MartinRojas0/orienta-compara-mvp1/pull/1)
+y [#2](https://github.com/MartinRojas0/orienta-compara-mvp1/pull/2) documentan
+entregas de catálogo y comparación. En este repositorio, los
+[PR #7](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/7),
+[#8](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/8),
+[#9](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/9) y
+[#10](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/10) registran
+comparación, ML, IA y QA; los [PR #23](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/23)
+y [#24](https://github.com/HuamaniAlexander/Orienta-Proyecto/pull/24), el release
+v0.1.0 y la sincronización de `dev`. No se encontró audio, transcripción ni otra
+fuente verificable de observaciones del profesor en los materiales consultados;
+no se atribuyen recomendaciones sin esa evidencia.
