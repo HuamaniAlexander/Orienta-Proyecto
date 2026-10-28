@@ -9,7 +9,7 @@ No sobrescribir archivos .env existentes. Los puertos son 127.0.0.1:5173 y :8000
 El script no detiene procesos ajenos: conserva puertos ocupados y verifica respuestas.
 Para detener una ejecución manual, usar Ctrl+C en cada terminal.
 
-## Vercel (preparado, sin publicar)
+## Vercel
 
 - Root directory: frontend.
 - Install: npm ci. Build: npm run build. Output: dist.
@@ -17,8 +17,9 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
 - frontend/vercel.json resuelve las rutas SPA.
 - Separar valores de preview y producción. En CORS_ORIGINS del backend registrar
   los orígenes concretos de cada frontend; no permitir cualquier dominio de Vercel.
+- Frontend publicado: https://orienta-proyecto.vercel.app.
 
-## Render Docker (preparado, sin publicar)
+## Render Docker
 
 - Runtime Docker; contexto backend; Dockerfile backend/Dockerfile.
 - Imagen ejecutada como usuario orienta sin privilegios. Uvicorn escucha
@@ -31,10 +32,28 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
   académicos persistentes ni preferencias del estudiante.
 - Aplicar migraciones e importación desde un entorno administrativo antes de
   activar el servicio. No ejecutarlas en cada arranque o desde visitantes.
+- Backend publicado: https://orienta-proyecto.onrender.com.
 
 Docker fue construido por GitHub Actions. No hay Docker instalado localmente,
-por lo que no se afirma haber ejecutado aquí la imagen. No hay servicios
-publicados ni credenciales de Vercel/Render configuradas por esta entrega.
+por lo que no se afirma haber ejecutado aquí la imagen. Esta revisión no accedió
+a la configuración privada ni a los registros de Render.
+
+## Verificación pública (27 de octubre de 2026)
+
+- `https://orienta-proyecto.vercel.app/carreras` respondió HTTP 200 y mostró
+  414 opciones en el catálogo.
+- `https://orienta-proyecto.onrender.com/health` respondió `status: ok`.
+- `/ready` informó base de datos y ML disponibles, y Gemini configurado.
+- `/api/ofertas?page_size=1` respondió JSON con `total: 414` y un elemento.
+- Una solicitud al catálogo con origen
+  `https://orienta-proyecto.vercel.app` respondió HTTP 200 e incluyó ese origen
+  en `Access-Control-Allow-Origin`.
+
+El issue [#50](https://github.com/HuamaniAlexander/Orienta-Proyecto/issues/50)
+registra un fallo anterior de ruta duplicada `backend/backend`. Las respuestas
+públicas actuales confirman que el servicio está operativo, pero no permiten
+determinar qué cambio se hizo en Render ni sustituyen la revisión de sus
+registros. No se modificaron variables ni configuración del servicio.
 
 ## Operación
 
