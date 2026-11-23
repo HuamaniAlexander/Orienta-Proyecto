@@ -45,7 +45,7 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Compara carreras.",
+      "Descubre qué estudiar.",
     );
     await expect
       .poll(() =>

@@ -26,7 +26,7 @@ import { useSearchParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
-import { SelectButton } from "../features/comparador/Selection";
+import { SelectButton, SelectionTray } from "../features/comparador/Selection";
 import type { CatalogPage, Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
@@ -121,12 +121,8 @@ export function Catalog() {
   return (
     <div className="container catalog-page">
       <div className="page-heading">
-        <p className="eyebrow">EXPLORA TUS POSIBILIDADES</p>
-        <h1>Encuentra tu próxima carrera.</h1>
-        <p>
-          Universidades e institutos de Lima Norte. Un lugar para empezar a
-          decidir.
-        </p>
+        <h1>Encuentra y compara tu próxima carrera.</h1>
+        <p>Añade dos opciones y descubre sus diferencias.</p>
       </div>
       <form
         className="catalog-search"
@@ -151,7 +147,7 @@ export function Catalog() {
         </button>
       </form>
       <div className="catalog-layout">
-        <aside>
+        <aside className="catalog-filters">
           <details className="filters-panel" open>
             <summary>
               <SlidersHorizontal size={18} /> Filtrar opciones
@@ -328,6 +324,7 @@ export function Catalog() {
             La información académica conserva sus fuentes y fechas de consulta.
           </p>
         </section>
+        <SelectionTray embedded />
       </div>
     </div>
   );

@@ -103,18 +103,27 @@ export function SelectButton({ offer }: { offer: Offer }) {
     </button>
   );
 }
-export function SelectionTray() {
+export function SelectionTray({ embedded = false }: { embedded?: boolean }) {
   const { items, remove } = useSelection();
   const location = useLocation();
-  if (!location.pathname.startsWith("/carreras") || !items.length) return null;
+  if (
+    !embedded &&
+    (!location.pathname.startsWith("/carreras") || !items.length)
+  )
+    return null;
+  const className = embedded
+    ? "catalog-selection"
+    : `selection-tray${location.pathname === "/carreras" ? " catalog-tray" : ""}`;
   return (
-    <aside className="selection-tray" aria-label="Opciones seleccionadas">
-      <div className="container tray-content">
+    <aside className={className} aria-label="Opciones seleccionadas">
+      <div className={embedded ? "tray-content" : "container tray-content"}>
         <div className="tray-title">
           <Scale size={25} />
           <div>
             <strong>{items.length} de 2 opciones</strong>
-            <small>Tu próxima comparación</small>
+            <small>
+              {embedded ? "Compara dos carreras" : "Tu próxima comparación"}
+            </small>
           </div>
         </div>
         <div className="tray-items">
@@ -142,7 +151,10 @@ export function SelectionTray() {
           </Link>
         ) : (
           <span className="tray-prompt">
-            <Plus size={14} aria-hidden="true" /> Elige una segunda opción
+            <Plus size={14} aria-hidden="true" />{" "}
+            {items.length
+              ? "Elige una segunda opción"
+              : "Añade dos opciones del catálogo"}
           </span>
         )}
       </div>

@@ -25,7 +25,11 @@ export function Home() {
         <div className="container hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">TU PRÓXIMO PASO</p>
-            <h1>Descubre qué estudiar.<br />Compara dónde hacerlo.</h1>
+            <h1>
+              Descubre qué estudiar.
+              <br />
+              Compara dónde hacerlo.
+            </h1>
             <p className="hero-description">
               Carreras e instituciones de Lima Norte, en un solo lugar.
             </p>
@@ -44,27 +48,40 @@ export function Home() {
         </div>
       </section>
       <div className="container home-search-wrap">
-        <form className="home-search" role="search" onSubmit={(event) => {
-          event.preventDefault();
-          const params = new URLSearchParams();
-          const fields = new FormData(event.currentTarget);
-          for (const key of ["q", "distrito_id"]) {
-            const value = String(fields.get(key) ?? "").trim();
-            if (value) params.set(key, value);
-          }
-          navigate({ pathname: "/carreras", search: params.toString() });
-        }}>
+        <form
+          className="home-search"
+          role="search"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const params = new URLSearchParams();
+            const fields = new FormData(event.currentTarget);
+            for (const key of ["q", "distrito_id"]) {
+              const value = String(fields.get(key) ?? "").trim();
+              if (value) params.set(key, value);
+            }
+            navigate({ pathname: "/carreras", search: params.toString() });
+          }}
+        >
           <label htmlFor="home-career">¿Qué carrera te interesa?</label>
           <div>
-            <input id="home-career" name="q" type="search" maxLength={120}
-              placeholder="Ej. Ingeniería de Sistemas" />
+            <input
+              id="home-career"
+              name="q"
+              type="search"
+              maxLength={120}
+              placeholder="Ej. Ingeniería de Sistemas"
+            />
             <select name="distrito_id" aria-label="Distrito">
               <option value="">Todo Lima Norte</option>
               {data?.distritos.map((district) => (
-                <option key={district.distrito_id} value={district.distrito_id}>{district.distrito}</option>
+                <option key={district.distrito_id} value={district.distrito_id}>
+                  {district.distrito}
+                </option>
               ))}
             </select>
-            <button className="button">Explorar carreras <ArrowRight size={19} /></button>
+            <button className="button">
+              Explorar carreras <ArrowRight size={19} />
+            </button>
           </div>
           <p>Después podrás elegir dos opciones y compararlas.</p>
         </form>

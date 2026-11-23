@@ -109,9 +109,6 @@ export function App() {
               <Leaf size={16} />
               <span>Modo ligero</span>
             </button>
-            <Link className="button header-cta" to="/carreras">
-              Explorar carreras <ArrowRight size={16} />
-            </Link>
             <button
               className="menu-button"
               aria-expanded={menu}

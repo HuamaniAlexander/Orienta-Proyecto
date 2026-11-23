@@ -493,3 +493,42 @@ select {
 .sort-select {
   min-width: 145px;
 }
+
+.catalog-selection {
+  display: none;
+}
+@media (min-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 28%);
+  }
+  .catalog-filters {
+    grid-column: 1 / -1;
+  }
+  .filters-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .catalog-tray {
+    display: none;
+  }
+  .catalog-selection {
+    display: block;
+    position: sticky;
+    top: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: #f7faff;
+    padding: 1rem;
+  }
+  .catalog-selection .tray-content,
+  .catalog-selection .tray-items {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .catalog-selection .tray-items > div {
+    width: 100%;
+    max-width: none;
+  }
+  .catalog-selection .tray-title strong {
+    color: var(--primary);
+  }
+}
