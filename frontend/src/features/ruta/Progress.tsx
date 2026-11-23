@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Offer } from "../../shared/types/catalog";
 
 export type SavedOffer = Pick<
@@ -41,7 +47,16 @@ const Context = createContext<{
 
 function read(): Progress {
   const serialized = localStorage.getItem(STORAGE);
-  return serialized ? (JSON.parse(serialized) as Progress) : empty();
+  if (!serialized) return empty();
+  const stored = JSON.parse(serialized) as Progress | null;
+  if (
+    !stored ||
+    !Array.isArray(stored.offers) ||
+    !Array.isArray(stored.comparisons) ||
+    !Array.isArray(stored.questions)
+  )
+    return empty();
+  return stored;
 }
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
@@ -53,6 +68,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   });
   const [status, setStatus] = useState({ text: "", error: false });
+  useEffect(() => {
+    function sync(event: StorageEvent) {
+      if (
+        event.storageArea !== localStorage ||
+        (event.key !== STORAGE && event.key !== null)
+      )
+        return;
+      try {
+        setProgress(read());
+      } catch {
+        setProgress(empty());
+      }
+    }
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
   function commit(change?: (previous: Progress) => Progress) {
     try {
       const next = change ? change(read()) : empty();
