@@ -595,10 +595,7 @@ a:hover {
     font-size: 3rem;
   }
 }
-@media (max-width: 767px) {
-  .container {
-    width: calc(100% - 36px);
-  }
+@media (max-width: 899px) {
   .site-header {
     height: 72px;
   }
@@ -644,6 +641,11 @@ a:hover {
   }
   .header-actions {
     gap: 6px;
+  }
+}
+@media (max-width: 767px) {
+  .container {
+    width: calc(100% - 36px);
   }
   .hero {
     padding: 36px 0 30px;
