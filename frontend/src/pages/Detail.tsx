@@ -1,3 +1,4 @@
+import { SaveOffer } from "../features/ruta/Progress";
 import { sourceLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
@@ -89,6 +90,7 @@ export function Detail() {
           <Link className="button" to={`/comparar?opciones=${offer.oferta_id}`}>
             <Scale size={18} /> Agregar al comparador
           </Link>
+          <SaveOffer offer={offer} />
           <p className="source-date">
             <CheckCircle2 size={14} /> Consulta de la fuente:{" "}
             {dateLabel(offer.fecha_consulta)}

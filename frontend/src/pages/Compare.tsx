@@ -1,3 +1,4 @@
+import { SaveComparison } from "../features/ruta/Progress";
 import { offerLabel } from "../shared/types/labels";
 import {
   ArrowLeft,
@@ -319,6 +320,7 @@ export function Compare() {
                   ))}
                 </div>
               </section>
+              <SaveComparison offers={state.data.opciones} />
               <section className="ai-callout">
                 <span>
                   <Sparkles size={29} />
