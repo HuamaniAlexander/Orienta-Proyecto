@@ -2,6 +2,7 @@ import { ArrowRight, Compass, Leaf, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { MyRoute, ProgressSettings } from "../pages/MyRoute";
+import { Discover, PreferenceForm } from "../pages/Discover";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
@@ -87,7 +88,12 @@ export function App() {
             <NavLink to="/comparar" onClick={() => setMenu(false)}>
               Comparar
             </NavLink>
-            <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>Mi ruta</NavLink>
+            <NavLink to="/descubre" onClick={() => setMenu(false)}>
+              Descubre
+            </NavLink>
+            <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>
+              Mi ruta
+            </NavLink>
           </nav>
           <div className="header-actions">
             <button
@@ -120,6 +126,8 @@ export function App() {
           <Route path="/carreras/:id" element={<Detail />} />
           <Route path="/comparar" element={<Compare />} />
           <Route path="/analisis" element={<Analysis />} />
+          <Route path="/descubre" element={<Discover />} />
+          <Route path="/descubre/preferencias" element={<PreferenceForm />} />
           <Route path="/mi-ruta" element={<MyRoute />} />
           <Route path="/mi-ruta/avance" element={<ProgressSettings />} />
           <Route path="*" element={<NotFound />} />

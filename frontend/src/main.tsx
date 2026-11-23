@@ -14,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <SelectionProvider>
-        <ProgressProvider><App /></ProgressProvider>
+        <ProgressProvider>
+          <App />
+        </ProgressProvider>
       </SelectionProvider>
     </BrowserRouter>
   </React.StrictMode>,
