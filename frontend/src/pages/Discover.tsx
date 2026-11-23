@@ -12,7 +12,7 @@ import {
   type Preferences,
   type Suggestion,
 } from "../features/ruta/Progress";
-import { useApi } from "../shared/api/client";
+import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import type { Facets } from "../shared/types/catalog";
 import { officialUrl } from "./Detail";
@@ -93,7 +93,11 @@ export function Discover() {
             elegiste y el catálogo.
           </p>
         )}
-      <SuggestionList suggestions={progress.current.suggestions} />
+      <SuggestionList
+        key={progress.current.version}
+        suggestions={progress.current.suggestions}
+        preferences={progress.current.preferences}
+      />
       {progress.previous && (
         <details className="route-panel">
           <summary>
@@ -103,14 +107,24 @@ export function Discover() {
             value={progress.previous.preferences}
             facets={facets.data}
           />
-          <SuggestionList suggestions={progress.previous.suggestions} />
+          <SuggestionList
+            key={progress.previous.version}
+            suggestions={progress.previous.suggestions}
+            preferences={progress.previous.preferences}
+          />
         </details>
       )}
     </div>
   );
 }
 
-function SuggestionList({ suggestions }: { suggestions: Suggestion[] }) {
+function SuggestionList({
+  suggestions,
+  preferences,
+}: {
+  suggestions: Suggestion[];
+  preferences: Preferences;
+}) {
   if (!suggestions.length)
     return (
       <p className="info-note">
@@ -138,10 +152,77 @@ function SuggestionList({ suggestions }: { suggestions: Suggestion[] }) {
             </a>
           )}
           <Link to={`/carreras/${offer.oferta_id}`}>Ver carrera y fuentes</Link>
+          {(preferences.interests.length > 0 ||
+            preferences.extra ||
+            preferences.district ||
+            preferences.modalities.length > 0) && (
+            <SuggestionAI offerId={offer.oferta_id} preferences={preferences} />
+          )}
           <SaveOffer offer={offer} />
         </article>
       ))}
     </div>
+  );
+}
+
+function SuggestionAI({
+  offerId,
+  preferences,
+}: {
+  offerId: number;
+  preferences: Preferences;
+}) {
+  const [text, setText] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function explain() {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await api<{ explanation: string }>(
+        "/api/descubre/explicar",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            offer_id: offerId,
+            interests: [...preferences.interests, preferences.extra].filter(
+              Boolean,
+            ),
+            district_id: preferences.district
+              ? Number(preferences.district)
+              : null,
+            modality_ids: preferences.modalities,
+          }),
+        },
+      );
+      setText(result.explanation);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No pudimos explicar la sugerencia.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <details className="route-stack">
+      <summary>Explicar con IA</summary>
+      <p>
+        Al solicitar la explicación se envían a Gemini tus intereses y
+        condiciones seleccionadas.
+      </p>
+      <button
+        className="button secondary"
+        disabled={busy}
+        onClick={() => void explain()}
+      >
+        {busy ? "Preparando explicación…" : "Solicitar explicación"}
+      </button>
+      {error && <Failure message={error} />}
+      {text && <p role="status">{text}</p>}
+    </details>
   );
 }
 

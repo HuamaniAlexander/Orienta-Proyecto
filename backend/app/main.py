@@ -17,6 +17,7 @@ from app.infrastructure.persistence.repository import InsforgeCatalog
 from app.infrastructure.settings import Settings
 from app.interfaces.http.catalog import router
 from app.interfaces.http.comparison import router as comparison_router
+from app.interfaces.http.discovery import router as discovery_router
 from app.interfaces.http.explanation import router as explanation_router
 from app.interfaces.http.ml import router as ml_router
 
@@ -50,6 +51,7 @@ def create_app(settings: Settings | None = None, repository: Any = None,
                 )
                 api.state.explainer = Explain(api.state.repository, provider, api.state.content)
                 api.state.gemini_model = config.gemini_model
+                api.state.gemini_client = gemini_client if config.gemini_api_key.get_secret_value() else None
                 yield
 
     api = FastAPI(title="ORIENTA", version="0.1.0", lifespan=lifespan)
@@ -63,6 +65,7 @@ def create_app(settings: Settings | None = None, repository: Any = None,
     api.include_router(comparison_router)
     api.include_router(ml_router)
     api.include_router(explanation_router)
+    api.include_router(discovery_router)
 
     @api.exception_handler(InvalidComparison)
     async def invalid_comparison(request: Request, error: InvalidComparison) -> JSONResponse:
