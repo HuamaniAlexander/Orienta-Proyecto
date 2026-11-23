@@ -68,7 +68,7 @@ export function Analysis() {
         </Link>
       </div>
     );
-  return <AnalysisContent ids={values.join(",")} />;
+  return <AnalysisContent key={values.join(",")} ids={values.join(",")} />;
 }
 
 function AnalysisContent({ ids }: { ids: string }) {
@@ -210,9 +210,7 @@ function AnalysisContent({ ids }: { ids: string }) {
           <Sparkles size={15} /> UNA MIRADA CON CONTEXTO
         </p>
         <h1>
-          Entiende tus opciones.
-          <br />
-          Con tus prioridades en mente.
+          Entiende las diferencias, con IA.
         </h1>
         <p>
           La IA te ayuda a explorar las diferencias. La decisión sigue siendo
