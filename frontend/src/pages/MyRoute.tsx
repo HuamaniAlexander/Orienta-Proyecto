@@ -71,6 +71,9 @@ export function MyRoute() {
           <Link className="button" to="/carreras">
             Seguir explorando
           </Link>
+          <Link className="button secondary" to="/conecta">
+            Preparar una conversación
+          </Link>
         </div>
         <section id="preguntas" className="route-panel">
           <h2>Tus preguntas</h2>

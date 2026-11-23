@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { MyRoute, ProgressSettings } from "../pages/MyRoute";
 import { Discover, PreferenceForm } from "../pages/Discover";
+import { Connect, FollowUp } from "../pages/Connect";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
@@ -94,6 +95,9 @@ export function App() {
             <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>
               Mi ruta
             </NavLink>
+            <NavLink to="/conecta" onClick={() => setMenu(false)}>
+              Conecta
+            </NavLink>
           </nav>
           <div className="header-actions">
             <button
@@ -130,6 +134,8 @@ export function App() {
           <Route path="/descubre/preferencias" element={<PreferenceForm />} />
           <Route path="/mi-ruta" element={<MyRoute />} />
           <Route path="/mi-ruta/avance" element={<ProgressSettings />} />
+          <Route path="/conecta" element={<Connect />} />
+          <Route path="/conecta/solicitudes/:id" element={<FollowUp />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

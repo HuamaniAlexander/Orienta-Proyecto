@@ -79,6 +79,9 @@ export function Discover() {
         <Link className="button secondary" to="/descubre/preferencias">
           Editar preferencias
         </Link>
+        <Link className="text-link" to="/conecta">
+          Buscar orientación
+        </Link>
       </section>
       {progress.current.preferences.availability && (
         <p className="info-note">
