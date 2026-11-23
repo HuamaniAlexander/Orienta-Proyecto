@@ -13,3 +13,5 @@ class Settings(BaseSettings):
     ml_artifacts_path: Path = Path(__file__).resolve().parents[2] / 'ml_artifacts'
     gemini_api_key: SecretStr = SecretStr('')
     gemini_model: str = 'gemini-3.5-flash-lite'
+    orientation_db_path: Path | None = None
+    orientation_profiles_path: Path | None = None

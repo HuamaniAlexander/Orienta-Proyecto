@@ -13,6 +13,7 @@ from app.domain.catalog import CatalogFilters, OfferNotFound, ServiceUnavailable
 from app.domain.comparison import InvalidComparison
 from app.infrastructure.ai.gemini import GeminiExplanation
 from app.infrastructure.ml.content import SklearnContent
+from app.infrastructure.orientation.store import OrientationStore
 from app.infrastructure.persistence.repository import InsforgeCatalog
 from app.infrastructure.settings import Settings
 from app.interfaces.http.catalog import router
@@ -20,6 +21,7 @@ from app.interfaces.http.comparison import router as comparison_router
 from app.interfaces.http.discovery import router as discovery_router
 from app.interfaces.http.explanation import router as explanation_router
 from app.interfaces.http.ml import router as ml_router
+from app.interfaces.http.orientation import router as orientation_router
 
 
 def create_app(settings: Settings | None = None, repository: Any = None,
@@ -28,6 +30,10 @@ def create_app(settings: Settings | None = None, repository: Any = None,
 
     @asynccontextmanager
     async def lifespan(api: FastAPI) -> AsyncIterator[None]:
+        api.state.orientation = (
+            OrientationStore(config.orientation_db_path, config.orientation_profiles_path)
+            if config.orientation_db_path and config.orientation_profiles_path else None
+        )
         async with httpx.AsyncClient(
             base_url=config.insforge_base_url or "http://unconfigured.invalid",
             headers={"Authorization": f"Bearer {config.insforge_api_key.get_secret_value()}",
@@ -66,6 +72,7 @@ def create_app(settings: Settings | None = None, repository: Any = None,
     api.include_router(ml_router)
     api.include_router(explanation_router)
     api.include_router(discovery_router)
+    api.include_router(orientation_router)
 
     @api.exception_handler(InvalidComparison)
     async def invalid_comparison(request: Request, error: InvalidComparison) -> JSONResponse:
