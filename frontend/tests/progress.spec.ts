@@ -4,11 +4,11 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   page,
 }) => {
   await page.goto("/descubre");
-  await page.getByLabel("Crear con tecnología").check();
+  await page.getByLabel("Organizar proyectos").check();
   await page.getByRole("button", { name: "Continuar" }).click();
   await expect(page.getByLabel("Dónde te gustaría estudiar")).toBeVisible();
   await page.getByRole("button", { name: "Continuar" }).click();
-  await expect(page.getByText("Intereses: Crear con tecnología")).toBeVisible();
+  await expect(page.getByText("Intereses: Organizar proyectos")).toBeVisible();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await expect(
     page.getByRole("heading", { name: "Opciones para seguir explorando." }),
@@ -18,7 +18,7 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
     .first()
     .click();
   await page.getByRole("link", { name: "Editar preferencias" }).click();
-  await page.getByLabel("Crear con tecnología").uncheck();
+  await page.getByLabel("Organizar proyectos").uncheck();
   await page.getByRole("button", { name: "Continuar" }).click();
   await page.getByRole("button", { name: "Continuar" }).click();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
