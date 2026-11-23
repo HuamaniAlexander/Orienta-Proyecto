@@ -302,3 +302,41 @@
 [data-lite="true"] .hero .hero-grid {
   grid-template-columns: 1fr;
 }
+
+.home-search-wrap {
+  position: relative;
+  margin-top: -2rem;
+  z-index: 1;
+  margin-bottom: 2rem;
+}
+.home-search {
+  background: white;
+  border: 1px solid #cbd7e6;
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  box-shadow: 0 10px 32px #102a4320;
+}
+.home-search label {
+  font-size: 1.35rem;
+  font-weight: 750;
+}
+.home-search > div {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: .75rem;
+  margin-block: .75rem;
+}
+.home-search :is(input, select) {
+  min-width: 0;
+  border: 1px solid #a7b8cf;
+  border-radius: .5rem;
+  background: white;
+  color: inherit;
+  padding: .75rem;
+  font: inherit;
+}
+.home-search p { margin: 0; }
+@media (max-width: 720px) {
+  .home-search > div { grid-template-columns: 1fr; }
+  .home-search-wrap { margin-top: 1rem; }
+}

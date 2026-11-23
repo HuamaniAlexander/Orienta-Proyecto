@@ -2,17 +2,14 @@ import {
   ArrowRight,
   BookOpen,
   Building2,
-  Check,
   ChevronRight,
   GraduationCap,
   MapPin,
   Scale,
   Search,
-  ShieldCheck,
-  Smartphone,
   Sparkles,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import type { Facets } from "../shared/types/catalog";
 import { AnimatedCount } from "../features/inicio/AnimatedCount";
@@ -20,43 +17,18 @@ import { InstitutionCarousel } from "../features/inicio/InstitutionCarousel";
 import "../features/inicio/home.css";
 
 export function Home() {
+  const navigate = useNavigate();
   const { data } = useApi<Facets>("/api/filtros");
   return (
     <>
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">
-              <span className="dot" /> TU FUTURO, CON MÁS CLARIDAD
-            </p>
-            <h1>
-              Compara carreras.
-              <br />
-              <span>Elige con información.</span>
-            </h1>
+            <p className="eyebrow">TU PRÓXIMO PASO</p>
+            <h1>Descubre qué estudiar.<br />Compara dónde hacerlo.</h1>
             <p className="hero-description">
-              Explora opciones de estudio en Lima Norte y comprende sus
-              diferencias en un solo lugar.
+              Carreras e instituciones de Lima Norte, en un solo lugar.
             </p>
-            <div className="hero-buttons">
-              <Link className="button hero-cta" to="/carreras">
-                Explorar carreras <ArrowRight size={19} className="hero-cta-arrow" />
-              </Link>
-              <a className="button secondary" href="#como-funciona">
-                Cómo funciona
-              </a>
-            </div>
-            <div className="hero-trust">
-              <span>
-                <Check size={17} /> Sin registro
-              </span>
-              <span>
-                <ShieldCheck size={17} /> Fuentes documentadas
-              </span>
-              <span>
-                <Smartphone size={17} /> Desde tu celular
-              </span>
-            </div>
           </div>
           <div className="hero-art illustration">
             <div className="hero-photo">
@@ -71,6 +43,32 @@ export function Home() {
           </div>
         </div>
       </section>
+      <div className="container home-search-wrap">
+        <form className="home-search" role="search" onSubmit={(event) => {
+          event.preventDefault();
+          const params = new URLSearchParams();
+          const fields = new FormData(event.currentTarget);
+          for (const key of ["q", "distrito_id"]) {
+            const value = String(fields.get(key) ?? "").trim();
+            if (value) params.set(key, value);
+          }
+          navigate({ pathname: "/carreras", search: params.toString() });
+        }}>
+          <label htmlFor="home-career">¿Qué carrera te interesa?</label>
+          <div>
+            <input id="home-career" name="q" type="search" maxLength={120}
+              placeholder="Ej. Ingeniería de Sistemas" />
+            <select name="distrito_id" aria-label="Distrito">
+              <option value="">Todo Lima Norte</option>
+              {data?.distritos.map((district) => (
+                <option key={district.distrito_id} value={district.distrito_id}>{district.distrito}</option>
+              ))}
+            </select>
+            <button className="button">Explorar carreras <ArrowRight size={19} /></button>
+          </div>
+          <p>Después podrás elegir dos opciones y compararlas.</p>
+        </form>
+      </div>
       {data && <InstitutionCarousel institutions={data.instituciones} />}
       <section className="section container" id="como-funciona">
         <div className="section-heading centered">
