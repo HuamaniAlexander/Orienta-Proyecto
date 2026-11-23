@@ -37,6 +37,7 @@ const statusText: Record<Receipt["status"], string> = {
 };
 
 export function Connect() {
+  const preparation = usePreparation();
   const advisors = useApi<Advisor[]>("/api/orientacion/orientadores");
   const [selected, setSelected] = useState("");
   const advisor = advisors.data?.find((item) => item.id === selected);
@@ -86,6 +87,7 @@ export function Connect() {
             <ContactForm
               key={advisor.id}
               advisor={advisor}
+              preparation={preparation}
               reload={() => {
                 setSelected("");
                 advisors.retry();
@@ -93,7 +95,7 @@ export function Connect() {
             />
           )}
         </section>
-        {!advisor && <PreparationPanel />}
+        {!advisor && <PreparationPanel preparation={preparation} />}
       </div>
     </div>
   );
@@ -119,6 +121,7 @@ function usePreparation() {
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [suggested, setSuggested] = useState<string[]>([]);
   async function generate() {
     setBusy(true);
     setError("");
@@ -134,12 +137,7 @@ function usePreparation() {
           }),
         },
       );
-      const draft = `Preguntas sugeridas:\n- ${result.questions.join("\n- ")}`;
-      setSummary((previous) =>
-        [previous.slice(0, Math.max(0, 1598 - draft.length)), draft]
-          .filter(Boolean)
-          .join("\n\n"),
-      );
+      setSuggested(result.questions);
     } catch (error) {
       setError(
         error instanceof Error
@@ -150,7 +148,7 @@ function usePreparation() {
       setBusy(false);
     }
   }
-  return { summary, setSummary, busy, error, generate };
+  return { summary, setSummary, busy, error, generate, suggested };
 }
 
 function PreparationFields({
@@ -162,7 +160,8 @@ function PreparationFields({
     <>
       <p>
         Al usar IA, se enviarán a Gemini las carreras, comparaciones y preguntas
-        guardadas que figuran en este borrador.
+        guardadas en Mi ruta. Puedes editar el borrador antes de compartirlo con
+        un orientador.
       </p>
       <button
         type="button"
@@ -173,6 +172,40 @@ function PreparationFields({
         {preparation.busy ? "Preparando preguntas…" : "Preparar con IA"}
       </button>
       {preparation.error && <Failure message={preparation.error} />}
+      {preparation.suggested.length > 0 && (
+        <div>
+          <h3>Preguntas sugeridas</h3>
+          <ul>
+            {preparation.suggested.map((question) => (
+              <li key={question}>{question}</li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="button secondary"
+            disabled={
+              preparation.summary.length +
+                preparation.suggested.join("\n").length +
+                10 >
+              1600
+            }
+            onClick={() =>
+              preparation.setSummary(
+                [
+                  preparation.summary,
+                  ...preparation.suggested.filter(
+                    (question) => !preparation.summary.includes(question),
+                  ),
+                ]
+                  .filter(Boolean)
+                  .join("\n"),
+              )
+            }
+          >
+            Añadir al borrador
+          </button>
+        </div>
+      )}
       <label>
         Resumen editable para tu conversación
         <textarea
@@ -187,8 +220,11 @@ function PreparationFields({
   );
 }
 
-export function PreparationPanel() {
-  const preparation = usePreparation();
+function PreparationPanel({
+  preparation,
+}: {
+  preparation: ReturnType<typeof usePreparation>;
+}) {
   return (
     <section className="route-panel route-stack">
       <h2>Prepara tu conversación</h2>
@@ -199,12 +235,13 @@ export function PreparationPanel() {
 
 function ContactForm({
   advisor,
+  preparation,
   reload,
 }: {
   advisor: Advisor;
+  preparation: ReturnType<typeof usePreparation>;
   reload: () => void;
 }) {
-  const preparation = usePreparation();
   const [channel, setChannel] = useState<"zoom" | "texto">(
     advisor.slots.length ? "zoom" : "texto",
   );
