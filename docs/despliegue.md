@@ -13,15 +13,13 @@ Para detener una ejecución manual, usar Ctrl+C en cada terminal.
 
 - Root directory: frontend.
 - Install: npm ci. Build: npm run build. Output: dist.
-- VITE_API_BASE_URL: URL HTTPS real del backend del mismo ambiente.
-- frontend/vercel.json resuelve las rutas SPA.
-- Separar valores de preview y producción. En CORS_ORIGINS del backend registrar
-  los orígenes concretos de cada frontend; no permitir cualquier dominio de Vercel.
+- `frontend/vercel.json` usa `VITE_API_BASE_URL=/` y reenvía `/api/*` al backend en Render. El navegador consulta la API bajo el mismo origen que la aplicación.
+- La regla de API precede al fallback de la SPA, que conserva la navegación directa a las pantallas.
 - Frontend publicado: https://orienta-proyecto.vercel.app.
 
-La ruta `/api/ofertas` del host Vercel responde con HTML de la SPA, no con JSON.
-La API está publicada por separado en Render; la comprobación pública del
-catálogo y del encabezado CORS se registra más abajo.
+El catálogo y las explicaciones dependen de la versión desplegada en Render.
+Para probar endpoints nuevos en Vercel, despliega primero una versión compatible
+del backend. Para apuntar a otro ambiente, ajusta el destino del proxy.
 
 ## Render Docker
 
