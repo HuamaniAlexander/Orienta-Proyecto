@@ -48,7 +48,7 @@ class DuplicateRequest(Exception):
 class OrientationStore:
     def __init__(self, path: Path, profiles: Path):
         self.path = path
-        advisors = TypeAdapter(list[Advisor]).validate_json(profiles.read_text(encoding="utf-8"))
+        advisors: list[Advisor] = TypeAdapter(list[Advisor]).validate_json(profiles.read_text(encoding="utf-8"))
         self.advisors = {advisor.id: advisor for advisor in advisors if advisor.active}
         if len({advisor.id for advisor in advisors}) != len(advisors):
             raise ValueError("Los identificadores de orientadores deben ser únicos.")
