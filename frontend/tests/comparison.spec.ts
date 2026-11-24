@@ -74,6 +74,7 @@ for (const width of [360, 390, 768, 1024, 1440])
       type: "jpeg",
       quality: 65,
     });
+    await page.getByText("Ver comparación completa", { exact: true }).click();
     await page.getByRole("checkbox", { name: "Solo diferencias" }).check();
     await expect(page.locator(".comparison-row:not(.different)")).toHaveCount(
       0,
@@ -85,4 +86,28 @@ test("enlace duplicado se rechaza sin perder el catalogo", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Volver al catálogo" }),
   ).toBeVisible();
+});
+
+test("Ubicación enlaza las direcciones reales de ambas sedes", async ({
+  page,
+}) => {
+  await page.route("https://maps.google.com/**", (route) =>
+    route.fulfill({ body: "Mapa" }),
+  );
+  await page.goto("/comparar?opciones=10,110");
+  await page.getByRole("button", { name: "Ubicación", exact: true }).click();
+  const map = page.getByTitle(/^Mapa de /).first();
+  await expect(map).toBeVisible();
+  await expect(page.getByTitle(/^Mapa de /)).toHaveCount(2);
+  const address = new URL((await map.getAttribute("src"))!).searchParams.get(
+    "q",
+  );
+  expect(address).toContain("Av. Alfredo Mendiola 6377");
+  const lookup = page.getByRole("link", { name: "Abrir ubicación" }).first();
+  expect(
+    new URL((await lookup.getAttribute("href"))!).searchParams.get("query"),
+  ).toBe(address);
+  await expect(
+    page.getByRole("link", { name: "Explicar con IA" }),
+  ).toHaveAttribute("href", "/analisis?opciones=10,110");
 });

@@ -339,7 +339,7 @@ function AnalysisContent({ ids }: { ids: string }) {
             )}{" "}
             {pending
               ? "Explorando tus opciones…"
-              : "Explorar diferencias con IA"}
+              : "Explicar diferencias con IA"}
           </button>
           {pending && (
             <p role="status" className="processing-note">

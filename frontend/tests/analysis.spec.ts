@@ -13,7 +13,7 @@ test("referencias y prosa identifican las carreras e instituciones", async ({
   );
   await page.goto("/analisis?opciones=10,110");
   await page
-    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .getByRole("button", { name: "Explicar diferencias con IA" })
     .click();
   const suggestion = page.locator(".suggestion-panel");
   await expect(suggestion).toContainText("Universidad Tecnológica del Perú");
@@ -32,7 +32,7 @@ for (const width of [360, 390, 768, 1024, 1440])
     );
     await page.goto("/analisis?opciones=10,110");
     await page
-      .getByRole("button", { name: "Explorar diferencias con IA" })
+      .getByRole("button", { name: "Explicar diferencias con IA" })
       .click();
     await expect(
       page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
@@ -63,7 +63,7 @@ test("explicacion se solicita una vez y muestra sus limites", async ({
     .getByLabel("Cuéntanos un poco más", { exact: false })
     .fill("Me interesa el software");
   await page
-    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .getByRole("button", { name: "Explicar diferencias con IA" })
     .dblclick();
   await expect(
     page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
@@ -87,7 +87,7 @@ test("Gemini no disponible conserva la comparacion", async ({ page }) => {
   );
   await page.goto("/analisis?opciones=10,110");
   await page
-    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .getByRole("button", { name: "Explicar diferencias con IA" })
     .click();
   await expect(page.getByRole("alert")).toContainText(
     "Gemini no está disponible",
@@ -119,7 +119,7 @@ test("explicacion permite reintentar tras un error temporal", async ({
   });
   await page.goto("/analisis?opciones=10,110");
   await page
-    .getByRole("button", { name: "Explorar diferencias con IA" })
+    .getByRole("button", { name: "Explicar diferencias con IA" })
     .click();
   await expect(page.getByRole("alert")).toContainText(
     "Gemini no está disponible",
