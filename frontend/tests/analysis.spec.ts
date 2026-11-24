@@ -12,13 +12,15 @@ test("referencias y prosa identifican las carreras e instituciones", async ({
     route.fulfill({ json: labeled }),
   );
   await page.goto("/analisis?opciones=10,110");
-  await page
-    .getByRole("button", { name: "Explicar diferencias con IA" })
-    .click();
+  await page.getByRole("button", { name: "Explicar con IA" }).click();
   const suggestion = page.locator(".suggestion-panel");
   await expect(suggestion).toContainText("Universidad Tecnológica del Perú");
   await expect(suggestion).toContainText("Universidad César Vallejo");
   await expect(suggestion).not.toContainText(/opción A|oferta 110|fuente 1/i);
+  await page
+    .getByRole("navigation", { name: "Pasos de la explicación" })
+    .getByRole("button", { name: "Fuentes y próximos pasos" })
+    .click();
   await expect(page.locator(".analysis-sources")).not.toContainText(
     /Fuente \d+/,
   );
@@ -31,9 +33,7 @@ for (const width of [360, 390, 768, 1024, 1440])
       route.fulfill({ json: response }),
     );
     await page.goto("/analisis?opciones=10,110");
-    await page
-      .getByRole("button", { name: "Explicar diferencias con IA" })
-      .click();
+    await page.getByRole("button", { name: "Explicar con IA" }).click();
     await expect(
       page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
     ).toBeVisible();
@@ -60,11 +60,9 @@ test("explicacion se solicita una vez y muestra sus limites", async ({
   });
   await page.goto("/analisis?opciones=10,110");
   await page
-    .getByLabel("Cuéntanos un poco más", { exact: false })
+    .getByLabel("¿Qué te gustaría entender mejor?", { exact: false })
     .fill("Me interesa el software");
-  await page
-    .getByRole("button", { name: "Explicar diferencias con IA" })
-    .dblclick();
+  await page.getByRole("button", { name: "Explicar con IA" }).dblclick();
   await expect(
     page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
   ).toBeVisible();
@@ -86,9 +84,7 @@ test("Gemini no disponible conserva la comparacion", async ({ page }) => {
     }),
   );
   await page.goto("/analisis?opciones=10,110");
-  await page
-    .getByRole("button", { name: "Explicar diferencias con IA" })
-    .click();
+  await page.getByRole("button", { name: "Explicar con IA" }).click();
   await expect(page.getByRole("alert")).toContainText(
     "Gemini no está disponible",
   );
@@ -118,9 +114,7 @@ test("explicacion permite reintentar tras un error temporal", async ({
     await route.fulfill({ json: response });
   });
   await page.goto("/analisis?opciones=10,110");
-  await page
-    .getByRole("button", { name: "Explicar diferencias con IA" })
-    .click();
+  await page.getByRole("button", { name: "Explicar con IA" }).click();
   await expect(page.getByRole("alert")).toContainText(
     "Gemini no está disponible",
   );
@@ -135,7 +129,9 @@ for (const width of [360, 390, 768, 1024, 1440])
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/analisis?opciones=10,110");
     await expect(
-      page.getByRole("heading", { name: "¿Qué es importante para ti?" }),
+      page.getByRole("heading", {
+        name: "¿En qué quieres centrar la explicación?",
+      }),
     ).toBeVisible();
     await expect
       .poll(() =>
@@ -149,3 +145,38 @@ for (const width of [360, 390, 768, 1024, 1440])
       fullPage: true,
     });
   });
+
+test("la explicación general recorre los cuatro pasos y conserva sus fuentes", async ({
+  page,
+}) => {
+  await page.route("**/api/explicaciones", async (route) => {
+    const payload = route.request().postDataJSON();
+    expect(payload.preferencias.prioridades).toEqual([]);
+    expect(payload.preferencias.intereses).toBe("");
+    await route.fulfill({ json: response });
+  });
+  await page.goto("/analisis?opciones=10,110");
+  await page
+    .getByLabel("¿Qué te gustaría entender mejor?")
+    .fill("Texto opcional");
+  await page.getByRole("button", { name: "Continuar sin prioridades" }).click();
+  const steps = page.getByRole("navigation", {
+    name: "Pasos de la explicación",
+  });
+  await expect(steps.getByRole("button", { name: "Resumen" })).toHaveAttribute(
+    "aria-current",
+    "step",
+  );
+  await steps.getByRole("button", { name: "Qué significa para ti" }).click();
+  await expect(
+    page.getByText("Explicación general", { exact: false }),
+  ).toBeVisible();
+  await steps.getByRole("button", { name: "Fuentes y próximos pasos" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Consulta la información original." }),
+  ).toBeVisible();
+  await page.getByLabel("Revisar ambos planes de estudio").check();
+  await expect(
+    page.getByLabel("Revisar ambos planes de estudio"),
+  ).toBeChecked();
+});

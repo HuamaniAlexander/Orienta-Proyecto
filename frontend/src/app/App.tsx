@@ -37,6 +37,7 @@ export function NotFound() {
   );
 }
 export function App() {
+  const { pathname } = useLocation();
   const [menu, setMenu] = useState(false);
   const [lite, setLite] = useState(() => {
     try {
@@ -86,7 +87,13 @@ export function App() {
             <NavLink to="/carreras" onClick={() => setMenu(false)}>
               Carreras
             </NavLink>
-            <NavLink to="/comparar" onClick={() => setMenu(false)}>
+            <NavLink
+              to="/comparar"
+              className={({ isActive }) =>
+                isActive || pathname === "/analisis" ? "active" : ""
+              }
+              onClick={() => setMenu(false)}
+            >
               Comparar
             </NavLink>
             <NavLink to="/descubre" onClick={() => setMenu(false)}>

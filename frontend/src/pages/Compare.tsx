@@ -36,7 +36,7 @@ const CRITERION_ICONS: Record<string, typeof Scale> = {
   gestion: Building,
 };
 import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { api } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { InstitutionLogo } from "../shared/components/InstitutionLogo";
@@ -88,6 +88,17 @@ export function Compare() {
   const [attempt, setAttempt] = useState(0);
   const [onlyDifferent, setOnlyDifferent] = useState(false);
   const fullComparison = useRef<HTMLDetailsElement>(null);
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (
+      hash === "#comparacion-completa" &&
+      state.data &&
+      fullComparison.current
+    ) {
+      fullComparison.current.open = true;
+      fullComparison.current.scrollIntoView();
+    }
+  }, [hash, state.data]);
   useEffect(() => {
     const controller = new AbortController();
     if (!key) {

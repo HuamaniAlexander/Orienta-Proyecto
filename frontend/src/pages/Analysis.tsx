@@ -6,13 +6,19 @@ import {
   ExternalLink,
   LoaderCircle,
   MapPin,
-  Sparkles,
+  Landmark,
+  Lightbulb,
+  Laptop,
+  Clock,
+  Banknote,
+  Flag,
+  FileText,
+  MessageSquare,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
-import { careerImage } from "../shared/components/OfferCard";
 import type { Facets, Source } from "../shared/types/catalog";
 import type { Comparison } from "./Compare";
 import { officialUrl } from "./Detail";
@@ -45,12 +51,85 @@ interface AnalysisResult {
   modelo: string;
 }
 const PRIORITIES = [
-  ["enfoque", "Lo que aprenderé"],
-  ["ubicacion", "Estudiar cerca"],
-  ["modalidad", "La modalidad"],
-  ["duracion", "La duración"],
-  ["costos", "Los costos"],
+  ["enfoque", "Lo que aprenderé", Lightbulb],
+  ["ubicacion", "Estudiar cerca", MapPin],
+  ["modalidad", "Modalidad", Laptop],
+  ["duracion", "Duración", Clock],
+  ["costos", "Costos", Banknote],
+] as const;
+const STEPS = [
+  "Tus prioridades",
+  "Resumen",
+  "Qué significa para ti",
+  "Fuentes y próximos pasos",
 ];
+
+const priorityGuides: Record<
+  string,
+  {
+    title: string;
+    checks: string[];
+    question: string;
+    action: string;
+    criterion: string;
+  }
+> = {
+  enfoque: {
+    title: "Si te importa lo que aprenderás",
+    checks: [
+      "Cursos y áreas del plan de estudios",
+      "Perfil de egreso",
+      "Actividades y proyectos del programa",
+    ],
+    question: "¿Qué aprenderé y cómo lo pondré en práctica?",
+    action: "Revisar programas",
+    criterion: "enfoque",
+  },
+  ubicacion: {
+    title: "Si te importa estudiar cerca",
+    checks: [
+      "Dirección de la sede",
+      "Horarios de asistencia",
+      "Tiempo de traslado",
+    ],
+    question: "¿Cómo encaja la asistencia al campus en mi rutina?",
+    action: "Revisar sedes",
+    criterion: "ubicacion",
+  },
+  modalidad: {
+    title: "Si te importa la modalidad",
+    checks: [
+      "Sesiones presenciales",
+      "Actividades en línea",
+      "Requisitos de conexión",
+    ],
+    question: "¿Qué actividades debo realizar en el campus?",
+    action: "Revisar modalidades",
+    criterion: "modalidad",
+  },
+  duracion: {
+    title: "Si te importa la duración",
+    checks: [
+      "Duración publicada",
+      "Número de ciclos",
+      "Prácticas y requisitos de egreso",
+    ],
+    question: "¿Qué etapas incluye el plan hasta egresar?",
+    action: "Revisar duración",
+    criterion: "duracion",
+  },
+  costos: {
+    title: "Si te importan los costos",
+    checks: [
+      "Conceptos de matrícula",
+      "Unidad de cobro",
+      "Periodo y categoría del tarifario",
+    ],
+    question: "¿Cuánto pagaría en mi convocatoria y bajo qué condiciones?",
+    action: "Revisar costos",
+    criterion: "costos",
+  },
+};
 
 export function Analysis() {
   const [params] = useSearchParams();
@@ -84,7 +163,16 @@ function AnalysisContent({ ids }: { ids: string }) {
   const [pending, setPending] = useState(false);
   const busy = useRef(false);
   const abort = useRef<AbortController | null>(null);
-  const output = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(0);
+  const [submittedPriorities, setSubmittedPriorities] = useState<string[]>([]);
+  const lastGeneral = useRef(false);
+  const [sourceTarget, setSourceTarget] = useState<string>();
+  useEffect(() => {
+    if (step === 3 && sourceTarget) {
+      document.getElementById(sourceTarget)?.focus();
+      setSourceTarget(undefined);
+    }
+  }, [step, sourceTarget]);
   useEffect(() => {
     const controller = new AbortController();
     api<Comparison>("/api/comparaciones", {
@@ -104,13 +192,10 @@ function AnalysisContent({ ids }: { ids: string }) {
       abort.current?.abort();
     };
   }, [ids]);
-  useEffect(() => {
-    if (result)
-      output.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [result]);
-  async function submit() {
+  async function submit(general = false) {
     if (busy.current) return;
     busy.current = true;
+    lastGeneral.current = general;
     setPending(true);
     setError("");
     setResult(undefined);
@@ -121,15 +206,17 @@ function AnalysisContent({ ids }: { ids: string }) {
         body: JSON.stringify({
           oferta_ids: ids.split(",").map(Number),
           preferencias: {
-            prioridades: priorities,
-            intereses: interests,
-            distrito_id: district ? Number(district) : null,
-            modalidad_id: modality ? Number(modality) : null,
+            prioridades: general ? [] : priorities,
+            intereses: general ? "" : interests,
+            distrito_id: !general && district ? Number(district) : null,
+            modalidad_id: !general && modality ? Number(modality) : null,
           },
         }),
         signal: abort.current.signal,
       });
       setResult(response);
+      setSubmittedPriorities(general ? [] : priorities);
+      setStep(1);
     } catch (err) {
       if (!abort.current.signal.aborted)
         setError(
@@ -158,6 +245,47 @@ function AnalysisContent({ ids }: { ids: string }) {
       </div>
     );
   const offers = comparison.opciones;
+  const compareUrl = `/comparar?opciones=${ids}`;
+  const labeledPriorities = PRIORITIES.filter(([id]) =>
+    submittedPriorities.includes(id),
+  ).map(([, label]) => label);
+  const sourceByUrl = new Map(
+    (result?.fuentes ?? [])
+      .filter((source) => officialUrl(source.url))
+      .map((source) => [officialUrl(source.url), source]),
+  );
+  const groupedUrls = new Set<string>();
+  const sourceGroups = offers.map((offer) => ({
+    offer,
+    links: [
+      [offer.ficha_url, "Programa académico"],
+      [offer.fuente_oferta_url, `Sede ${offer.distrito}`],
+    ].flatMap(([url, label]) => {
+      const href = officialUrl(url);
+      if (!href || groupedUrls.has(href)) return [];
+      groupedUrls.add(href);
+      return [{ href, label }];
+    }),
+  }));
+  function sourceLink(id: number) {
+    const source = result?.fuentes.find((item) => item.fuente_id === id);
+    const canonical = source && sourceByUrl.get(officialUrl(source.url));
+    if (!canonical) return null;
+    const target = `fuente-ia-${canonical.fuente_id}`;
+    return (
+      <button
+        type="button"
+        key={id}
+        className="text-link"
+        onClick={() => {
+          setStep(3);
+          setSourceTarget(target);
+        }}
+      >
+        {sourceLabel(source, offers)}
+      </button>
+    );
+  }
   function points(title: string, items: Point[]) {
     return (
       items.length > 0 && (
@@ -181,16 +309,7 @@ function AnalysisContent({ ids }: { ids: string }) {
                       }
                     </small>
                   )}
-                  {item.fuente_ids.map((id) => (
-                    <a key={id} href={`#fuente-ia-${id}`}>
-                      {sourceLabel(
-                        result?.fuentes.find(
-                          (source) => source.fuente_id === id,
-                        ),
-                        offers,
-                      )}
-                    </a>
-                  ))}
+                  {item.fuente_ids.map(sourceLink)}
                 </div>
               </li>
             ))}
@@ -201,226 +320,227 @@ function AnalysisContent({ ids }: { ids: string }) {
   }
   return (
     <div className="container analysis-page">
-      <Link className="back-link" to={`/comparar?opciones=${ids}`}>
-        <ArrowLeft size={16} />
-        Volver a la comparación
+      <nav className="analysis-breadcrumb" aria-label="Ruta de navegación">
+        <Link to={compareUrl}>Comparar</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Explicación con IA</span>
+      </nav>
+      <Link className="back-link" to={compareUrl}>
+        <ArrowLeft size={16} /> Volver al comparador
       </Link>
       <div className="page-heading">
-        <p className="eyebrow">
-          <Sparkles size={15} /> UNA MIRADA CON CONTEXTO
-        </p>
-        <h1>
-          Entiende las diferencias, con IA.
-        </h1>
-        <p>
-          La IA te ayuda a explorar las diferencias. La decisión sigue siendo
-          tuya.
-        </p>
+        <h1>Entiende tus opciones, paso a paso.</h1>
+        <p>Una explicación clara de tus dos alternativas.</p>
       </div>
       <div className="analysis-selected">
-        {comparison.opciones.map((offer) => (
+        {offers.map((offer) => (
           <div key={offer.oferta_id}>
-            <img
-              className="illustration"
-              src={careerImage(offer)}
-              width="72"
-              height="72"
-              alt=""
-            />
+            <Landmark className="illustration" size={36} aria-hidden="true" />
             <div>
-              <span>{offer.institucion}</span>
               <strong>{offer.carrera_oficial}</strong>
+              <span>{offer.institucion}</span>
               <small>
-                {offer.institucion} · {offer.distrito}
+                <MapPin size={15} aria-hidden="true" /> {offer.distrito}
               </small>
             </div>
           </div>
         ))}
       </div>
-      <div className="analysis-layout">
-        <form
-          className="preferences-panel"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void submit();
-          }}
-        >
-          <div className="panel-heading">
-            <span>01</span>
-            <div>
-              <h2>¿Qué es importante para ti?</h2>
-              <p>Elige hasta tres prioridades.</p>
-            </div>
-          </div>
-          <fieldset className="priority-options" disabled={pending}>
-            <legend className="sr-only">Tus prioridades</legend>
-            {PRIORITIES.map(([value, label]) => (
-              <label
-                key={value}
-                className={priorities.includes(value) ? "checked" : ""}
-              >
-                <input
-                  type="checkbox"
-                  checked={priorities.includes(value)}
-                  disabled={
-                    !priorities.includes(value) && priorities.length >= 3
-                  }
-                  onChange={() =>
-                    setPriorities((current) =>
-                      current.includes(value)
-                        ? current.filter((item) => item !== value)
-                        : [...current, value],
-                    )
-                  }
-                />
-                <span>{label}</span>
-                {priorities.includes(value) && <Check size={14} />}
-              </label>
-            ))}
-          </fieldset>
-          <div className="preference-selects">
-            <label>
-              ¿Dónde prefieres estudiar?
-              <select
-                aria-label="Distrito preferido"
-                disabled={pending}
-                value={district}
-                onChange={(event) => setDistrict(event.target.value)}
-              >
-                <option value="">No tengo un distrito definido</option>
-                {facets.data?.distritos.map((item) => (
-                  <option key={item.distrito_id} value={item.distrito_id}>
-                    {item.distrito}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              ¿Qué modalidad prefieres?
-              <select
-                aria-label="Modalidad preferida"
-                disabled={pending}
-                value={modality}
-                onChange={(event) => setModality(event.target.value)}
-              >
-                <option value="">Estoy explorando</option>
-                {facets.data?.modalidades
-                  .filter((item) => item.codigo_id <= 3)
-                  .map((item) => (
-                    <option key={item.codigo_id} value={item.codigo_id}>
-                      {item.etiqueta}
-                    </option>
-                  ))}
-              </select>
-            </label>
-          </div>
-          <label className="interests-label" htmlFor="intereses">
-            Cuéntanos un poco más <span>(opcional)</span>
-          </label>
-          <textarea
-            id="intereses"
-            disabled={pending}
-            value={interests}
-            onChange={(event) => setInterests(event.target.value)}
-            maxLength={1500}
-            rows={4}
-            placeholder="Por ejemplo: disfruto resolver problemas con tecnología y quiero estudiar de forma presencial."
-          />
-          <p className="preferences-help">
-            Estas preguntas contextualizan una comparación; no constituyen un
-            test vocacional validado. Tus preferencias no se guardan en la base
-            de datos y se envían a Gemini al solicitar el análisis.
-          </p>
-          <button className="button" type="submit" disabled={pending}>
-            {pending ? (
-              <LoaderCircle className="spin" size={18} />
-            ) : (
-              <Sparkles size={18} />
-            )}{" "}
-            {pending
-              ? "Explorando tus opciones…"
-              : "Explicar diferencias con IA"}
+      <nav className="analysis-step-nav" aria-label="Pasos de la explicación">
+        {STEPS.map((label, index) => (
+          <button
+            key={label}
+            type="button"
+            disabled={pending || (index > 0 && !result)}
+            aria-current={step === index ? "step" : undefined}
+            onClick={() => setStep(index)}
+          >
+            <span aria-hidden="true">{index + 1}</span>
+            {label}
           </button>
-          {pending && (
-            <p role="status" className="processing-note">
-              Estamos preparando una explicación con los datos y fuentes de tus
-              opciones.
-            </p>
-          )}
-        </form>
-        <aside className="analysis-explainer">
-          <span className="step-icon">
-            <Sparkles size={24} />
-          </span>
-          <h2>
-            Más claridad,
-            <br />
-            sin promesas imposibles.
-          </h2>
-          <p>
-            La explicación conecta tus prioridades con lo que está documentado.
-          </p>
-          <ul>
-            <li>
-              <Check size={16} />
-              Diferencias y coincidencias
-            </li>
-            <li>
-              <Check size={16} />
-              Ventajas según tus preferencias
-            </li>
-            <li>
-              <Check size={16} />
-              Fuentes para seguir investigando
-            </li>
-            <li>
-              <Check size={16} />
-              Lo que todavía falta confirmar
-            </li>
-          </ul>
-          <div>
-            <MapPin size={17} />
-            <p>
-              Puede que ambas opciones encajen, o que falte información para
-              sugerir una.
-            </p>
+        ))}
+      </nav>
+      {step === 0 && (
+        <>
+          <div className="analysis-layout">
+            <form
+              className="preferences-panel"
+              id="analysis-priorities"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void submit();
+              }}
+            >
+              <header>
+                <h2>¿En qué quieres centrar la explicación?</h2>
+                <p>
+                  Elige hasta tres prioridades o continúa con una explicación
+                  general.
+                </p>
+              </header>
+              <fieldset className="priority-options" disabled={pending}>
+                <legend className="sr-only">Tus prioridades</legend>
+                {PRIORITIES.map(([value, label, Icon]) => (
+                  <label
+                    key={value}
+                    className={priorities.includes(value) ? "checked" : ""}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={priorities.includes(value)}
+                      disabled={
+                        !priorities.includes(value) && priorities.length >= 3
+                      }
+                      onChange={() =>
+                        setPriorities((current) =>
+                          current.includes(value)
+                            ? current.filter((item) => item !== value)
+                            : [...current, value],
+                        )
+                      }
+                    />
+                    <Icon size={23} aria-hidden="true" />
+                    <span>{label}</span>
+                    {priorities.includes(value) && (
+                      <Check size={17} aria-hidden="true" />
+                    )}
+                  </label>
+                ))}
+              </fieldset>
+              <details className="analysis-context" open>
+                <summary>
+                  Añadir contexto personal <span>· Opcional</span>
+                </summary>
+                <div className="preference-selects">
+                  <label>
+                    Distrito de preferencia
+                    <select
+                      aria-label="Distrito preferido"
+                      disabled={pending}
+                      value={district}
+                      onChange={(event) => setDistrict(event.target.value)}
+                    >
+                      <option value="">Sin preferencia</option>
+                      {facets.data?.distritos.map((item) => (
+                        <option key={item.distrito_id} value={item.distrito_id}>
+                          {item.distrito}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Modalidad de preferencia
+                    <select
+                      aria-label="Modalidad preferida"
+                      disabled={pending}
+                      value={modality}
+                      onChange={(event) => setModality(event.target.value)}
+                    >
+                      <option value="">Sin preferencia</option>
+                      {facets.data?.modalidades
+                        .filter((item) => item.codigo_id <= 3)
+                        .map((item) => (
+                          <option key={item.codigo_id} value={item.codigo_id}>
+                            {item.etiqueta}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                </div>
+                <label className="interests-label" htmlFor="intereses">
+                  ¿Qué te gustaría entender mejor?
+                </label>
+                <textarea
+                  id="intereses"
+                  disabled={pending}
+                  value={interests}
+                  maxLength={1500}
+                  rows={2}
+                  onChange={(event) => setInterests(event.target.value)}
+                  placeholder="Escribe tu duda en una frase"
+                />
+                <p className="preferences-help">
+                  Al solicitar la explicación, el contexto indicado se envía a
+                  Gemini.
+                </p>
+              </details>
+            </form>
+            <aside className="analysis-explainer">
+              <h2>Tu explicación incluirá</h2>
+              <ul>
+                {[
+                  "Qué cambia y qué coincide",
+                  "Cómo interpretar las diferencias",
+                  "Fuentes para profundizar",
+                ].map((item) => (
+                  <li key={item}>
+                    <Check size={20} aria-hidden="true" /> {item}
+                  </li>
+                ))}
+              </ul>
+              <p>La decisión sigue siendo tuya.</p>
+              <button
+                type="button"
+                className="text-link"
+                disabled={pending}
+                onClick={() => void submit(true)}
+              >
+                Continuar sin prioridades
+              </button>
+            </aside>
           </div>
-        </aside>
-      </div>
+          <div className="analysis-actions">
+            <Link className="button secondary" to={compareUrl}>
+              <ArrowLeft size={17} /> Volver al comparador
+            </Link>
+            <Link
+              className="text-link"
+              to={`${compareUrl}#comparacion-completa`}
+            >
+              Ver comparación completa
+            </Link>
+            <button
+              className="button"
+              type="submit"
+              form="analysis-priorities"
+              disabled={pending}
+            >
+              {pending ? (
+                <>
+                  <LoaderCircle className="spin" size={17} /> Preparando
+                  explicación…
+                </>
+              ) : (
+                <>
+                  Explicar con IA <ArrowRight size={17} />
+                </>
+              )}
+            </button>
+          </div>
+        </>
+      )}
       {error && (
         <div className="ai-error">
-          <Failure message={error} retry={() => void submit()} />
-          <Link className="text-link" to={`/comparar?opciones=${ids}`}>
+          <Failure
+            message={error}
+            retry={() => void submit(lastGeneral.current)}
+          />
+          <Link className="text-link" to={compareUrl}>
             Tu comparación básica sigue disponible <ArrowRight size={16} />
           </Link>
         </div>
       )}
-      {result && (
-        <div className="analysis-output" ref={output} aria-live="polite">
-          <div className="panel-heading">
-            <span>02</span>
-            <div>
-              <p className="eyebrow">EXPLICACIÓN GENERADA CON GEMINI</p>
-              <h2>Una mirada a tus diferencias.</h2>
-            </div>
-          </div>
+      {result && step === 1 && (
+        <section className="analysis-step-panel" aria-live="polite">
+          <h2>Una mirada a tus diferencias.</h2>
           <div className="result-grid">
             {points(
               "Diferencias principales",
               result.explicacion.diferencias_principales,
             )}
             {points("Lo que tienen en común", result.explicacion.coincidencias)}
-            {points(
-              "En relación con tus prioridades",
-              result.explicacion.relacion_preferencias,
-            )}
-            {points(
-              "Ventajas condicionadas",
-              result.explicacion.ventajas_condicionadas,
-            )}
           </div>
           <section className="suggestion-panel">
-            <Sparkles size={23} />
             <div>
               <h3>
                 {result.explicacion.sugerencia.oferta_id
@@ -435,73 +555,187 @@ function AnalysisContent({ ids }: { ids: string }) {
                 )}
               </p>
               <div className="point-references">
-                {result.explicacion.sugerencia.fuente_ids.map((id) => (
-                  <a href={`#fuente-ia-${id}`} key={id}>
-                    {sourceLabel(
-                      result?.fuentes.find((source) => source.fuente_id === id),
-                      offers,
-                    )}
-                  </a>
-                ))}
+                {result.explicacion.sugerencia.fuente_ids.map(sourceLink)}
               </div>
             </div>
           </section>
-          <section className="analysis-limits">
-            <h3>Ten en cuenta</h3>
-            <ul>
-              {result.explicacion.limites.map((limit, index) => (
-                <li key={index}>
-                  {readableText(limit, offers, result.fuentes)}
-                </li>
-              ))}
-            </ul>
-          </section>
-          {result.contenido.opciones.length > 0 && (
-            <details className="lexical-details">
-              <summary>Coincidencias de palabras con el catálogo</summary>
+          <ul className="analysis-limit-list">
+            {result.explicacion.limites.map((limit, index) => (
+              <li key={index}>{readableText(limit, offers, result.fuentes)}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {result && step === 2 && (
+        <section className="analysis-step-panel">
+          <div className="analysis-priority-summary">
+            <p>
+              <strong>Tus prioridades</strong> ·{" "}
+              {labeledPriorities.join(" · ") || "Explicación general"}
+            </p>
+            <button className="text-link" onClick={() => setStep(0)}>
+              Editar prioridades
+            </button>
+          </div>
+          <div className="result-grid analysis-priority-cards">
+            {PRIORITIES.filter(([id]) => submittedPriorities.includes(id)).map(
+              ([id, , Icon]) => {
+                const guide = priorityGuides[id];
+                return (
+                  <article
+                    key={id}
+                    className="analysis-result-section priority-guide"
+                  >
+                    <h3>
+                      <Icon size={24} aria-hidden="true" /> {guide.title}
+                    </h3>
+                    <h4>En qué fijarte</h4>
+                    <ul>
+                      {guide.checks.map((item) => (
+                        <li key={item}>
+                          <Check size={16} aria-hidden="true" /> {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="priority-question">
+                      <MessageSquare size={18} aria-hidden="true" />
+                      <div>
+                        <strong>Pregunta que vale la pena hacer</strong>
+                        <p>{guide.question}</p>
+                      </div>
+                    </div>
+                    <Link
+                      className="button secondary"
+                      to={`${compareUrl}&criterio=${guide.criterion}`}
+                    >
+                      {guide.action} <ArrowRight size={16} aria-hidden="true" />
+                    </Link>
+                  </article>
+                );
+              },
+            )}
+          </div>
+          <div className="result-grid">
+            {points(
+              "Qué significa para tus prioridades",
+              result.explicacion.relacion_preferencias,
+            )}
+            {points(
+              "Ventajas condicionadas",
+              result.explicacion.ventajas_condicionadas,
+            )}
+          </div>
+          {!result.explicacion.relacion_preferencias.length &&
+            !result.explicacion.ventajas_condicionadas.length && (
               <p>
-                El índice de contenido identifica términos compartidos. No es un
-                porcentaje de afinidad ni una recomendación vocacional.
+                Revisa las diferencias del resumen y contrástalas con tus
+                condiciones de estudio.
               </p>
-              {result.contenido.opciones.map((item) => (
-                <p key={item.carrera_id}>
-                  <strong>
-                    {
-                      comparison.opciones.find(
-                        (offer) => offer.carrera_id === item.carrera_id,
-                      )?.carrera_oficial
-                    }
-                    :{" "}
-                  </strong>
-                  {item.terminos_compartidos.join(", ") ||
-                    "Sin términos compartidos"}
-                </p>
-              ))}
-            </details>
-          )}
-          <section className="analysis-sources">
-            <h3>Fuentes del contexto</h3>
-            <div>
-              {result.fuentes.map((source) => (
+            )}
+        </section>
+      )}
+      {result && step === 3 && (
+        <div className="analysis-layout analysis-source-layout">
+          <section className="analysis-sources analysis-step-panel">
+            <h2>
+              <FileText size={24} aria-hidden="true" /> Consulta la información
+              original.
+            </h2>
+            <p>Fuentes agrupadas por opción.</p>
+            {sourceGroups.map(({ offer, links }) => (
+              <article className="analysis-source-row" key={offer.oferta_id}>
+                <div className="analysis-source-identity">
+                  <Landmark size={27} aria-hidden="true" />
+                  <div>
+                    <strong>{offer.carrera_oficial}</strong>
+                    <p>{offer.institucion}</p>
+                  </div>
+                </div>
+                <div>
+                  {links.map(({ href, label }) => (
+                    <a
+                      id={
+                        sourceByUrl.get(href)
+                          ? `fuente-ia-${sourceByUrl.get(href)?.fuente_id}`
+                          : undefined
+                      }
+                      href={href}
+                      key={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {label} <ExternalLink size={15} aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+            {[...sourceByUrl]
+              .filter(([href]) => href && !groupedUrls.has(href))
+              .map(([href, source]) => (
                 <a
+                  className="analysis-extra-source"
+                  key={href}
                   id={`fuente-ia-${source.fuente_id}`}
-                  key={source.fuente_id}
-                  href={officialUrl(source.url)}
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span>{sourceLabel(source, comparison.opciones)}</span>
-                  <small>{source.url}</small>
-                  <ExternalLink size={15} />
+                  {sourceLabel(source, offers)}{" "}
+                  <ExternalLink size={15} aria-hidden="true" />
                 </a>
               ))}
-            </div>
+            <details className="analysis-context">
+              <summary>Cómo leer esta explicación</summary>
+              <p>
+                Gemini organiza la información del catálogo. Contrasta cada
+                interpretación con su fuente.
+              </p>
+            </details>
           </section>
-          <p className="model-note">
-            Modelo: {result.modelo}. La validación estructural y de referencias
-            no garantiza que cada interpretación sea correcta. Contrasta la
-            explicación con las fuentes.
-          </p>
+          <aside className="analysis-explainer">
+            <h2>
+              <Flag size={24} aria-hidden="true" /> Haz que la comparación te
+              sirva.
+            </h2>
+            <div className="analysis-checklist">
+              {[
+                "Revisar ambos planes de estudio",
+                "Comparar las condiciones de matrícula",
+                "Anotar una pregunta para cada institución",
+              ].map((item) => (
+                <label key={item}>
+                  <input type="checkbox" /> {item}
+                </label>
+              ))}
+            </div>
+            <Link className="button" to={compareUrl}>
+              Volver a comparar <ArrowRight size={17} />
+            </Link>
+            <Link className="button secondary" to="/carreras">
+              Cambiar una opción
+            </Link>
+          </aside>
+        </div>
+      )}
+      {result && step > 0 && (
+        <div className="analysis-actions">
+          <button
+            className="button secondary"
+            onClick={() => setStep(step - 1)}
+          >
+            <ArrowLeft size={17} /> {STEPS[step - 1]}
+          </button>
+          <Link className="text-link" to={`${compareUrl}#comparacion-completa`}>
+            Ver comparación completa
+          </Link>
+          <button
+            className="button"
+            onClick={() => setStep(step === 3 ? 0 : step + 1)}
+          >
+            {step === 3 ? "Editar mis prioridades" : STEPS[step + 1]}{" "}
+            <ArrowRight size={17} />
+          </button>
         </div>
       )}
     </div>
