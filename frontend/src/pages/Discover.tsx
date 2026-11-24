@@ -340,7 +340,11 @@ export function PreferenceForm() {
   function changeStep(next: number) {
     setSaved(false);
     setStep(next);
-    requestAnimationFrame(() => heading.current?.focus());
+    requestAnimationFrame(() => {
+      const title = heading.current;
+      if (title?.parentElement) title.parentElement.scrollTop = 0;
+      title?.focus({ preventScroll: true });
+    });
   }
 
   function choose(next: number[]) {
@@ -382,7 +386,7 @@ export function PreferenceForm() {
         </header>
         <div className="questionnaire-layout">
           <form
-            className="questionnaire-card questionnaire-form"
+            className={`questionnaire-card questionnaire-form${reviewing ? "" : " questionnaire-form--questions"}`}
             onSubmit={(event) => {
               event.preventDefault();
               if (reviewing) void submit();
@@ -453,6 +457,7 @@ export function PreferenceForm() {
               <section
                 className="questionnaire-body"
                 aria-labelledby="current-question"
+                tabIndex={0}
               >
                 <h2 id="current-question" ref={heading} tabIndex={-1}>
                   {question.title}

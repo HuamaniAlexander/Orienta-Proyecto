@@ -74,3 +74,28 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
     page.getByRole("heading", { name: "Explora lo que te interesa." }),
   ).toBeVisible();
 });
+
+for (const width of [390, 1440]) {
+  test(`la tarjeta conserva su tamaño en las 24 preguntas a ${width} px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/descubre");
+    const card = page.locator(".questionnaire-form");
+    const size = () =>
+      card.evaluate(({ offsetWidth, offsetHeight }) => ({
+        width: offsetWidth,
+        height: offsetHeight,
+      }));
+    const initial = await size();
+    for (let question = 2; question <= 24; question++) {
+      await page.getByRole("button", { name: "Siguiente pregunta" }).click();
+      await expect(
+        card.getByText(`Pregunta ${question} de 24`, { exact: true }),
+      ).toBeVisible();
+      expect(await size()).toEqual(initial);
+    }
+    await page.getByRole("button", { name: "Anterior", exact: true }).click();
+    expect(await size()).toEqual(initial);
+  });
+}
