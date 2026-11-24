@@ -22,7 +22,7 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
@@ -120,6 +120,11 @@ export function Catalog() {
     : 1;
   return (
     <div className="container catalog-page">
+      <nav className="catalog-breadcrumb" aria-label="Ruta de navegación">
+        <Link to="/">Inicio</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Carreras</span>
+      </nav>
       <div className="page-heading">
         <h1>Encuentra y compara tu próxima carrera.</h1>
         <p>Añade dos opciones y descubre sus diferencias.</p>
@@ -143,7 +148,7 @@ export function Catalog() {
           maxLength={150}
         />
         <button className="button" type="submit">
-          Buscar <ArrowRight size={16} />
+          Buscar
         </button>
       </form>
       <div className="catalog-layout">
@@ -152,64 +157,58 @@ export function Catalog() {
             <summary>
               <SlidersHorizontal size={18} /> Filtrar opciones
             </summary>
-            <div className="filters-title">
-              <h2>Filtrar opciones</h2>
-              <button onClick={() => setParams({})}>Limpiar</button>
-            </div>
-            {facets.loading ? (
-              <Loading text="Cargando filtros…" />
-            ) : facets.error ? (
-              <Failure message={facets.error} retry={facets.retry} />
-            ) : (
-              <div className="filters-fields">
-                {available.map((filter) => (
-                  <label key={filter.key} htmlFor={filter.key}>
-                    {filter.label}
-                    <span className="filter-select">
-                      <filter.icon
-                        className="filter-icon"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                      <select
-                        id={filter.key}
-                        aria-label={filter.label}
-                        title={
-                          filter.options.find(
-                            ([id]) => String(id) === params.get(filter.key),
-                          )?.[1] ??
-                          `Sin restricción: ${filter.label.toLowerCase()}`
-                        }
-                        value={params.get(filter.key) ?? ""}
-                        onChange={(event) =>
-                          change(filter.key, event.target.value)
-                        }
-                      >
-                        <option value="">
-                          {["tipo_id", "distrito_id"].includes(filter.key)
-                            ? "Todos"
-                            : "Todas"}
-                        </option>
-                        {filter.options.map(([id, label]) => (
-                          <option key={id} value={id}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown
-                        className="select-chevron"
-                        size={16}
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </label>
-                ))}
+            <div className="catalog-filter-controls">
+              <div className="filters-title">
+                <h2>Filtrar opciones</h2>
+                <button onClick={() => setParams({})}>Limpiar</button>
               </div>
-            )}
-            <p className="filters-help">
-              Cada filtro muestra las alternativas compatibles con los
-              anteriores.
-            </p>
+              {facets.loading ? (
+                <Loading text="Cargando filtros…" />
+              ) : facets.error ? (
+                <Failure message={facets.error} retry={facets.retry} />
+              ) : (
+                <div className="filters-fields">
+                  {available.map((filter) => (
+                    <label key={filter.key} htmlFor={filter.key}>
+                      <span className="sr-only">{filter.label}</span>
+                      <span className="filter-select">
+                        <filter.icon
+                          className="filter-icon"
+                          size={18}
+                          aria-hidden="true"
+                        />
+                        <select
+                          id={filter.key}
+                          aria-label={filter.label}
+                          title={
+                            filter.options.find(
+                              ([id]) => String(id) === params.get(filter.key),
+                            )?.[1] ??
+                            `Sin restricción: ${filter.label.toLowerCase()}`
+                          }
+                          value={params.get(filter.key) ?? ""}
+                          onChange={(event) =>
+                            change(filter.key, event.target.value)
+                          }
+                        >
+                          <option value="">{filter.label}</option>
+                          {filter.options.map(([id, label]) => (
+                            <option key={id} value={id}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          className="select-chevron"
+                          size={16}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </details>
         </aside>
         <section
@@ -218,7 +217,7 @@ export function Catalog() {
         >
           <div className="results-toolbar">
             <div>
-              <h2>Opciones académicas</h2>
+              <h2>Opciones para explorar</h2>
               <p role="status">
                 {result.loading
                   ? "Buscando opciones…"
@@ -276,7 +275,12 @@ export function Catalog() {
             <Failure message={result.error} retry={result.retry} />
           ) : result.data?.items.length ? (
             <>
-              <div className="offer-grid">
+              <div
+                className="offer-grid"
+                tabIndex={0}
+                role="region"
+                aria-label="Lista de ofertas"
+              >
                 {result.data.items.map((offer) => (
                   <OfferCard
                     key={offer.oferta_id}

@@ -1,4 +1,4 @@
-import { Check, Plus, Scale, X } from "lucide-react";
+import { ArrowRight, Check, Columns2, Plus, Scale, X } from "lucide-react";
 import {
   createContext,
   useCallback,
@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Institution } from "../../shared/components/OfferCard";
 import type { Offer } from "../../shared/types/catalog";
 
 interface Selection {
@@ -99,7 +100,7 @@ export function SelectButton({ offer }: { offer: Offer }) {
       onClick={() => toggle(offer)}
     >
       {selected ? <Check size={14} /> : <Plus size={14} />}{" "}
-      {selected ? "Elegida" : "Comparar"}
+      {selected ? "Añadida a comparación" : "Añadir a comparación"}
     </button>
   );
 }
@@ -111,19 +112,74 @@ export function SelectionTray({ embedded = false }: { embedded?: boolean }) {
     (!location.pathname.startsWith("/carreras") || !items.length)
   )
     return null;
-  const className = embedded
-    ? "catalog-selection"
-    : `selection-tray${location.pathname === "/carreras" ? " catalog-tray" : ""}`;
+  const comparisonUrl = `/comparar?opciones=${items.map((item) => item.oferta_id).join(",")}`;
+  if (embedded) {
+    return (
+      <aside className="catalog-selection" aria-label="Opciones seleccionadas">
+        <header className="catalog-selection-heading">
+          <Columns2 size={31} aria-hidden="true" />
+          <div>
+            <h2>Compara 2 carreras</h2>
+            <p>Tus opciones, lado a lado.</p>
+          </div>
+        </header>
+        <div className="catalog-selection-body">
+          <p className="catalog-selection-count">
+            {items.length} de 2 opciones seleccionadas
+          </p>
+          <ol className="catalog-selection-list">
+            {[0, 1].map((index) => {
+              const offer = items[index];
+              return (
+                <li key={index}>
+                  <span className="catalog-selection-number" aria-hidden="true">
+                    {index + 1}
+                  </span>
+                  {offer ? (
+                    <>
+                      <div className="catalog-selection-offer">
+                        <strong>{offer.carrera_oficial}</strong>
+                        <Institution offer={offer} />
+                      </div>
+                      <button
+                        onClick={() => remove(offer.oferta_id)}
+                        aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
+                      >
+                        <X size={17} aria-hidden="true" />
+                      </button>
+                    </>
+                  ) : (
+                    <span>Elige una opción del catálogo</span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+          <div className="catalog-selection-action">
+            {items.length === 2 ? (
+              <Link className="button" to={comparisonUrl}>
+                Comparar ahora <ArrowRight size={21} aria-hidden="true" />
+              </Link>
+            ) : (
+              <button className="button" disabled>
+                Comparar ahora
+              </button>
+            )}
+            <p>Verás duración, enfoque, costos, ubicación y modalidad.</p>
+          </div>
+        </div>
+      </aside>
+    );
+  }
+  const className = `selection-tray${location.pathname === "/carreras" ? " catalog-tray" : ""}`;
   return (
     <aside className={className} aria-label="Opciones seleccionadas">
-      <div className={embedded ? "tray-content" : "container tray-content"}>
+      <div className="container tray-content">
         <div className="tray-title">
           <Scale size={25} />
           <div>
             <strong>{items.length} de 2 opciones</strong>
-            <small>
-              {embedded ? "Compara dos carreras" : "Tu próxima comparación"}
-            </small>
+            <small>Tu próxima comparación</small>
           </div>
         </div>
         <div className="tray-items">
@@ -143,10 +199,7 @@ export function SelectionTray({ embedded = false }: { embedded?: boolean }) {
           ))}
         </div>
         {items.length === 2 ? (
-          <Link
-            className="button"
-            to={`/comparar?opciones=${items.map((item) => item.oferta_id).join(",")}`}
-          >
+          <Link className="button" to={comparisonUrl}>
             Comparar opciones
           </Link>
         ) : (

@@ -4,7 +4,7 @@ test("detalle conserva filtros y presenta fuentes", async ({ page }) => {
   await page
     .getByTestId("offer-card")
     .first()
-    .getByRole("link", { name: "Ver detalles" })
+    .getByRole("link", { name: "Ver carrera" })
     .click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Software",

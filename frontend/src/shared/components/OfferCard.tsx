@@ -80,15 +80,7 @@ export function OfferCard({
         <span className="area-badge">{offer.area}</span>
       </div>
       <div className="offer-body">
-        <span
-          className={`type-badge ${
-            offer.tipo.toLowerCase().includes("universidad")
-              ? "tipo-universidad"
-              : "tipo-instituto"
-          }`}
-        >
-          {offer.tipo}
-        </span>
+        <Institution offer={offer} />
         <h3>
           <Link
             to={`/carreras/${offer.oferta_id}`}
@@ -97,32 +89,40 @@ export function OfferCard({
             {offer.carrera_oficial}
           </Link>
         </h3>
-        <Institution offer={offer} />
         <div className="offer-facts">
           <span>
             <MapPin size={14} />
             {offer.distrito}
           </span>
-          <span>
+          <span
+            className={`type-badge ${
+              offer.tipo.toLowerCase().includes("universidad")
+                ? "tipo-universidad"
+                : "tipo-instituto"
+            }`}
+          >
+            {offer.tipo}
+          </span>
+          <span className="offer-modality">
             <Monitor size={14} />
             {offer.modalidad}
           </span>
-          <span>
+          <span className="offer-duration">
             <BookOpen size={14} />
             {duration(offer)}
           </span>
         </div>
-        <div className="offer-actions">
+        <div className="offer-details">
           <Link
             className="text-link"
             to={`/carreras/${offer.oferta_id}`}
             state={{ from: location.pathname + location.search }}
           >
-            Ver detalles <ArrowRight size={16} />
+            Ver carrera <ArrowRight size={16} aria-hidden="true" />
           </Link>
-          {action}
         </div>
       </div>
+      {action && <div className="offer-actions">{action}</div>}
     </article>
   );
 }

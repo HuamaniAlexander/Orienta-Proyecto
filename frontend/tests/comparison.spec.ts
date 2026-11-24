@@ -6,7 +6,7 @@ test("footer compacto fuera del catálogo aunque existan selecciones", async ({
   await page
     .getByTestId("offer-card")
     .first()
-    .getByRole("button", { name: "Comparar", exact: true })
+    .getByRole("button", { name: "Añadir a comparación", exact: true })
     .click();
   await expect(
     page.getByRole("complementary", { name: "Opciones seleccionadas" }),
@@ -25,26 +25,24 @@ test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
   await page
     .getByTestId("offer-card")
     .nth(0)
-    .getByRole("button", { name: "Comparar", exact: true })
+    .getByRole("button", { name: "Añadir a comparación", exact: true })
     .click();
   await page
     .getByTestId("offer-card")
     .nth(1)
-    .getByRole("button", { name: "Comparar", exact: true })
+    .getByRole("button", { name: "Añadir a comparación", exact: true })
     .click();
   await expect(
     page
       .getByTestId("offer-card")
       .nth(2)
-      .getByRole("button", { name: "Comparar", exact: true }),
+      .getByRole("button", { name: "Añadir a comparación", exact: true }),
   ).toBeDisabled();
   await page.reload();
   await expect(
     page.getByRole("complementary", { name: "Opciones seleccionadas" }),
   ).toContainText("2 de 2 opciones");
-  await page
-    .getByRole("link", { name: "Comparar opciones", exact: true })
-    .click();
+  await page.getByRole("link", { name: "Comparar ahora", exact: true }).click();
   await expect(
     page.getByText("Comparas dos ofertas de la misma carrera:", {
       exact: false,

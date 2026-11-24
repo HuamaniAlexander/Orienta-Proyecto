@@ -95,3 +95,34 @@ test("fallo de red permite reintentar", async ({ page }) => {
     page.getByRole("button", { name: "Volver a intentar" }),
   ).toBeVisible();
 });
+
+test("la lista se desplaza sin mover el comparador en escritorio", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/carreras");
+  const list = page.getByRole("region", { name: "Lista de ofertas" });
+  const comparison = page.getByRole("complementary", {
+    name: "Opciones seleccionadas",
+  });
+  const card = list.getByTestId("offer-card").first();
+  await card.getByRole("button", { name: "Añadir a comparación" }).click();
+  await expect(comparison).toContainText("1 de 2 opciones seleccionadas");
+  const panelTop = await comparison.evaluate(
+    (element) => element.getBoundingClientRect().top,
+  );
+  const pageTop = await page.evaluate(() => window.scrollY);
+  const bounds = (await list.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + 35);
+  await page.mouse.wheel(0, 650);
+  await expect
+    .poll(() => list.evaluate((element) => element.scrollTop))
+    .toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.scrollY)).toBe(pageTop);
+  expect(
+    await comparison.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBe(panelTop);
+  await expect(
+    comparison.getByRole("button", { name: /^Quitar / }),
+  ).toBeVisible();
+});
