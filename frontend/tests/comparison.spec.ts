@@ -43,6 +43,7 @@ test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
     page.getByRole("complementary", { name: "Opciones seleccionadas" }),
   ).toContainText("2 de 2 opciones");
   await page.getByRole("link", { name: "Comparar ahora", exact: true }).click();
+  await page.getByText("Ver comparación completa", { exact: true }).click();
   await expect(
     page.getByText("Comparas dos ofertas de la misma carrera:", {
       exact: false,
