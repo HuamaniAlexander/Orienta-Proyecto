@@ -180,3 +180,34 @@ test("la explicación general recorre los cuatro pasos y conserva sus fuentes", 
     page.getByLabel("Revisar ambos planes de estudio"),
   ).toBeChecked();
 });
+
+test("una respuesta rechazada muestra el catálogo y permite reintentar Gemini", async ({
+  page,
+}) => {
+  let calls = 0;
+  await page.route("**/api/explicaciones", (route) => {
+    calls++;
+    return calls === 1
+      ? route.fulfill({
+          status: 503,
+          json: {
+            detail:
+              "La respuesta de IA no superó la validación. Tu comparación sigue disponible.",
+          },
+        })
+      : route.fulfill({ json: response });
+  });
+  await page.goto("/analisis?opciones=10,110");
+  await page.getByRole("button", { name: "Explicar con IA" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Resumen del catálogo" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("La respuesta de Gemini quedó descartada", { exact: false }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Reintentar con IA" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
+  ).toBeVisible();
+  expect(calls).toBe(2);
+});

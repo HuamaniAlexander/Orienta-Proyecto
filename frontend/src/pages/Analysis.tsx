@@ -49,7 +49,48 @@ interface AnalysisResult {
     opciones: { carrera_id: number; terminos_compartidos: string[] }[];
   };
   modelo: string;
+  resumen_catalogo?: boolean;
 }
+function catalogSummary(comparison: Comparison): AnalysisResult {
+  const offers = comparison.opciones;
+  const rows = comparison.criterios.filter(
+    (row) =>
+      ["duracion", "distrito", "modalidad"].includes(row.key) &&
+      row.a &&
+      row.b &&
+      ![row.a, row.b].some((value) => /^consultar/i.test(value)),
+  );
+  const points = (different: boolean): Point[] =>
+    rows
+      .filter((row) => row.different === different)
+      .map((row) => ({
+        texto: different
+          ? `${row.title} de ${offers[0].institucion}: ${row.a}. ${offers[1].institucion}: ${row.b}.`
+          : `${row.title}: ambas ofertas registran ${row.a}.`,
+        naturaleza: "documentado",
+        fuente_ids: [],
+      }));
+  return {
+    explicacion: {
+      oferta_ids: offers.map((offer) => offer.oferta_id),
+      diferencias_principales: points(true),
+      coincidencias: points(false),
+      relacion_preferencias: [],
+      ventajas_condicionadas: [],
+      sugerencia: {
+        oferta_id: null,
+        motivo: "Compara las mallas y los importes publicados antes de elegir.",
+        fuente_ids: [],
+      },
+      limites: [],
+    },
+    fuentes: [],
+    contenido: { estado: "no_disponible", opciones: [] },
+    modelo: "",
+    resumen_catalogo: true,
+  };
+}
+
 const PRIORITIES = [
   ["enfoque", "Lo que aprenderé", Lightbulb],
   ["ubicacion", "Estudiar cerca", MapPin],
@@ -196,6 +237,7 @@ function AnalysisContent({ ids }: { ids: string }) {
     if (busy.current) return;
     busy.current = true;
     lastGeneral.current = general;
+    setStep(0);
     setPending(true);
     setError("");
     setResult(undefined);
@@ -218,12 +260,21 @@ function AnalysisContent({ ids }: { ids: string }) {
       setSubmittedPriorities(general ? [] : priorities);
       setStep(1);
     } catch (err) {
-      if (!abort.current.signal.aborted)
-        setError(
-          err instanceof Error
-            ? err.message
-            : "No pudimos obtener la explicación.",
-        );
+      if (abort.current.signal.aborted) return;
+      const message =
+        err instanceof Error
+          ? err.message
+          : "No pudimos obtener la explicación.";
+      if (
+        comparison &&
+        message.includes("La respuesta de IA no superó la validación")
+      ) {
+        setResult(catalogSummary(comparison));
+        setSubmittedPriorities(general ? [] : priorities);
+        setStep(1);
+      } else {
+        setError(message);
+      }
     } finally {
       busy.current = false;
       setPending(false);
@@ -532,7 +583,23 @@ function AnalysisContent({ ids }: { ids: string }) {
       )}
       {result && step === 1 && (
         <section className="analysis-step-panel" aria-live="polite">
-          <h2>Una mirada a tus diferencias.</h2>
+          <h2>
+            {result.resumen_catalogo
+              ? "Resumen del catálogo"
+              : "Una mirada a tus diferencias."}
+          </h2>
+          {result.resumen_catalogo && (
+            <p>
+              La respuesta de Gemini quedó descartada por la validación.{" "}
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => void submit(lastGeneral.current)}
+              >
+                Reintentar con IA
+              </button>
+            </p>
+          )}
           <div className="result-grid">
             {points(
               "Diferencias principales",
