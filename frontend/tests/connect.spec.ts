@@ -93,3 +93,23 @@ for (const width of [375, 1440]) {
     await expect(page.getByRole("link", { name: /Ana Torres/ })).toBeVisible();
   });
 }
+
+test("Conecta conserva la preparación de Mi ruta cuando falta el directorio", async ({
+  page,
+}) => {
+  await page.route("**/api/orientacion/orientadores", (route) =>
+    route.fulfill({ status: 404, json: { detail: "Not Found" } }),
+  );
+  await page.goto("/conecta");
+  await expect(
+    page.getByText("El directorio de orientadores aún no está disponible."),
+  ).toBeVisible();
+  await expect(page.getByText("Not Found", { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Buscar", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("link", { name: "Preparar mi conversación" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Prepara tu conversación." }),
+  ).toBeVisible();
+});

@@ -235,6 +235,7 @@ export function Connect() {
     availability: "",
   });
   const profiles = advisors.data ?? [];
+  const directoryUnavailable = advisors.status === 404;
   const advisor = profiles.find((item) => item.id === advisorId);
   const shown = profiles.filter(
     (item) =>
@@ -323,13 +324,30 @@ export function Connect() {
                 <option value="zoom">Horarios por Zoom</option>
                 <option value="texto">Preguntas por escrito</option>
               </select>
-              <button className="button">Buscar</button>
+              <button className="button" disabled={directoryUnavailable}>
+                Buscar
+              </button>
             </form>
             <section aria-labelledby="advisor-directory">
               <h2 id="advisor-directory">Encuentra a tu orientador</h2>
               {advisors.loading && <Loading text="Consultando orientadores…" />}
-              {advisors.error && (
-                <Failure message={advisors.error} retry={advisors.retry} />
+              {directoryUnavailable ? (
+                <div className="connect-panel connect-guide" role="status">
+                  <Info size={24} aria-hidden="true" />
+                  <div>
+                    <h3>
+                      El directorio de orientadores aún no está disponible.
+                    </h3>
+                    <p>
+                      Mientras tanto, puedes preparar tus preguntas desde Mi
+                      ruta.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                advisors.error && (
+                  <Failure message={advisors.error} retry={advisors.retry} />
+                )
               )}
               {advisors.data && (
                 <>
@@ -785,7 +803,14 @@ export function FollowUp() {
         />
         {result.loading && <Loading />}
         {result.error && (
-          <Failure message={result.error} retry={result.retry} />
+          <Failure
+            message={
+              result.status === 404 && result.error === "Not Found"
+                ? "El seguimiento de sesiones aún no está disponible en este servidor."
+                : result.error
+            }
+            retry={result.retry}
+          />
         )}
         {receipt && (
           <>
