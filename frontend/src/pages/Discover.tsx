@@ -65,7 +65,9 @@ function PreferenceSummary({
           .map(
             (id) =>
               facets?.modalidades.find((item) => item.codigo_id === id)
-                ?.etiqueta ?? `Modalidad ${id}`,
+                ?.etiqueta ??
+              questions[21].choices[id - 1] ??
+              `Modalidad ${id}`,
           )
           .join(", ") || "Sin indicar"}
       </li>
@@ -321,6 +323,7 @@ export function PreferenceForm() {
   }
   const total = questions.length;
   const reviewing = step === total;
+  const [editingReview, setEditingReview] = useState(false);
   const question = questions[step];
   const section = Math.min(Math.floor(step / 4), sections.length - 1);
   const CurrentIcon =
@@ -340,10 +343,11 @@ export function PreferenceForm() {
   function changeStep(next: number) {
     setSaved(false);
     setStep(next);
+    const scrollToTitle = reviewing !== (next === total);
     requestAnimationFrame(() => {
       const title = heading.current;
       if (title?.parentElement) title.parentElement.scrollTop = 0;
-      title?.focus({ preventScroll: true });
+      title?.focus({ preventScroll: !scrollToTitle });
     });
   }
 
@@ -392,7 +396,8 @@ export function PreferenceForm() {
               if (reviewing) void submit();
               else {
                 if (!(step in answers)) setAnswers({ ...answers, [step]: [] });
-                changeStep(step + 1);
+                changeStep(editingReview ? total : step + 1);
+                setEditingReview(false);
               }
             }}
           >
@@ -405,7 +410,9 @@ export function PreferenceForm() {
                       ? "Revisión final"
                       : `Pregunta ${step + 1} de ${total}`}
                   </strong>
-                  <span>{sections[section]}</span>
+                  <span>
+                    {reviewing ? "Cuestionario completo" : sections[section]}
+                  </span>
                 </div>
               </div>
               <div className="questionnaire-progress">
@@ -420,38 +427,71 @@ export function PreferenceForm() {
               </div>
             </div>
             {reviewing ? (
-              <section className="questionnaire-body">
+              <section className="questionnaire-body questionnaire-review">
                 <h2 ref={heading} tabIndex={-1}>
                   Resumen de tus respuestas
                 </h2>
-                <PreferenceSummary value={value} facets={facets.data} />
-                <details>
-                  <summary>Revisar las 24 preguntas</summary>
-                  <ol>
-                    {questions.map((item, index) => (
-                      <li key={item.title}>
-                        <button
-                          className="text-link"
-                          type="button"
-                          onClick={() => changeStep(index)}
-                        >
-                          {item.title}
-                        </button>
-                        <p>
-                          {index === 20
-                            ? (facets.data?.distritos.find(
-                                (district) =>
-                                  String(district.distrito_id) ===
-                                  value.district,
-                              )?.distrito ?? "Sin preferencia")
-                            : (answers[index] ?? [])
-                                .map((choice) => item.choices[choice])
-                                .join(", ") || "Sin indicar"}
-                        </p>
-                      </li>
-                    ))}
-                  </ol>
-                </details>
+                <p>
+                  Revisa lo que elegiste y cambia cualquier respuesta antes de
+                  ver tus sugerencias.
+                </p>
+                <div className="questionnaire-review-summary">
+                  <h3>Preferencias para tus sugerencias</h3>
+                  <PreferenceSummary value={value} facets={facets.data} />
+                </div>
+                <div className="questionnaire-review-sections">
+                  {sections.map((name, group) => {
+                    const Icon = sectionIcons[group];
+                    return (
+                      <details key={name}>
+                        <summary>
+                          <Icon size={19} aria-hidden="true" />
+                          <strong>{name}</strong>
+                          <span>4 preguntas</span>
+                        </summary>
+                        <ol start={group * 4 + 1}>
+                          {questions
+                            .slice(group * 4, group * 4 + 4)
+                            .map((item, offset) => {
+                              const index = group * 4 + offset;
+                              const district = facets.data?.distritos.find(
+                                (entry) =>
+                                  String(entry.distrito_id) === value.district,
+                              )?.distrito;
+                              const answer =
+                                index === 20
+                                  ? value.district
+                                    ? `${district ?? "Distrito guardado"}${value.flexible ? " · También considera otros distritos" : ""}`
+                                    : "Sin distrito preferido"
+                                  : (answers[index] ?? [])
+                                      .map((choice) => item.choices[choice])
+                                      .join(", ") || "Sin respuesta";
+                              return (
+                                <li key={item.title}>
+                                  <div>
+                                    <strong>{item.title}</strong>
+                                    <p>{answer}</p>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="button secondary"
+                                    aria-label={`Editar pregunta ${index + 1}`}
+                                    disabled={busy}
+                                    onClick={() => {
+                                      setEditingReview(true);
+                                      changeStep(index);
+                                    }}
+                                  >
+                                    Editar
+                                  </button>
+                                </li>
+                              );
+                            })}
+                        </ol>
+                      </details>
+                    );
+                  })}
+                </div>
               </section>
             ) : (
               <section
@@ -574,7 +614,8 @@ export function PreferenceForm() {
                     aria-pressed={step in answers && selected.length === 0}
                     onClick={() => {
                       choose([]);
-                      changeStep(step + 1);
+                      changeStep(editingReview ? total : step + 1);
+                      setEditingReview(false);
                     }}
                   >
                     Aún no lo sé
@@ -583,15 +624,23 @@ export function PreferenceForm() {
               </section>
             )}
             <footer className="questionnaire-footer">
-              <p>Puedes revisar tus respuestas.</p>
+              {!reviewing && <p>Puedes revisar tus respuestas.</p>}
               <div className="questionnaire-actions">
                 <button
                   type="button"
                   className="button secondary"
-                  disabled={step === 0 || busy}
-                  onClick={() => changeStep(step - 1)}
+                  disabled={(step === 0 && !editingReview) || busy}
+                  onClick={() => {
+                    changeStep(editingReview ? total : step - 1);
+                    setEditingReview(false);
+                  }}
                 >
-                  <ArrowLeft size={19} /> Anterior
+                  <ArrowLeft size={19} />{" "}
+                  {reviewing
+                    ? "Volver a la última pregunta"
+                    : editingReview
+                      ? "Volver a la revisión"
+                      : "Anterior"}
                 </button>
                 <div>
                   <button className="button" disabled={busy}>
@@ -599,9 +648,11 @@ export function PreferenceForm() {
                       ? "Buscando opciones…"
                       : reviewing
                         ? "Ver sugerencias"
-                        : step === total - 1
-                          ? "Revisar mis respuestas"
-                          : "Siguiente pregunta"}{" "}
+                        : editingReview
+                          ? "Guardar y volver a la revisión"
+                          : step === total - 1
+                            ? "Revisar mis respuestas"
+                            : "Siguiente pregunta"}{" "}
                     <ArrowRight size={19} />
                   </button>
                   <button
@@ -645,7 +696,9 @@ export function PreferenceForm() {
                 return (
                   <li
                     key={name}
-                    aria-current={index === section ? "step" : undefined}
+                    aria-current={
+                      !reviewing && index === section ? "step" : undefined
+                    }
                   >
                     <Icon aria-hidden="true" />
                     <span>

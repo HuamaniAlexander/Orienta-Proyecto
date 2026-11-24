@@ -28,6 +28,19 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   }
   await page.getByRole("button", { name: "Revisar mis respuestas" }).click();
   await expect(page.getByText("Intereses: Organizar proyectos")).toBeVisible();
+  await page.locator("summary").getByText("Actividades e intereses").click();
+  await page
+    .getByRole("button", { name: "Editar pregunta 1", exact: true })
+    .click();
+  await expect(
+    page.getByLabel("Organizar una actividad o un negocio"),
+  ).toBeChecked();
+  await page
+    .getByRole("button", { name: "Guardar y volver a la revisión" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Resumen de tus respuestas" }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await expect(
     page.getByRole("heading", { name: "Opciones para seguir explorando." }),
