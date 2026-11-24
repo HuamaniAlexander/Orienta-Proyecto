@@ -21,7 +21,7 @@ test("footer compacto fuera del catálogo aunque existan selecciones", async ({
 test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
   page,
 }) => {
-  await page.goto("/carreras");
+  await page.goto("/carreras?q=software");
   await page
     .getByTestId("offer-card")
     .nth(0)

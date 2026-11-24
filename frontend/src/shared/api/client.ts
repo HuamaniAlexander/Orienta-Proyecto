@@ -23,7 +23,7 @@ export async function api<T>(
   }
   return response.json() as Promise<T>;
 }
-export function useApi<T>(path: string) {
+export function useApi<T>(path: string, load = api<T>) {
   const [state, setState] = useState<{
     data?: T;
     loading: boolean;
@@ -34,7 +34,7 @@ export function useApi<T>(path: string) {
   useEffect(() => {
     const controller = new AbortController();
     setState({ loading: true });
-    api<T>(path, { signal: controller.signal }).then(
+    load(path, { signal: controller.signal }).then(
       (data) => {
         if (!controller.signal.aborted) setState({ data, loading: false });
       },
@@ -50,6 +50,6 @@ export function useApi<T>(path: string) {
       },
     );
     return () => controller.abort();
-  }, [path, attempt]);
+  }, [path, attempt, load]);
   return { ...state, retry };
 }

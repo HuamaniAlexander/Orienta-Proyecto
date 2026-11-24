@@ -126,3 +126,11 @@ test("la lista se desplaza sin mover el comparador en escritorio", async ({
     comparison.getByRole("button", { name: /^Quitar / }),
   ).toBeVisible();
 });
+
+test("agrupa sedes de la misma carrera antes de paginar", async ({ page }) => {
+  await page.goto("/carreras");
+  const cards = page.getByTestId("offer-card");
+  await expect(cards.locator('a[href="/carreras/33"]').first()).toBeVisible();
+  await expect(cards.locator('a[href="/carreras/66"]')).toHaveCount(0);
+  await expect(cards.locator('a[href="/carreras/128"]').first()).toBeVisible();
+});

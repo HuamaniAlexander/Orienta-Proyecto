@@ -27,7 +27,11 @@ import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
 import { SelectButton, SelectionTray } from "../features/comparador/Selection";
-import type { CatalogPage, Facets } from "../shared/types/catalog";
+import {
+  groupedOffers,
+  OFFERS_PER_PAGE,
+} from "../features/catalogo/groupedOffers";
+import type { Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
 export function Catalog() {
@@ -41,7 +45,9 @@ export function Catalog() {
     if (facets.data && canonical !== rawParams.toString())
       setParams(canonical, { replace: true });
   }, [canonical, rawParams, setParams, facets.data]);
-  const result = useApi<CatalogPage>(`/api/ofertas?${params.toString()}`);
+  const query = new URLSearchParams(params);
+  query.delete("page");
+  const result = useApi(`/api/ofertas?${query}`, groupedOffers);
   function change(key: string, value: string) {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);
@@ -115,9 +121,15 @@ export function Catalog() {
     ),
   }));
   const active = filters.filter((filter) => params.has(filter.key));
-  const pages = result.data
-    ? Math.max(1, Math.ceil(result.data.total / result.data.page_size))
+  const total = result.data?.length ?? 0;
+  const pages = Math.max(1, Math.ceil(total / OFFERS_PER_PAGE));
+  const requestedPage = Number(params.get("page"));
+  const page = Number.isSafeInteger(requestedPage)
+    ? Math.max(1, Math.min(pages, requestedPage))
     : 1;
+  const visibleOffers =
+    result.data?.slice((page - 1) * OFFERS_PER_PAGE, page * OFFERS_PER_PAGE) ??
+    [];
   return (
     <div className="container catalog-page">
       <nav className="catalog-breadcrumb" aria-label="Ruta de navegación">
@@ -222,7 +234,7 @@ export function Catalog() {
                 {result.loading
                   ? "Buscando opciones…"
                   : result.data
-                    ? `${result.data.total} ${result.data.total === 1 ? "opción encontrada" : "opciones encontradas"}`
+                    ? `${total} ${total === 1 ? "opción encontrada" : "opciones encontradas"}`
                     : "La consulta no se pudo completar"}
               </p>
             </div>
@@ -273,15 +285,16 @@ export function Catalog() {
             <Loading />
           ) : result.error ? (
             <Failure message={result.error} retry={result.retry} />
-          ) : result.data?.items.length ? (
+          ) : visibleOffers.length ? (
             <>
               <div
+                key={page}
                 className="offer-grid"
                 tabIndex={0}
                 role="region"
                 aria-label="Lista de ofertas"
               >
-                {result.data.items.map((offer) => (
+                {visibleOffers.map((offer) => (
                   <OfferCard
                     key={offer.oferta_id}
                     offer={offer}
@@ -292,19 +305,19 @@ export function Catalog() {
               <nav className="pagination" aria-label="Páginas del catálogo">
                 <button
                   className="button secondary"
-                  disabled={result.data.page <= 1}
-                  onClick={() => change("page", String(result.data!.page - 1))}
+                  disabled={page <= 1}
+                  onClick={() => change("page", String(page - 1))}
                 >
                   <ArrowLeft size={16} />
                   Anterior
                 </button>
                 <span>
-                  Página {result.data.page} de {pages}
+                  Página {page} de {pages}
                 </span>
                 <button
                   className="button secondary"
-                  disabled={result.data.page >= pages}
-                  onClick={() => change("page", String(result.data!.page + 1))}
+                  disabled={page >= pages}
+                  onClick={() => change("page", String(page + 1))}
                 >
                   Siguiente
                   <ArrowRight size={16} />
