@@ -28,6 +28,12 @@ interface Discovery {
   version: number;
   preferences: Preferences;
   suggestions: Suggestion[];
+  answers?: QuestionnaireDraft["answers"];
+}
+export interface QuestionnaireDraft {
+  step: number;
+  answers: Record<number, number[]>;
+  preferences: Preferences;
 }
 interface Progress {
   offers: SavedOffer[];
@@ -35,6 +41,7 @@ interface Progress {
   questions: string[];
   current?: Discovery;
   previous?: Discovery;
+  questionnaire?: QuestionnaireDraft;
 }
 const STORAGE = "orienta-progress-v1";
 const empty = (): Progress => ({ offers: [], comparisons: [], questions: [] });

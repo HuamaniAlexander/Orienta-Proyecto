@@ -19,7 +19,6 @@ export const INTERESTS = [
     terms: /ciencia|investig|laboratorio|ingenier/,
   },
 ];
-export const STEPS = ["Intereses", "Condiciones", "Revisión"];
 export const INITIAL: Preferences = {
   interests: [],
   extra: "",
@@ -55,7 +54,9 @@ export async function discover(
     .filter(
       (offer) =>
         !preferences.modalities.length ||
-        preferences.modalities.includes(offer.modalidad_id),
+        preferences.modalities.includes(offer.modalidad_id) ||
+        (offer.modalidad_id === 5 &&
+          preferences.modalities.some((id) => id === 1 || id === 2)),
     )
     .map((offer) => {
       const content = normalize(

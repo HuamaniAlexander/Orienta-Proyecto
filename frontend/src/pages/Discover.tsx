@@ -1,21 +1,38 @@
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Building2,
+  Check,
+  ClipboardList,
+  Flag,
+  GraduationCap,
+  MapPin,
+  Microscope,
+  Route,
+  Settings,
+  Users,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  discover,
-  INITIAL,
-  INTERESTS,
-  STEPS,
-} from "../features/ruta/discovery";
+import { discover, INITIAL } from "../features/ruta/discovery";
 import {
   SaveOffer,
   useProgress,
   type Preferences,
+  type QuestionnaireDraft,
   type Suggestion,
 } from "../features/ruta/Progress";
 import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import type { Facets } from "../shared/types/catalog";
 import { officialUrl } from "./Detail";
+import {
+  questions,
+  sections,
+  selectedInterests,
+} from "../features/ruta/questions";
+import "../features/ruta/questionnaire.css";
 
 function PreferenceSummary({
   value,
@@ -77,7 +94,9 @@ export function Discover() {
           facets={facets.data}
         />
         <Link className="button secondary" to="/descubre/preferencias">
-          Editar preferencias
+          {progress.questionnaire
+            ? "Reanudar cuestionario"
+            : "Editar preferencias"}
         </Link>
         <Link className="text-link" to="/conecta">
           Buscar orientación
@@ -229,10 +248,27 @@ function SuggestionAI({
   );
 }
 
+const sectionIcons = [
+  ClipboardList,
+  Users,
+  Building2,
+  BookOpen,
+  Flag,
+  Settings,
+];
+
 export function PreferenceForm() {
   const { progress, update } = useProgress();
-  const [value, setValue] = useState(progress.current?.preferences ?? INITIAL);
-  const [step, setStep] = useState(0);
+  const draft = progress.questionnaire;
+  const [value, setValue] = useState(
+    draft?.preferences ?? progress.current?.preferences ?? INITIAL,
+  );
+  const [step, setStep] = useState(draft?.step ?? 0);
+  const [answers, setAnswers] = useState<QuestionnaireDraft["answers"]>(
+    draft?.answers ?? progress.current?.answers ?? {},
+  );
+  const [saved, setSaved] = useState(false);
+  const heading = useRef<HTMLHeadingElement>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const pending = useRef<AbortController | null>(null);
@@ -240,6 +276,7 @@ export function PreferenceForm() {
   const navigate = useNavigate();
   useEffect(() => () => pending.current?.abort(), []);
   function edit(change: Partial<Preferences>) {
+    setSaved(false);
     setValue((previous) => ({ ...previous, ...change }));
   }
   async function submit() {
@@ -256,10 +293,12 @@ export function PreferenceForm() {
         update((previous) => ({
           ...previous,
           previous: previous.current,
+          questionnaire: undefined,
           current: {
             version: (previous.current?.version ?? 0) + 1,
             preferences,
             suggestions,
+            answers,
           },
         }))
       )
@@ -280,184 +319,350 @@ export function PreferenceForm() {
       if (!controller.signal.aborted) setBusy(false);
     }
   }
+  const total = questions.length;
+  const reviewing = step === total;
+  const question = questions[step];
+  const section = Math.min(Math.floor(step / 4), sections.length - 1);
+  const CurrentIcon =
+    step < 4 ? Microscope : step === 21 ? GraduationCap : sectionIcons[section];
+  const selected =
+    answers[step] ??
+    (step === 21
+      ? value.modalities.map((id) => id - 1)
+      : step === 22
+        ? question.choices.flatMap((choice, index) =>
+            value.availability.includes(choice) ? [index] : [],
+          )
+        : []);
+  const max = question?.kind !== "multiple" ? 1 : step < 20 ? 2 : Infinity;
+  const hasSkip = step < 20 || step === 23;
+
+  function changeStep(next: number) {
+    setSaved(false);
+    setStep(next);
+    requestAnimationFrame(() => heading.current?.focus());
+  }
+
+  function choose(next: number[]) {
+    const updated = { ...answers, [step]: next };
+    setAnswers(updated);
+    setSaved(false);
+    if (step < 20) edit({ interests: selectedInterests(updated) });
+    if (step === 21)
+      edit({
+        modalities: next
+          .filter((choice) => choice < 3)
+          .map((choice) => choice + 1),
+      });
+    if (step === 22)
+      edit({
+        availability: next.map((choice) => question.choices[choice]).join(", "),
+      });
+    if (
+      step === 23 &&
+      (next.includes(0) || next.includes(3) || selected.includes(0))
+    ) {
+      edit({ flexible: next.includes(0) });
+    }
+  }
+
   return (
-    <div className="container section">
-      <div className="page-heading">
-        <h1>
-          {progress.current
-            ? "Tus preferencias pueden cambiar."
-            : "Empieza por lo que te interesa."}
-        </h1>
-        <p>Responde unas preguntas breves para explorar opciones.</p>
-      </div>
-      <div className="route-layout">
-        <form
-          className="route-panel route-stack"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (step < 2) setStep(step + 1);
-            else void submit();
-          }}
+    <div className="questionnaire-page">
+      <div className="container questionnaire-container">
+        <nav
+          className="questionnaire-breadcrumb"
+          aria-label="Ruta de navegación"
         >
-          <h2>
-            {" "}
-            Paso {step + 1} de 3 · {STEPS[step]}
-          </h2>
-          <progress
-            max={3}
-            value={step + 1}
-            aria-label="Avance del cuestionario"
-          />
-          {step === 0 && (
-            <>
-              <fieldset className="discovery-options">
-                <legend>¿Qué actividades disfrutas más?</legend>
-                {INTERESTS.map(({ label }) => (
-                  <label key={label}>
-                    <input
-                      type="checkbox"
-                      checked={value.interests.includes(label)}
-                      onChange={(event) =>
-                        edit({
-                          interests: event.target.checked
-                            ? [...value.interests, label]
-                            : value.interests.filter((item) => item !== label),
-                        })
-                      }
-                    />{" "}
-                    {label}
-                  </label>
-                ))}
-              </fieldset>
-              <label>
-                ¿Hay algo más que te gustaría explorar?
-                <input
-                  value={value.extra}
-                  onChange={(event) => edit({ extra: event.target.value })}
-                  maxLength={100}
+          <Link to="/descubre">Descubre</Link>
+          <span aria-hidden="true">/</span> Cuestionario
+        </nav>
+        <header className="questionnaire-title">
+          <h1>Explora lo que te interesa.</h1>
+          <p>Responde a tu ritmo. Puedes volver y cambiar tus respuestas.</p>
+        </header>
+        <div className="questionnaire-layout">
+          <form
+            className="questionnaire-card questionnaire-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (reviewing) void submit();
+              else {
+                if (!(step in answers)) setAnswers({ ...answers, [step]: [] });
+                changeStep(step + 1);
+              }
+            }}
+          >
+            <div className="questionnaire-status">
+              <div className="questionnaire-position">
+                <CurrentIcon aria-hidden="true" />
+                <div>
+                  <strong>
+                    {reviewing
+                      ? "Revisión final"
+                      : `Pregunta ${step + 1} de ${total}`}
+                  </strong>
+                  <span>{sections[section]}</span>
+                </div>
+              </div>
+              <div className="questionnaire-progress">
+                <span aria-hidden="true">
+                  {Math.min(step + 1, total)} / {total}
+                </span>
+                <progress
+                  max={total}
+                  value={Math.min(step + 1, total)}
+                  aria-label="Avance del cuestionario"
                 />
-              </label>
-            </>
-          )}
-          {step === 1 && (
-            <>
-              {facets.loading && <Loading text="Cargando condiciones…" />}
-              {facets.error && (
-                <Failure message={facets.error} retry={facets.retry} />
-              )}
-              <label>
-                Dónde te gustaría estudiar
-                <select
-                  value={value.district}
-                  onChange={(event) => edit({ district: event.target.value })}
-                >
-                  <option value="">Todo Lima Norte</option>
-                  {facets.data?.distritos.map((item) => (
-                    <option key={item.distrito_id} value={item.distrito_id}>
-                      {item.distrito}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {value.district && (
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={value.flexible}
-                    onChange={(event) =>
-                      edit({ flexible: event.target.checked })
-                    }
-                  />{" "}
-                  Considerar otros distritos
-                </label>
-              )}
-              <fieldset className="discovery-options">
-                <legend>Modalidad</legend>
-                {facets.data?.modalidades
-                  .filter((item) => item.codigo_id <= 3)
-                  .map((item) => (
-                    <label key={item.codigo_id}>
-                      <input
-                        type="checkbox"
-                        checked={value.modalities.includes(item.codigo_id)}
+              </div>
+            </div>
+            {reviewing ? (
+              <section className="questionnaire-body">
+                <h2 ref={heading} tabIndex={-1}>
+                  Resumen de tus respuestas
+                </h2>
+                <PreferenceSummary value={value} facets={facets.data} />
+                <details>
+                  <summary>Revisar las 24 preguntas</summary>
+                  <ol>
+                    {questions.map((item, index) => (
+                      <li key={item.title}>
+                        <button
+                          className="text-link"
+                          type="button"
+                          onClick={() => changeStep(index)}
+                        >
+                          {item.title}
+                        </button>
+                        <p>
+                          {index === 20
+                            ? (facets.data?.distritos.find(
+                                (district) =>
+                                  String(district.distrito_id) ===
+                                  value.district,
+                              )?.distrito ?? "Sin preferencia")
+                            : (answers[index] ?? [])
+                                .map((choice) => item.choices[choice])
+                                .join(", ") || "Sin indicar"}
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              </section>
+            ) : (
+              <section
+                className="questionnaire-body"
+                aria-labelledby="current-question"
+              >
+                <h2 id="current-question" ref={heading} tabIndex={-1}>
+                  {question.title}
+                </h2>
+                <p>
+                  {step === 20
+                    ? "Indica tu preferencia de ubicación."
+                    : step === 23
+                      ? "Elige las opciones que considerarías."
+                      : question.kind === "scale"
+                        ? "Responde según tu interés, no según cuánto sabes ahora."
+                        : max === 1
+                          ? "Elige una opción."
+                          : max === 2
+                            ? "Elige hasta dos opciones."
+                            : "Puedes elegir una o más opciones."}
+                </p>
+                {step === 20 ? (
+                  <div className="questionnaire-district">
+                    {facets.loading && <Loading text="Cargando distritos…" />}
+                    {facets.error && (
+                      <Failure message={facets.error} retry={facets.retry} />
+                    )}
+                    <label className="questionnaire-select">
+                      <MapPin aria-hidden="true" />
+                      <select
+                        aria-label="Distrito de preferencia"
+                        value={value.district}
                         onChange={(event) =>
                           edit({
-                            modalities: event.target.checked
-                              ? [...value.modalities, item.codigo_id]
-                              : value.modalities.filter(
-                                  (id) => id !== item.codigo_id,
-                                ),
+                            district: event.target.value,
+                            flexible: false,
                           })
                         }
-                      />{" "}
-                      {item.etiqueta}
+                      >
+                        <option value="">Selecciona un distrito</option>
+                        {facets.data?.distritos.map((item) => (
+                          <option
+                            key={item.distrito_id}
+                            value={item.distrito_id}
+                          >
+                            {item.distrito}
+                          </option>
+                        ))}
+                      </select>
                     </label>
-                  ))}
-              </fieldset>
-              <label>
-                Disponibilidad
-                <select
-                  value={value.availability}
-                  onChange={(event) =>
-                    edit({ availability: event.target.value })
-                  }
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={value.flexible}
+                        disabled={!value.district}
+                        onChange={(event) =>
+                          edit({ flexible: event.target.checked })
+                        }
+                      />{" "}
+                      Considerar otros distritos.
+                    </label>
+                    <label className="questionnaire-choice">
+                      <input
+                        type="radio"
+                        checked={20 in answers && !value.district}
+                        onChange={() => {
+                          edit({ district: "", flexible: false });
+                          choose([]);
+                        }}
+                      />{" "}
+                      No tengo un distrito preferido.
+                    </label>
+                  </div>
+                ) : (
+                  <fieldset
+                    aria-labelledby="current-question"
+                    className={`questionnaire-options ${question.kind === "scale" ? "is-scale" : step >= 21 || (question.kind === "single" && step !== 3) ? "is-list" : ""}`}
+                  >
+                    {question.choices.map((choice, index) => {
+                      const checked = selected.includes(index);
+                      return (
+                        <label key={choice} className="questionnaire-choice">
+                          <input
+                            type={max === 1 ? "radio" : "checkbox"}
+                            name={`question-${step}`}
+                            checked={checked}
+                            disabled={
+                              !checked && max === 2 && selected.length >= max
+                            }
+                            onChange={() => {
+                              if (step === 21 && index === 3 && !checked)
+                                choose([3]);
+                              else if (checked)
+                                choose(selected.filter((id) => id !== index));
+                              else if (max === 1) choose([index]);
+                              else
+                                choose([
+                                  ...selected.filter(
+                                    (id) => step !== 21 || id !== 3,
+                                  ),
+                                  index,
+                                ]);
+                            }}
+                          />
+                          {question.kind === "scale" && (
+                            <strong>{index + 1}</strong>
+                          )}
+                          <span>{choice}</span>
+                        </label>
+                      );
+                    })}
+                  </fieldset>
+                )}
+                {hasSkip && (
+                  <button
+                    type="button"
+                    className="text-link questionnaire-skip"
+                    aria-pressed={step in answers && selected.length === 0}
+                    onClick={() => {
+                      choose([]);
+                      changeStep(step + 1);
+                    }}
+                  >
+                    Aún no lo sé
+                  </button>
+                )}
+              </section>
+            )}
+            <footer className="questionnaire-footer">
+              <p>Puedes revisar tus respuestas.</p>
+              <div className="questionnaire-actions">
+                <button
+                  type="button"
+                  className="button secondary"
+                  disabled={step === 0 || busy}
+                  onClick={() => changeStep(step - 1)}
                 >
-                  {[
-                    "",
-                    "Por las mañanas",
-                    "Por las tardes",
-                    "Por las noches",
-                    "Fines de semana",
-                    "Horario flexible",
-                  ].map((item) => (
-                    <option key={item} value={item}>
-                      {item || "Sin indicar"}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </>
-          )}
-          {step === 2 && (
-            <section>
-              <h3>Resumen de tus respuestas</h3>
-              <PreferenceSummary value={value} facets={facets.data} />
-              <p>
-                Estas sugerencias son orientativas. Se guardan en este
-                navegador.
-              </p>
-            </section>
-          )}
-          <div className="route-actions">
-            <button
-              type="button"
-              className="button secondary"
-              disabled={step === 0 || busy}
-              onClick={() => setStep(step - 1)}
-            >
-              Atrás
-            </button>
-            <button className="button" disabled={busy}>
-              {busy
-                ? "Buscando opciones…"
-                : step < 2
-                  ? "Continuar"
-                  : "Ver sugerencias"}
-            </button>
-          </div>
-          {error && <Failure message={error} />}
-        </form>
-        <aside className="route-panel">
-          <h2>Tu recorrido</h2>
-          <ol>
-            {STEPS.map((name, index) => (
-              <li key={name} aria-current={step === index ? "step" : undefined}>
-                {name}
-              </li>
-            ))}
-          </ol>
-          <p>Puedes revisar y cambiar tus respuestas.</p>
-        </aside>
+                  <ArrowLeft size={19} /> Anterior
+                </button>
+                <div>
+                  <button className="button" disabled={busy}>
+                    {busy
+                      ? "Buscando opciones…"
+                      : reviewing
+                        ? "Ver sugerencias"
+                        : step === total - 1
+                          ? "Revisar mis respuestas"
+                          : "Siguiente pregunta"}{" "}
+                    <ArrowRight size={19} />
+                  </button>
+                  <button
+                    className="text-link"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      setError("");
+                      setSaved(
+                        update((previous) => ({
+                          ...previous,
+                          questionnaire: { step, answers, preferences: value },
+                        })),
+                      );
+                    }}
+                  >
+                    Guardar y continuar después
+                  </button>
+                </div>
+              </div>
+              {saved && (
+                <p aria-hidden="true">Avance guardado en este navegador.</p>
+              )}
+              {error && <Failure message={error} />}
+            </footer>
+          </form>
+          <aside
+            className="questionnaire-card questionnaire-route"
+            aria-labelledby="questionnaire-route-title"
+          >
+            <h2 id="questionnaire-route-title">
+              <Route aria-hidden="true" /> Tu recorrido
+            </h2>
+            <ol>
+              {sections.map((name, index) => {
+                const Icon = sectionIcons[index];
+                const first = index * 4;
+                const complete = questions
+                  .slice(first, first + 4)
+                  .every((_, offset) => first + offset in answers);
+                return (
+                  <li
+                    key={name}
+                    aria-current={index === section ? "step" : undefined}
+                  >
+                    <Icon aria-hidden="true" />
+                    <span>
+                      <strong>{name}</strong>
+                      <small>4 preguntas</small>
+                    </span>
+                    {complete && (
+                      <Check
+                        className="questionnaire-complete"
+                        size={16}
+                        aria-label="Completado"
+                      />
+                    )}
+                    <span className="questionnaire-range">
+                      {first + 1} – {first + 4}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </aside>
+        </div>
       </div>
     </div>
   );
