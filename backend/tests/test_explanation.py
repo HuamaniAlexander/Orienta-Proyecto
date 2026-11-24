@@ -116,6 +116,23 @@ def test_use_case_checks_constraints_and_validates_provider():
     asyncio.run(run())
 
 
+def test_invalid_evidence_is_retried_without_sending_published_prices():
+    repository = Repository()
+    repository.details['10']['oferta']['consulta_costos'] = 'Matrícula: S/ 250.00'
+    contexts = []
+
+    class Provider:
+        async def explain(self, context):
+            contexts.append(context)
+            return Explanation.model_validate(output(source=999 if len(contexts) == 1 else 1))
+
+    result = asyncio.run(Explain(repository, Provider()).execute([10, 110], {}))
+    assert result['explicacion']['oferta_ids'] == [10, 110]
+    assert len(contexts) == 2
+    assert 'correccion' in contexts[1]
+    assert all('S/ 250.00' not in json.dumps(context) for context in contexts)
+
+
 def test_http_contract_and_provider_failure_keep_basic_comparison():
     class Provider:
         async def explain(self, context):

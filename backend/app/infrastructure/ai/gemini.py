@@ -24,9 +24,11 @@ documentados. No inventes costos, salarios, requisitos, mallas, acreditaciones, 
 empleabilidad ni estadísticas. No conviertas ciclos en años ni costos por crédito en
 mensualidades. No interpretes similitud léxica como compatibilidad o éxito vocacional.
 Explica primero las diferencias de carrera, luego las de institución/sede/modalidad.
-Relaciona ventajas con preferencias declaradas. Permite empate y sugerencia.oferta_id=null
+Relaciona ventajas con preferencias declaradas. Si no hay preferencias, incluye un
+punto general de orientación en relacion_preferencias. Permite empate y sugerencia.oferta_id=null
 cuando falte evidencia. La sugerencia, si existe, es condicionada y requiere fuentes.
-No emitas enlaces ni IDs ajenos al contexto. Usa texto plano breve, sin HTML o Markdown.
+No emitas importes monetarios, porcentajes ni enlaces, aunque aparezcan en el contexto.
+Para importes remite a la pestaña Costos. No emitas IDs ajenos al contexto. Usa texto plano breve, sin HTML o Markdown.
 Devuelve únicamente el JSON del esquema solicitado, con diferencias, coincidencias,
 relación con preferencias, ventajas condicionadas, sugerencia razonada y límites."""
 
