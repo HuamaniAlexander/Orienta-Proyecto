@@ -67,11 +67,12 @@ export async function discover(
           offer.ambitos_editoriales,
         ].join(" "),
       );
-      const matches = INTERESTS.filter(
+      const related = INTERESTS.filter(
         ({ label, terms }) =>
           preferences.interests.includes(label) && terms.test(content),
-      ).map(
-        ({ label }) =>
+      ).map(({ label }) => label);
+      const matches = related.map(
+        (label) =>
           `El nombre, el área o el enfoque de la ficha se relacionan con «${label}».`,
       );
       if (
@@ -93,6 +94,7 @@ export async function discover(
       return {
         offer,
         reasons,
+        related,
         matches: matches.length,
         score: matches.length * 2 + Number(districtMatch),
       };
@@ -101,12 +103,15 @@ export async function discover(
     .sort((a, b) => b.score - a.score);
   const unique = new Set<number>();
   const suggestions: Suggestion[] = [];
-  for (const { offer, reasons } of ranked) {
+  for (const { offer, reasons, related } of ranked) {
     if (unique.has(offer.carrera_id)) continue;
     unique.add(offer.carrera_id);
     suggestions.push({
       offer: savedOffer(offer),
       reasons,
+      area: offer.area,
+      areaId: offer.area_id,
+      relatedInterests: related,
       source: offer.ficha_url ?? offer.fuente_oferta_url,
     });
     if (suggestions.length === 6) break;

@@ -1,20 +1,25 @@
 import {
   ArrowLeft,
   ArrowRight,
+  Bookmark,
   BookOpen,
   Building2,
   Check,
   ClipboardList,
   Flag,
   GraduationCap,
+  Info,
   MapPin,
   Microscope,
+  Pencil,
   Route,
+  Search,
+  SlidersHorizontal,
   Settings,
   Users,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { discover, INITIAL } from "../features/ruta/discovery";
 import {
   SaveOffer,
@@ -24,6 +29,7 @@ import {
   type Suggestion,
 } from "../features/ruta/Progress";
 import { api, useApi } from "../shared/api/client";
+import { careerImage } from "../shared/components/OfferCard";
 import { Failure, Loading } from "../shared/components/Feedback";
 import type { Facets } from "../shared/types/catalog";
 import { officialUrl } from "./Detail";
@@ -33,6 +39,7 @@ import {
   selectedInterests,
 } from "../features/ruta/questions";
 import "../features/ruta/questionnaire.css";
+import "../features/ruta/discovery-results.css";
 
 function PreferenceSummary({
   value,
@@ -76,68 +83,304 @@ function PreferenceSummary({
   );
 }
 
+const REVIEW_URL = "/descubre/preferencias?revisar=1";
+
 export function Discover() {
   const { progress } = useProgress();
-  const facets = useApi<Facets>("/api/filtros");
   if (!progress.current) return <PreferenceForm />;
   return (
-    <div className="container section">
-      <div className="page-heading">
-        <h1>Opciones para seguir explorando.</h1>
-        <p>
-          Sugerencias relacionadas con los intereses y condiciones que
-          declaraste.
-        </p>
-      </div>
-      <section className="route-panel">
-        <h2>Tus preferencias actuales</h2>
-        <PreferenceSummary
-          value={progress.current.preferences}
-          facets={facets.data}
-        />
-        <Link className="button secondary" to="/descubre/preferencias">
-          {progress.questionnaire
-            ? "Reanudar cuestionario"
-            : "Editar preferencias"}
-        </Link>
-        <Link className="text-link" to="/conecta">
-          Buscar orientación
-        </Link>
-      </section>
-      {progress.current.preferences.availability && (
-        <p className="info-note">
-          Confirma los horarios directamente con cada institución. El catálogo
-          no permite verificar tu disponibilidad.
-        </p>
-      )}
-      {progress.current.preferences.interests.length === 0 &&
-        !progress.current.preferences.extra && (
-          <p className="info-note">
-            No indicaste intereses. Las sugerencias usan las condiciones que
-            elegiste y el catálogo.
-          </p>
+    <DiscoveryResults
+      key={progress.current.version}
+      current={progress.current}
+    />
+  );
+}
+
+function DiscoveryResults({
+  current,
+}: {
+  current: {
+    version: number;
+    preferences: Preferences;
+    suggestions: Suggestion[];
+    answers?: QuestionnaireDraft["answers"];
+  };
+}) {
+  const { progress, update } = useProgress();
+  const facets = useApi<Facets>("/api/filtros");
+  const [value, setValue] = useState(current.preferences);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const pending = useRef<AbortController | null>(null);
+  useEffect(() => () => pending.current?.abort(), []);
+  const interests = [
+    ...current.preferences.interests,
+    current.preferences.extra,
+  ].filter(Boolean);
+  const shown = showAll ? current.suggestions : current.suggestions.slice(0, 3);
+  const hours = questions[22].choices;
+  const modality = value.modalities.join(",");
+  async function refresh() {
+    if (pending.current) return;
+    const controller = new AbortController();
+    pending.current = controller;
+    setBusy(true);
+    setError("");
+    try {
+      const suggestions = await discover(value, controller.signal);
+      if (controller.signal.aborted) return;
+      const answers = current.answers && {
+        ...current.answers,
+        21: value.modalities
+          .filter((id) => id >= 1 && id <= 3)
+          .map((id) => id - 1),
+        22: hours.flatMap((label, index) =>
+          value.availability.split(", ").includes(label) ? [index] : [],
+        ),
+      };
+      if (
+        !update((previous) => ({
+          ...previous,
+          previous: previous.current,
+          current: {
+            version: current.version + 1,
+            preferences: value,
+            suggestions,
+            answers,
+          },
+        }))
+      )
+        setError("El navegador no permitió guardar las opciones actualizadas.");
+    } catch (err) {
+      if (!controller.signal.aborted)
+        setError(
+          err instanceof Error
+            ? err.message
+            : "No pudimos actualizar tus opciones.",
+        );
+    } finally {
+      pending.current = null;
+      if (!controller.signal.aborted) setBusy(false);
+    }
+  }
+  return (
+    <div className="questionnaire-page">
+      <div className="container questionnaire-container">
+        <nav
+          className="questionnaire-breadcrumb"
+          aria-label="Ruta de navegación"
+        >
+          <Link to="/descubre">Descubre</Link>
+          <span aria-hidden="true">/</span> Carreras afines
+        </nav>
+        <header className="questionnaire-title discovery-results-heading">
+          <div>
+            <h1>Descubre caminos que conectan contigo.</h1>
+            <p>Explora estas carreras a partir de lo que nos contaste.</p>
+          </div>
+          <Link className="button secondary" to="/descubre/preferencias">
+            <Pencil size={17} aria-hidden="true" />
+            {progress.questionnaire
+              ? "Reanudar cuestionario"
+              : "Editar mis respuestas"}
+          </Link>
+        </header>
+        <section
+          className="discovery-interest-bar"
+          aria-labelledby="discover-interests"
+        >
+          <div>
+            <h2 id="discover-interests">Lo que te interesa</h2>
+            <p>Según tus respuestas</p>
+          </div>
+          {interests.length ? (
+            <ul>
+              {interests.map((interest) => (
+                <li key={interest}>
+                  <Search size={21} aria-hidden="true" />
+                  {interest}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              Tus sugerencias usan las condiciones que elegiste y la oferta del
+              catálogo.
+            </p>
+          )}
+        </section>
+        <div className="discovery-results-layout">
+          <section
+            className="discovery-results-panel"
+            aria-labelledby="affine-careers"
+            aria-busy={busy}
+          >
+            <header>
+              <div>
+                <h2 id="affine-careers">Carreras para explorar</h2>
+                <p>Conoce qué relación tienen con tus intereses.</p>
+              </div>
+              <span>
+                {shown.length} {shown.length === 1 ? "opción" : "opciones"}
+              </span>
+            </header>
+            <SuggestionList
+              suggestions={shown}
+              preferences={current.preferences}
+            />
+            {current.suggestions.length > 3 && (
+              <button
+                type="button"
+                className="button secondary discovery-show-more"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? "Mostrar menos opciones" : "Ver más opciones"}
+              </button>
+            )}
+          </section>
+          <aside className="discovery-results-panel discovery-filters">
+            <h2>
+              <SlidersHorizontal size={23} aria-hidden="true" /> Ajusta tu
+              búsqueda
+            </h2>
+            <p>Tus condiciones de estudio.</p>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                void refresh();
+              }}
+            >
+              {facets.error && (
+                <Failure message={facets.error} retry={facets.retry} />
+              )}
+              <label>
+                Distrito
+                <select
+                  value={value.district}
+                  onChange={(event) =>
+                    setValue({
+                      ...value,
+                      district: event.target.value,
+                      flexible: Boolean(event.target.value) && value.flexible,
+                    })
+                  }
+                >
+                  <option value="">Todos los distritos</option>
+                  {value.district && !facets.data && (
+                    <option value={value.district}>Distrito guardado</option>
+                  )}
+                  {facets.data?.distritos.map((district) => (
+                    <option
+                      key={district.distrito_id}
+                      value={district.distrito_id}
+                    >
+                      {district.distrito}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Modalidad
+                <select
+                  value={modality}
+                  onChange={(event) =>
+                    setValue({
+                      ...value,
+                      modalities: event.target.value
+                        ? event.target.value.split(",").map(Number)
+                        : [],
+                    })
+                  }
+                >
+                  <option value="">Todas las modalidades</option>
+                  {modality && !/^[123]$/.test(modality) && (
+                    <option value={modality}>
+                      {value.modalities
+                        .map(
+                          (id) =>
+                            questions[21].choices[id - 1] ?? `Modalidad ${id}`,
+                        )
+                        .join(" y ")}
+                    </option>
+                  )}
+                  {questions[21].choices.slice(0, 3).map((item, index) => (
+                    <option key={item} value={index + 1}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Horario
+                <select
+                  value={value.availability}
+                  onChange={(event) =>
+                    setValue({ ...value, availability: event.target.value })
+                  }
+                >
+                  <option value="">Sin preferencia</option>
+                  {value.availability &&
+                    !hours.includes(value.availability) && (
+                      <option value={value.availability}>
+                        {value.availability}
+                      </option>
+                    )}
+                  {hours.map((hour) => (
+                    <option key={hour}>{hour}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="discovery-flexible">
+                <input
+                  type="checkbox"
+                  disabled={!value.district}
+                  checked={Boolean(value.district) && value.flexible}
+                  onChange={(event) =>
+                    setValue({ ...value, flexible: event.target.checked })
+                  }
+                />{" "}
+                Considerar otros distritos
+              </label>
+              <button className="button" disabled={busy}>
+                {busy ? "Actualizando opciones…" : "Actualizar opciones"}
+              </button>
+              {error && <Failure message={error} />}
+            </form>
+            <p className="discovery-schedule-note">
+              El horario se guarda como preferencia. Confirma la disponibilidad
+              con cada institución.
+            </p>
+          </aside>
+        </div>
+        <footer className="discovery-results-footer">
+          <Link className="button secondary" to={REVIEW_URL}>
+            <ArrowLeft size={17} />
+            Volver a mis respuestas
+          </Link>
+          <Link className="button secondary" to="/mi-ruta">
+            <Bookmark size={17} />
+            Ver Mi ruta
+            <ArrowRight size={17} />
+          </Link>
+        </footer>
+        {progress.previous && (
+          <details className="discovery-results-panel">
+            <summary>
+              Sugerencias anteriores · versión {progress.previous.version}
+            </summary>
+            <PreferenceSummary
+              value={progress.previous.preferences}
+              facets={facets.data}
+            />
+            <SuggestionList
+              key={progress.previous.version}
+              suggestions={progress.previous.suggestions}
+              preferences={progress.previous.preferences}
+            />
+          </details>
         )}
-      <SuggestionList
-        key={progress.current.version}
-        suggestions={progress.current.suggestions}
-        preferences={progress.current.preferences}
-      />
-      {progress.previous && (
-        <details className="route-panel">
-          <summary>
-            Sugerencias anteriores · versión {progress.previous.version}
-          </summary>
-          <PreferenceSummary
-            value={progress.previous.preferences}
-            facets={facets.data}
-          />
-          <SuggestionList
-            key={progress.previous.version}
-            suggestions={progress.previous.suggestions}
-            preferences={progress.previous.preferences}
-          />
-        </details>
-      )}
+      </div>
     </div>
   );
 }
@@ -151,40 +394,83 @@ function SuggestionList({
 }) {
   if (!suggestions.length)
     return (
-      <p className="info-note">
-        No encontramos coincidencias con los criterios indicados. Puedes editar
-        tus preferencias y volver a consultar.
+      <p>
+        No encontramos coincidencias. Puedes ampliar los filtros y actualizar
+        las opciones.
       </p>
     );
   return (
-    <div className="discovery-results">
-      {suggestions.map(({ offer, reasons, source }) => (
-        <article className="route-panel route-stack" key={offer.oferta_id}>
-          <h2>{offer.carrera_oficial}</h2>
-          <p>
-            {offer.institucion} · {offer.distrito}
-          </p>
-          <strong>Por qué aparece esta opción</strong>
-          <ul>
-            {reasons.map((reason) => (
-              <li key={reason}>{reason}</li>
-            ))}
-          </ul>
-          {officialUrl(source) && (
-            <a href={officialUrl(source)} target="_blank" rel="noreferrer">
-              Consultar ficha oficial
-            </a>
-          )}
-          <Link to={`/carreras/${offer.oferta_id}`}>Ver carrera y fuentes</Link>
-          {(preferences.interests.length > 0 ||
-            preferences.extra ||
-            preferences.district ||
-            preferences.modalities.length > 0) && (
-            <SuggestionAI offerId={offer.oferta_id} preferences={preferences} />
-          )}
-          <SaveOffer offer={offer} />
-        </article>
-      ))}
+    <div className="discovery-career-grid">
+      {suggestions.map(
+        ({ offer, reasons, source, area, areaId, relatedInterests }) => (
+          <article className="discovery-career-card" key={offer.oferta_id}>
+            <img
+              src={careerImage({
+                carrera_oficial: offer.carrera_oficial,
+                area_id: areaId ?? 0,
+              })}
+              alt=""
+              loading="lazy"
+            />
+            <div className="discovery-career-content">
+              {area && <span className="discovery-tag">{area}</span>}
+              <h3>{offer.carrera_oficial}</h3>
+              <p className="discovery-institution">
+                {offer.institucion} · {offer.distrito}
+              </p>
+              <strong>¿Por qué aparece?</strong>
+              <p>{reasons[0]}</p>
+              {!!relatedInterests?.length && (
+                <ul className="discovery-tags">
+                  {relatedInterests.map((interest) => (
+                    <li className="discovery-tag" key={interest}>
+                      {interest}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <details className="discovery-relationship">
+                <summary>
+                  <Info size={16} aria-hidden="true" /> Ver relación con mis
+                  respuestas <ArrowRight size={15} aria-hidden="true" />
+                </summary>
+                <ul>
+                  {reasons.map((reason) => (
+                    <li key={reason}>{reason}</li>
+                  ))}
+                </ul>
+                {officialUrl(source) && (
+                  <a
+                    href={officialUrl(source)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Consultar ficha oficial
+                  </a>
+                )}
+                {(preferences.interests.length > 0 ||
+                  preferences.extra ||
+                  preferences.district ||
+                  preferences.modalities.length > 0) && (
+                  <SuggestionAI
+                    offerId={offer.oferta_id}
+                    preferences={preferences}
+                  />
+                )}
+              </details>
+              <div className="discovery-career-actions">
+                <Link
+                  className="button secondary"
+                  to={`/carreras/${offer.oferta_id}`}
+                >
+                  Explorar carrera <ArrowRight size={16} />
+                </Link>
+                <SaveOffer offer={offer} compact />
+              </div>
+            </div>
+          </article>
+        ),
+      )}
     </div>
   );
 }
@@ -254,6 +540,7 @@ const sectionIcons = [
   ClipboardList,
   Users,
   Building2,
+  Bookmark,
   BookOpen,
   Flag,
   Settings,
@@ -265,7 +552,12 @@ export function PreferenceForm() {
   const [value, setValue] = useState(
     draft?.preferences ?? progress.current?.preferences ?? INITIAL,
   );
-  const [step, setStep] = useState(draft?.step ?? 0);
+  const [params] = useSearchParams();
+  const [step, setStep] = useState(
+    params.get("revisar") === "1" && progress.current
+      ? questions.length
+      : (draft?.step ?? 0),
+  );
   const [answers, setAnswers] = useState<QuestionnaireDraft["answers"]>(
     draft?.answers ?? progress.current?.answers ?? {},
   );

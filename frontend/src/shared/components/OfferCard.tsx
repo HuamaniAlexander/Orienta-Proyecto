@@ -15,7 +15,7 @@ const AREA_IMAGES = [
   "ambiente",
   "humanidades",
 ];
-export function careerImage(offer: Offer) {
+export function careerImage(offer: Pick<Offer, "area_id" | "carrera_oficial">) {
   const name = offer.carrera_oficial
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")

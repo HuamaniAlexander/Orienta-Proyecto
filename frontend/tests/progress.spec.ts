@@ -43,13 +43,26 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   ).toBeVisible();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await expect(
-    page.getByRole("heading", { name: "Opciones para seguir explorando." }),
+    page.getByRole("heading", {
+      name: "Descubre caminos que conectan contigo.",
+    }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Guardar en Mi ruta" })
     .first()
     .click();
-  await page.getByRole("link", { name: "Editar preferencias" }).click();
+  await page.getByRole("link", { name: "Volver a mis respuestas" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Resumen de tus respuestas" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Ver sugerencias" }).click();
+  await page.getByLabel("Horario").selectOption("Por las tardes");
+  await page.getByRole("button", { name: "Actualizar opciones" }).click();
+  await expect(
+    page.getByText("Sugerencias anteriores · versión 2"),
+  ).toBeVisible();
+  await expect(page.getByLabel("Horario")).toHaveValue("Por las tardes");
+  await page.getByRole("link", { name: "Editar mis respuestas" }).click();
   await page.getByLabel("Organizar una actividad o un negocio").uncheck();
   for (let step = 1; step < 24; step++) {
     await page.getByRole("button", { name: "Siguiente pregunta" }).click();
@@ -57,7 +70,7 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   await page.getByRole("button", { name: "Revisar mis respuestas" }).click();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await expect(
-    page.getByText("Sugerencias anteriores · versión 1"),
+    page.getByText("Sugerencias anteriores · versión 3"),
   ).toBeVisible();
   await page.goto("/mi-ruta");
   await expect(

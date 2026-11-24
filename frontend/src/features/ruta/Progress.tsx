@@ -1,3 +1,4 @@
+import { Bookmark } from "lucide-react";
 import {
   createContext,
   useContext,
@@ -23,6 +24,9 @@ export interface Suggestion {
   offer: SavedOffer;
   reasons: string[];
   source: string | null;
+  area?: string;
+  areaId?: number;
+  relatedInterests?: string[];
 }
 interface Discovery {
   version: number;
@@ -147,7 +151,13 @@ export const comparisonKey = (offers: SavedOffer[]) =>
     .sort((a, b) => a - b)
     .join(",");
 
-export function SaveOffer({ offer }: { offer: SavedOffer }) {
+export function SaveOffer({
+  offer,
+  compact = false,
+}: {
+  offer: SavedOffer;
+  compact?: boolean;
+}) {
   const { progress, update } = useProgress();
   const isSaved = progress.offers.some(
     (item) => item.oferta_id === offer.oferta_id,
@@ -156,6 +166,7 @@ export function SaveOffer({ offer }: { offer: SavedOffer }) {
     <button
       className="button secondary"
       aria-pressed={isSaved}
+      aria-label={isSaved ? "Retirar de Mi ruta" : "Guardar en Mi ruta"}
       onClick={() =>
         update((previous) => {
           const remaining = previous.offers.filter(
@@ -168,7 +179,14 @@ export function SaveOffer({ offer }: { offer: SavedOffer }) {
         })
       }
     >
-      {isSaved ? "Retirar de Mi ruta" : "Guardar en Mi ruta"}
+      {compact && <Bookmark size={16} aria-hidden="true" />}
+      {compact
+        ? isSaved
+          ? "Guardada"
+          : "Guardar"
+        : isSaved
+          ? "Retirar de Mi ruta"
+          : "Guardar en Mi ruta"}
     </button>
   );
 }
