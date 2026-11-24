@@ -236,3 +236,37 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.discovery-career-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.discovery-career-card > img {
+  aspect-ratio: 3.4 / 1;
+}
+.discovery-card-section {
+  width: 100%;
+  border-top: 1px solid #d1dbea;
+  padding-top: 0.55rem;
+}
+.discovery-card-section h4 {
+  color: #0c1330;
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+.discovery-condition-badges {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #d6e0ef;
+}
+.discovery-interest-bar > .discovery-condition-badges {
+  border-right: 0;
+}
+@media (max-width: 470px) {
+  .discovery-career-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

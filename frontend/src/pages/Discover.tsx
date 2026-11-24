@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { programSources } from "../features/comparador/programSources";
 import { discover, INITIAL } from "../features/ruta/discovery";
 import {
   SaveOffer,
@@ -108,7 +109,9 @@ function DiscoveryResults({
 }) {
   const { progress, update } = useProgress();
   const facets = useApi<Facets>("/api/filtros");
-  const [value, setValue] = useState(current.preferences);
+  const [value, setValue] = useState(
+    progress.explorationPreferences ?? current.preferences,
+  );
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -118,7 +121,7 @@ function DiscoveryResults({
     ...current.preferences.interests,
     current.preferences.extra,
   ].filter(Boolean);
-  const shown = showAll ? current.suggestions : current.suggestions.slice(0, 3);
+  const shown = showAll ? current.suggestions : current.suggestions.slice(0, 2);
   const hours = questions[22].choices;
   const modality = value.modalities.join(",");
   async function refresh() {
@@ -143,6 +146,7 @@ function DiscoveryResults({
         !update((previous) => ({
           ...previous,
           previous: previous.current,
+          explorationPreferences: undefined,
           current: {
             version: current.version + 1,
             preferences: value,
@@ -176,8 +180,11 @@ function DiscoveryResults({
         </nav>
         <header className="questionnaire-title discovery-results-heading">
           <div>
-            <h1>Descubre caminos que conectan contigo.</h1>
-            <p>Explora estas carreras a partir de lo que nos contaste.</p>
+            <h1>Alternativas para seguir explorando.</h1>
+            <p>
+              Explora opciones a partir de tus respuestas y el catálogo
+              revisado.
+            </p>
           </div>
           <Link className="button secondary" to="/descubre/preferencias">
             <Pencil size={17} aria-hidden="true" />
@@ -191,7 +198,7 @@ function DiscoveryResults({
           aria-labelledby="discover-interests"
         >
           <div>
-            <h2 id="discover-interests">Lo que te interesa</h2>
+            <h2 id="discover-interests">Tu punto de partida</h2>
             <p>Según tus respuestas</p>
           </div>
           {interests.length ? (
@@ -209,6 +216,27 @@ function DiscoveryResults({
               catálogo.
             </p>
           )}
+          <div className="discovery-condition-badges">
+            {current.preferences.district && (
+              <span className="discovery-tag">
+                {facets.data?.distritos.find(
+                  (item) =>
+                    String(item.distrito_id) === current.preferences.district,
+                )?.distrito ?? "Distrito guardado"}
+              </span>
+            )}
+            {current.preferences.modalities.map((id) => (
+              <span className="discovery-tag" key={id}>
+                {questions[21].choices[id - 1] ?? `Modalidad ${id}`}
+              </span>
+            ))}
+            {current.preferences.availability && (
+              <span className="discovery-tag">
+                {current.preferences.availability}
+              </span>
+            )}
+            <a href="#discovery-conditions">Ajustar condiciones</a>
+          </div>
         </section>
         <div className="discovery-results-layout">
           <section
@@ -218,8 +246,8 @@ function DiscoveryResults({
           >
             <header>
               <div>
-                <h2 id="affine-careers">Carreras para explorar</h2>
-                <p>Conoce qué relación tienen con tus intereses.</p>
+                <h2 id="affine-careers">Opciones sugeridas</h2>
+                <p>Conoce las razones y revisa la información de origen.</p>
               </div>
               <span>
                 {shown.length} {shown.length === 1 ? "opción" : "opciones"}
@@ -229,7 +257,7 @@ function DiscoveryResults({
               suggestions={shown}
               preferences={current.preferences}
             />
-            {current.suggestions.length > 3 && (
+            {current.suggestions.length > 2 && (
               <button
                 type="button"
                 className="button secondary discovery-show-more"
@@ -239,7 +267,10 @@ function DiscoveryResults({
               </button>
             )}
           </section>
-          <aside className="discovery-results-panel discovery-filters">
+          <aside
+            className="discovery-results-panel discovery-filters"
+            id="discovery-conditions"
+          >
             <h2>
               <SlidersHorizontal size={23} aria-hidden="true" /> Ajusta tu
               búsqueda
@@ -343,7 +374,7 @@ function DiscoveryResults({
                 Considerar otros distritos
               </label>
               <button className="button" disabled={busy}>
-                {busy ? "Actualizando opciones…" : "Actualizar opciones"}
+                {busy ? "Buscando alternativas…" : "Solicitar alternativas"}
               </button>
               {error && <Failure message={error} />}
             </form>
@@ -418,8 +449,14 @@ function SuggestionList({
               <p className="discovery-institution">
                 {offer.institucion} · {offer.distrito}
               </p>
-              <strong>¿Por qué aparece?</strong>
-              <p>{reasons[0]}</p>
+              <strong>Por tus intereses</strong>
+              <p>
+                {relatedInterests?.length
+                  ? `La ficha coincide con ${relatedInterests.join(", ")}.`
+                  : preferences.extra
+                    ? reasons[0]
+                    : "Opción disponible para explorar en el catálogo."}
+              </p>
               {!!relatedInterests?.length && (
                 <ul className="discovery-tags">
                   {relatedInterests.map((interest) => (
@@ -431,23 +468,14 @@ function SuggestionList({
               )}
               <details className="discovery-relationship">
                 <summary>
-                  <Info size={16} aria-hidden="true" /> Ver relación con mis
-                  respuestas <ArrowRight size={15} aria-hidden="true" />
+                  <Info size={16} aria-hidden="true" /> Ver respuestas
+                  relacionadas <ArrowRight size={15} aria-hidden="true" />
                 </summary>
                 <ul>
                   {reasons.map((reason) => (
                     <li key={reason}>{reason}</li>
                   ))}
                 </ul>
-                {officialUrl(source) && (
-                  <a
-                    href={officialUrl(source)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Consultar ficha oficial
-                  </a>
-                )}
                 {(preferences.interests.length > 0 ||
                   preferences.extra ||
                   preferences.district ||
@@ -458,12 +486,58 @@ function SuggestionList({
                   />
                 )}
               </details>
+              <section className="discovery-card-section">
+                <h4>Por tus condiciones</h4>
+                <p>
+                  Oferta en {offer.distrito}
+                  {offer.modalidad ? ` · ${offer.modalidad}` : ""}.
+                </p>
+                {preferences.availability && (
+                  <p>
+                    Horario preferido: {preferences.availability}. Sujeto a
+                    disponibilidad.
+                  </p>
+                )}
+              </section>
+              <section className="discovery-card-section">
+                <h4>Fuentes para revisar</h4>
+                <div className="discovery-career-actions">
+                  {officialUrl(source) && (
+                    <a
+                      className="button secondary"
+                      href={officialUrl(source)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Programa oficial ↗
+                    </a>
+                  )}
+                  {programSources[offer.oferta_id]?.curriculum && (
+                    <a
+                      className="button secondary"
+                      href={programSources[offer.oferta_id]?.curriculum}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Malla curricular ↗
+                    </a>
+                  )}
+                  {!officialUrl(source) && (
+                    <Link
+                      className="text-link"
+                      to={`/carreras/${offer.oferta_id}`}
+                    >
+                      Fuentes de la oferta
+                    </Link>
+                  )}
+                </div>
+              </section>
               <div className="discovery-career-actions">
                 <Link
-                  className="button secondary"
-                  to={`/carreras/${offer.oferta_id}`}
+                  className="button"
+                  to={`/carreras?q=${encodeURIComponent(offer.carrera_oficial)}`}
                 >
-                  Explorar carrera <ArrowRight size={16} />
+                  Ver ofertas relacionadas <ArrowRight size={16} />
                 </Link>
                 <SaveOffer offer={offer} compact />
               </div>
@@ -587,6 +661,7 @@ export function PreferenceForm() {
         update((previous) => ({
           ...previous,
           previous: previous.current,
+          explorationPreferences: undefined,
           questionnaire: undefined,
           current: {
             version: (previous.current?.version ?? 0) + 1,
