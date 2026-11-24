@@ -1,6 +1,7 @@
 import { ArrowRight, Compass, Leaf, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
+import { PrepareConversation } from "../pages/PrepareConversation";
 import { MyRoute, ProgressSettings } from "../pages/MyRoute";
 import { Discover, PreferenceForm } from "../pages/Discover";
 import { Connect, FollowUp } from "../pages/Connect";
@@ -137,6 +138,7 @@ export function App() {
           <Route path="/descubre" element={<Discover />} />
           <Route path="/descubre/preferencias" element={<PreferenceForm />} />
           <Route path="/mi-ruta" element={<MyRoute />} />
+          <Route path="/mi-ruta/preparar" element={<PrepareConversation />} />
           <Route path="/mi-ruta/avance" element={<ProgressSettings />} />
           <Route path="/conecta" element={<Connect />} />
           <Route path="/conecta/solicitudes/:id" element={<FollowUp />} />

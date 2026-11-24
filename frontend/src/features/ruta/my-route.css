@@ -1,0 +1,234 @@
+.my-route {
+  color: #0d1530;
+}
+.my-route-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.my-route-header h2,
+.my-route-header h3,
+.my-route-header p,
+.my-route-row h3,
+.my-route-row p,
+.my-route fieldset p {
+  margin: 0;
+}
+.my-route-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: #fff;
+  border: 1px solid #ccd8e9;
+  border-radius: 0.8rem;
+  padding: 0.4rem;
+  margin: 0 0 1.2rem;
+  gap: 0.35rem;
+}
+.my-route-tabs a,
+.my-route-tabs li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.2rem;
+  border-radius: 0.55rem;
+  text-decoration: none;
+  padding: 0.4rem;
+  font-weight: 650;
+  text-align: center;
+}
+.my-route-tabs [aria-current] {
+  color: #174eaa;
+  background: #e6efff;
+  box-shadow: inset 3px 0 #2361ea;
+}
+.my-route-tabs svg,
+.my-route-badge svg {
+  color: #1851ba;
+  flex-shrink: 0;
+}
+.my-route-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.45fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.my-route-layout.preferences-layout {
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+}
+.my-route-layout.conversation-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.25fr);
+}
+.conversation-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.my-route .route-panel {
+  border: 1px solid #ccd8e9;
+  border-radius: 0.8rem;
+}
+.my-route .route-panel h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+  letter-spacing: -0.025em;
+  color: #0d1530;
+}
+.my-route .route-panel h3 {
+  font-size: 1.05rem;
+  color: #0d1530;
+}
+.my-route .route-panel > header p {
+  color: #22498b;
+}
+.my-route-row {
+  border: 1px solid #d1dcec;
+  border-radius: 0.7rem;
+  padding: 0.7rem;
+  overflow-wrap: anywhere;
+}
+.my-route-row:where(a) {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  text-decoration: none;
+  color: #17376b;
+}
+.my-route-offer {
+  display: grid;
+  grid-template-columns: minmax(0, 30%) minmax(0, 1fr) max-content;
+  gap: 0.8rem;
+  align-items: center;
+}
+.my-route-offer img {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.my-route-row .button {
+  min-height: 2.05rem;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.8rem;
+}
+.my-route-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  padding: 0.26rem 0.6rem;
+  border-radius: 0.6rem;
+  background: #e9f0fd;
+  color: #17417e;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.my-route-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+.my-route-pair > div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.my-route-pair p {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.my-route-question {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+.my-route-question > div {
+  display: grid;
+  gap: 0.25rem;
+}
+.my-route-question.researched {
+  background: #eefbf6;
+  border-color: #a7d9c5;
+}
+.my-route-note {
+  background: #eaf2ff;
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+}
+.my-route input[type="checkbox"] {
+  accent-color: #2155ab;
+}
+.my-route fieldset {
+  min-width: 0;
+  padding: 0.6rem;
+  border: 1px solid #ccd8e9;
+  border-radius: 0.6rem;
+}
+.my-route legend svg {
+  vertical-align: middle;
+}
+.my-route label > select,
+.my-route label > textarea,
+.conversation-questions input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #aebed6;
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  color: inherit;
+  background: white;
+}
+.my-route .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.conversation-preview {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  background: #eef4ff;
+  padding: 1rem;
+  border-radius: 0.6rem;
+}
+.conversation-questions {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.conversation-questions li {
+  margin-bottom: 0.4rem;
+}
+.conversation-questions input {
+  margin-bottom: 0.35rem;
+}
+.conversation-questions .route-actions {
+  display: inline-flex;
+  margin-left: 0.5rem;
+  gap: 0.3rem;
+}
+@media (max-width: 800px) {
+  .my-route-layout,
+  .my-route-layout.preferences-layout,
+  .my-route-layout.conversation-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my-route-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 540px) {
+  .my-route-offer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my-route-offer img {
+    max-width: 16rem;
+  }
+  .my-route-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conversation-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

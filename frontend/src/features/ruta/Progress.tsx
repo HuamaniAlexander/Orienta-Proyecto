@@ -11,7 +11,8 @@ import type { Offer } from "../../shared/types/catalog";
 export type SavedOffer = Pick<
   Offer,
   "oferta_id" | "carrera_oficial" | "institucion" | "distrito"
->;
+> &
+  Partial<Pick<Offer, "area_id" | "area" | "modalidad">>;
 export interface Preferences {
   interests: string[];
   extra: string;
@@ -43,21 +44,34 @@ interface Progress {
   offers: SavedOffer[];
   comparisons: SavedOffer[][];
   questions: string[];
+  questionDetails?: Record<string, { offerId?: number; researched?: boolean }>;
+  explorationPreferences?: Preferences;
+  conversation?: {
+    summary: string;
+    questions: { text: string; source: string }[];
+    offers: number[];
+    selectedQuestions: string[];
+  };
   current?: Discovery;
   previous?: Discovery;
   questionnaire?: QuestionnaireDraft;
 }
 const STORAGE = "orienta-progress-v1";
+const SESSION_MODE = "orienta-session-only";
+const storage = () =>
+  sessionStorage.getItem(SESSION_MODE) ? sessionStorage : localStorage;
 const empty = (): Progress => ({ offers: [], comparisons: [], questions: [] });
 const Context = createContext<{
   progress: Progress;
   update: (change: (previous: Progress) => Progress) => boolean;
   clear: () => boolean;
+  persistent: boolean;
+  setPersistence: (enabled: boolean) => void;
   status: { text: string; error: boolean };
 } | null>(null);
 
 function read(): Progress {
-  const serialized = localStorage.getItem(STORAGE);
+  const serialized = storage().getItem(STORAGE);
   if (!serialized) return empty();
   const stored = JSON.parse(serialized) as Progress | null;
   if (
@@ -95,11 +109,38 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
   }, []);
+  const [persistent, setPersistent] = useState(() => {
+    try {
+      return storage() === localStorage;
+    } catch {
+      return true;
+    }
+  });
+  function setPersistence(enabled: boolean) {
+    if (enabled === persistent) return;
+    try {
+      const target = enabled ? localStorage : sessionStorage;
+      target.setItem(STORAGE, JSON.stringify(read()));
+      if (enabled) {
+        sessionStorage.removeItem(SESSION_MODE);
+        sessionStorage.removeItem(STORAGE);
+      } else {
+        sessionStorage.setItem(SESSION_MODE, "1");
+        localStorage.removeItem(STORAGE);
+      }
+      setPersistent(enabled);
+    } catch {
+      setStatus({
+        text: "No pudimos cambiar cómo se guarda tu ruta.",
+        error: true,
+      });
+    }
+  }
   function commit(change?: (previous: Progress) => Progress) {
     try {
       const next = change ? change(read()) : empty();
-      if (change) localStorage.setItem(STORAGE, JSON.stringify(next));
-      else localStorage.removeItem(STORAGE);
+      if (change) storage().setItem(STORAGE, JSON.stringify(next));
+      else storage().removeItem(STORAGE);
       setProgress(next);
       setStatus({
         text: change
@@ -118,7 +159,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }
   return (
     <Context.Provider
-      value={{ progress, update: commit, clear: () => commit(), status }}
+      value={{
+        progress,
+        update: commit,
+        clear: () => commit(),
+        status,
+        persistent,
+        setPersistence,
+      }}
     >
       {children}
       <p
@@ -142,8 +190,19 @@ export function savedOffer({
   carrera_oficial,
   institucion,
   distrito,
+  area,
+  area_id,
+  modalidad,
 }: SavedOffer): SavedOffer {
-  return { oferta_id, carrera_oficial, institucion, distrito };
+  return {
+    oferta_id,
+    carrera_oficial,
+    institucion,
+    distrito,
+    area,
+    area_id,
+    modalidad,
+  };
 }
 export const comparisonKey = (offers: SavedOffer[]) =>
   offers

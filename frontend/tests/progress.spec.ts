@@ -44,7 +44,7 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await expect(
     page.getByRole("heading", {
-      name: "Descubre caminos que conectan contigo.",
+      name: "Alternativas para seguir explorando.",
     }),
   ).toBeVisible();
   await page
@@ -57,7 +57,7 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   ).toBeVisible();
   await page.getByRole("button", { name: "Ver sugerencias" }).click();
   await page.getByLabel("Horario").selectOption("Por las tardes");
-  await page.getByRole("button", { name: "Actualizar opciones" }).click();
+  await page.getByRole("button", { name: "Solicitar alternativas" }).click();
   await expect(
     page.getByText("Sugerencias anteriores · versión 2"),
   ).toBeVisible();
@@ -76,6 +76,7 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   await expect(
     page.getByRole("button", { name: "Retirar de Mi ruta" }),
   ).toBeVisible();
+  await page.getByRole("link", { name: "Preguntas · 0" }).click();
   await page
     .getByLabel("Escribe una nueva pregunta")
     .fill("¿Qué incluye la matrícula?");
@@ -84,17 +85,17 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
   await expect(
     page.getByText("¿Qué incluye la matrícula?", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Gestionar avance" }).click();
+  await page.getByRole("link", { name: "Preferencias y datos" }).click();
   await page
     .getByRole("button", { name: "Borrar avance de este dispositivo" })
     .click();
   await page.getByRole("button", { name: "Cancelar" }).click();
-  await expect(page.getByText("1 preguntas")).toBeVisible();
+  await expect(page.getByText(/1 preguntas$/)).toBeVisible();
   await page
     .getByRole("button", { name: "Borrar avance de este dispositivo" })
     .click();
   await page.getByRole("button", { name: "Sí, borrar mi avance" }).click();
-  await expect(page.getByText("0 preguntas")).toBeVisible();
+  await expect(page.getByText(/0 preguntas$/)).toBeVisible();
   await page.goto("/descubre");
   await expect(
     page.getByRole("heading", { name: "Explora lo que te interesa." }),
@@ -125,3 +126,63 @@ for (const width of [390, 1440]) {
     expect(await size()).toEqual(initial);
   });
 }
+
+test("prepara con IA, edita y revisa una pregunta de Mi ruta antes de copiar", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    if (localStorage.getItem("orienta-progress-v1")) return;
+    localStorage.setItem(
+      "orienta-progress-v1",
+      JSON.stringify({
+        offers: [
+          {
+            oferta_id: 10,
+            carrera_oficial: "Ingeniería de Sistemas",
+            institucion: "UTP",
+            distrito: "Los Olivos",
+          },
+        ],
+        comparisons: [],
+        questions: ["¿Qué proyectos realizaré?"],
+      }),
+    );
+  });
+  await page.route("**/api/orientacion/preparar", (route) => {
+    const body = route.request().postDataJSON();
+    expect(body.questions).toEqual(["¿Qué proyectos realizaré?"]);
+    expect(body.offers).toEqual(["Ingeniería de Sistemas (UTP)"]);
+    return route.fulfill({
+      json: {
+        summary: "Estoy explorando Ingeniería de Sistemas.",
+        questions: ["¿Qué cursos conviene comparar?"],
+      },
+    });
+  });
+  await page.goto("/mi-ruta?vista=preguntas");
+  await page
+    .getByRole("checkbox", { name: "Investigada: ¿Qué proyectos realizaré?" })
+    .check();
+  await expect(
+    page.getByRole("button", { name: "Investigadas · 1" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Preparar mi conversación" }).click();
+  await page.getByRole("button", { name: "Preparar con IA" }).click();
+  await expect(page.getByLabel("Resumen de mi ruta")).toHaveValue(
+    "Estoy explorando Ingeniería de Sistemas.",
+  );
+  await page
+    .getByRole("textbox", { name: "Pregunta 1", exact: true })
+    .fill("¿Qué proyectos realizaré en el primer año?");
+  await page.getByRole("button", { name: "Guardar borrador" }).click();
+  await page.reload();
+  await page
+    .getByRole("button", { name: "Revisar antes de compartir" })
+    .click();
+  await expect(
+    page.getByText("¿Qué proyectos realizaré en el primer año?", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copiar guía" })).toBeVisible();
+});
