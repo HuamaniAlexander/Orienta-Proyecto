@@ -221,7 +221,7 @@
   .home-header .main-nav a,
   .home-header .lite-button {
     color: #10182b;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .home-header .main-nav a.active {
     color: #123bfc;
@@ -255,7 +255,7 @@
 .hero.home-hero h1 {
   margin: 0.7rem 0 0;
   color: #fff;
-  font-size: clamp(2.25rem, 3.2vw, 3.15rem);
+  font-size: clamp(1.9rem, 2.7vw, 2.65rem);
   line-height: 1.03;
   letter-spacing: -0.035em;
 }
@@ -263,7 +263,7 @@
   margin: 0.85rem 0 0;
   max-width: 38rem;
   color: #fff;
-  font-size: clamp(1rem, 1.55vw, 1.4rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
   line-height: 1.35;
 }
 .home-hero .hero-art {
@@ -313,7 +313,7 @@
 }
 .home-search > label {
   color: #0b1530;
-  font-size: clamp(1.15rem, 1.75vw, 1.55rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   font-weight: 700;
 }
 .home-search-fields {
@@ -345,7 +345,7 @@
   background: #fff;
   color: #0c152a;
   font: inherit;
-  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
+  font-size: clamp(1rem, 1.15vw, 1.1rem);
 }
 .home-field input::placeholder {
   color: #566980;
@@ -364,7 +364,7 @@
   border-color: #073bbb;
   box-shadow: 0 6px 15px #102a4333;
   color: white;
-  font-size: clamp(1.05rem, 2vw, 1.85rem);
+  font-size: clamp(1rem, 1.55vw, 1.45rem);
 }
 .home-search .home-search-button:hover {
   background: #062e96;
@@ -406,7 +406,7 @@
 }
 .home-areas h2 {
   color: #0b1530;
-  font-size: clamp(1.55rem, 2.4vw, 2.25rem);
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
   letter-spacing: -0.035em;
 }
 .home-areas .text-link {
@@ -440,7 +440,7 @@
   gap: 14px;
   padding: 9px 18px;
   color: #0b1530;
-  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
   font-weight: 700;
 }
 .home-compare {
@@ -460,7 +460,7 @@
   margin: 0;
   padding-inline-start: 24px;
   border-inline-start: 1px solid #aabbd0;
-  font-size: clamp(1rem, 1.55vw, 1.4rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
   font-weight: 700;
 }
 .home-compare a {
