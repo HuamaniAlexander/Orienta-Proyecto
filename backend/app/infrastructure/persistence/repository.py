@@ -19,6 +19,19 @@ from app.domain.catalog import (
 OFFER_COLUMNS = ",".join(field.name for field in fields(AcademicOffer))
 
 
+def search_words(value: str) -> list[str]:
+    normalized = unicodedata.normalize("NFKD", value.casefold())
+    return re.findall(r"[a-z0-9]+", "".join(char for char in normalized if not unicodedata.combining(char)))
+
+
+def name_matches(value: str, tokens: list[str]) -> bool:
+    words = search_words(value)
+    return any(
+        all(word.startswith(token) for word, token in zip(words[start:], tokens))
+        for start in range(len(words) - len(tokens) + 1)
+    )
+
+
 class InsforgeCatalog:
     def __init__(self, client: httpx.AsyncClient):
         self.client = client
@@ -41,16 +54,35 @@ class InsforgeCatalog:
             value = getattr(filters, name)
             if value is not None:
                 params[name] = f"eq.{value}"
-        query = unicodedata.normalize("NFKD", filters.q).encode("ascii", "ignore").decode()
-        tokens = re.findall(r"[a-zA-Z0-9]+", query.lower())[:12]
+        tokens = search_words(filters.q)
         if tokens:
-            params["and"] = "(" + ",".join(f"busqueda.ilike.*{token}*" for token in tokens) + ")"
+            return await self._search_names(filters, params, tokens)
         response = await self.records("orienta_catalogo", params)
         rows = response.json()
         raw_total = response.headers.get("x-total-count") or response.headers.get("content-range", "0/0").split("/")[-1]
         if not raw_total.isdigit():
             raise ServiceUnavailable("No pudimos determinar el total de resultados.")
         return CatalogPage([AcademicOffer(**row) for row in rows], int(raw_total), filters.page, filters.page_size)
+
+    async def _search_names(
+        self, filters: CatalogFilters, params: dict[str, str], tokens: list[str],
+    ) -> CatalogPage:
+        candidates = {**params, "limit": "200"}
+        matches = []
+        offset = 0
+        while True:
+            candidates["offset"] = str(offset)
+            response = await self.records("orienta_catalogo", candidates)
+            rows = response.json()
+            matches.extend(
+                AcademicOffer(**row) for row in rows
+                if name_matches(row["carrera_oficial"], tokens) or name_matches(row["institucion"], tokens)
+            )
+            if len(rows) < 200:
+                break
+            offset += len(rows)
+        start = (filters.page - 1) * filters.page_size
+        return CatalogPage(matches[start:start + filters.page_size], len(matches), filters.page, filters.page_size)
 
     async def get(self, offer_id: int) -> AcademicOffer:
         response = await self.records("orienta_catalogo", {
