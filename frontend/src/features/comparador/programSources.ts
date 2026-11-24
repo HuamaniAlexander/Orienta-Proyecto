@@ -7,7 +7,77 @@ interface ProgramSource {
   example: string;
 }
 
+const upnAdministration: ProgramSource = {
+  curriculum:
+    "https://www.upn.edu.pe/hubfs/brochure/ug-administracion.pdf?hsLang=es-pe",
+  planLabel: "Plan de Administración de UPN",
+  years: [
+    [
+      "Administración Contemporánea",
+      "Gestión del Marketing Global",
+      "Contabilidad y Análisis Financiero",
+    ],
+    [
+      "Economía General para los Negocios",
+      "Costos Empresariales y Presupuestos",
+      "Gestión por Procesos y Automatización",
+    ],
+    [
+      "Ciencia de Datos y Visualización",
+      "Gestión Estratégica Corporativa",
+      "Marco Legal Empresarial",
+    ],
+    [
+      "Control y Auditoría Administrativa",
+      "Estrategias Empresariales",
+      "Formulación y Evaluación de Proyectos de Inversión",
+    ],
+    [
+      "Gestión de Proyectos y Metodologías Ágiles",
+      "Innovación y Transformación Digital en las Organizaciones",
+      "Trabajo de Investigación",
+    ],
+  ],
+  focus: "Administración, finanzas y operaciones",
+  topics: ["Gestión", "Finanzas", "Operaciones"],
+  example:
+    "Organizar los recursos y procesos de un negocio para mejorar su operación.",
+};
+
 export const programSources: Partial<Record<number, ProgramSource>> = {
+  33: upnAdministration,
+  66: upnAdministration,
+  128: {
+    curriculum:
+      "https://www.uch.edu.pe/facultades/ciencias-contables-economicas-y-financieras/administracion",
+    planLabel: "Malla publicada por UCH",
+    years: [
+      [
+        "Habilidades lectoras y comunicativas",
+        "Habilidades digitales e inteligencia artificial",
+        "Inteligencia Emocional",
+      ],
+      ["Macroeconomía", "Experiencias Creativas", "Contabilidad Empresarial"],
+      [
+        "Estadística y Probabilidades",
+        "Gestión Pública",
+        "Análisis de datos para la Investigación",
+      ],
+      [
+        "Prácticas Preprofesionales I",
+        "Prácticas Preprofesionales II",
+        "Trabajo de Investigación II",
+      ],
+      [
+        "People Analytics & Employee Experience",
+        "Planeamiento Estratégico del Talento Humano",
+        "Gestión Comercial y de Ventas",
+      ],
+    ],
+    focus: "Gestión de organizaciones y personas",
+    topics: ["Gestión pública", "Talento humano", "Análisis de datos"],
+    example: "Proponer una mejora de gestión usando datos de una organización.",
+  },
   9: {
     curriculum:
       "https://www.utp.edu.pe/sites/default/files/mallas/MALLA_Ingenieria_de_Sistemas_e_Informatica_3.pdf",

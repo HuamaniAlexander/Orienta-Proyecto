@@ -1111,3 +1111,41 @@ input[type="checkbox"] {
     display: none;
   }
 }
+
+.duration-criterion,
+.duration-course-card {
+  display: flex;
+  flex-direction: column;
+}
+.duration-course-card {
+  flex: 1;
+}
+.duration-course-content {
+  flex: 1;
+}
+.duration-course-card .criterion-source {
+  margin-top: 0.8rem;
+}
+.focus-criterion {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 5;
+  row-gap: 0.55rem;
+}
+.focus-criterion
+  :is(.criterion-kicker, .focus-topics, .focus-example, .criterion-source) {
+  margin-block: 0;
+}
+.cost-criterion > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.cost-criterion .criterion-source {
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+
+.cost-criterion .cost-values {
+  width: 100%;
+}

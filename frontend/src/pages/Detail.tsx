@@ -149,7 +149,7 @@ export function Detail() {
           </section>
           <section className="detail-section">
             <h2>Costos y condiciones.</h2>
-            <p className="section-intro">
+            <p className="section-intro published-cost-description">
               {offer.consulta_costos ??
                 "Solicita a la institución los costos vigentes de esta oferta."}
             </p>

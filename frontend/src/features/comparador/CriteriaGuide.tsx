@@ -12,7 +12,7 @@ import {
   Target,
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import type { Comparison } from "../../pages/Compare";
 import { officialUrl } from "../../pages/Detail";
 import { useApi } from "../../shared/api/client";
@@ -40,7 +40,7 @@ const criteria = [
     title: "Costos de estudio",
     description: "Conoce los principales conceptos de pago de cada carrera.",
     icon: Banknote,
-    note: "Tarifas de referencia. Confirma el periodo, la categoría y la unidad de cobro.",
+    note: "Montos publicados por las instituciones. Revisa el periodo y la unidad de cobro.",
   },
   {
     label: "Ubicación",
@@ -100,9 +100,12 @@ function Duration({ offer, year }: { offer: Offer; year: number }) {
             ? `${offer.duracion_valor} ${offer.duracion_unidad}`
             : plan
               ? `${plan.years.length * 2} ciclos`
-              : "Duración por confirmar"}
+              : "Plan de estudios"}
         </strong>
-        <p>{plan?.planLabel ?? "Duración publicada"}</p>
+        <p>
+          {plan?.planLabel ??
+            (offer.duracion_valor != null ? "Duración publicada" : offer.nivel)}
+        </p>
       </div>
       <div className="duration-course-card">
         <div className="duration-course-content">
@@ -120,9 +123,7 @@ function Duration({ offer, year }: { offer: Offer; year: number }) {
                 ))}
               </ul>
             ) : (
-              <p>
-                Consulta el detalle de cursos en la ficha oficial del programa.
-              </p>
+              <p>{offer.enfoque_editorial || offer.carrera_oficial}</p>
             )}
           </div>
         </div>
@@ -149,13 +150,13 @@ function Focus({ offer }: { offer: Offer }) {
           </p>
         </div>
       </div>
-      {plan && (
-        <ul className="focus-topics">
-          {plan.topics.map((topic) => (
+      <ul className="focus-topics">
+        {(plan?.topics ?? [offer.area, offer.nivel])
+          .filter(Boolean)
+          .map((topic) => (
             <li key={topic}>{topic}</li>
           ))}
-        </ul>
-      )}
+      </ul>
       <div className="focus-example">
         <h4>{plan ? "Un reto que podrías abordar" : "Ámbitos de estudio"}</h4>
         <p>
@@ -202,7 +203,7 @@ function PublishedCosts({ offer }: { offer: Offer }) {
   if (!tariff)
     return (
       <>
-        <h3>Costos publicados</h3>
+        <h3>Matrícula y enseñanza</h3>
         <p>
           {offer.consulta_costos ?? "Consulta los importes con la institución."}
         </p>
@@ -224,11 +225,11 @@ function PublishedCosts({ offer }: { offer: Offer }) {
       />
       <p>Tarifa por crédito</p>
       <ul>
-        <li>{tariff.creditos_matriculados} créditos de referencia</li>
+        <li>Tarifario para {tariff.creditos_matriculados} créditos</li>
         <li>Semestre {tariff.periodo}</li>
       </ul>
       <label className="cost-category">
-        Categoría de referencia
+        Categoría del tarifario
         <select
           value={tariff.categoria}
           onChange={(event) => setCategory(event.target.value)}
@@ -245,20 +246,43 @@ function PublishedCosts({ offer }: { offer: Offer }) {
   );
 }
 
+const tariffSources: Partial<Record<number, string>> = {
+  1: utpCostSource,
+  2: "https://www.upn.edu.pe/transparencia/pensiones-tarifas",
+  22: "https://www.cientifica.edu.pe/wp-content/uploads/2026/04/Categorias-2026-01-fv.pdf",
+};
+
 function Cost({ offer }: { offer: Offer }) {
+  const lines = offer.consulta_costos?.split("\n") ?? [];
+  const enrollment =
+    /^(Matrícula(?: regular| de ingresante)?|Prematrícula): (S\/ .+)$/.exec(
+      lines[0] ?? "",
+    );
+  const tuition = /^Enseñanza: (S\/ .+)$/.exec(lines[1] ?? "");
   return (
     <article className="cost-criterion" aria-label={offer.institucion}>
       <OfferLogo offer={offer} />
       <div>
-        {offer.oferta_id === 9 ? (
+        {enrollment && tuition ? (
           <>
-            <CostAmounts fee={398} tuition={815} />
-            <p>Por cuota · 5 cuotas</p>
+            <dl className="cost-values">
+              <div>
+                <dt>{enrollment[1]}</dt>
+                <dd>{enrollment[2]}</dd>
+              </div>
+              <div>
+                <dt>Enseñanza</dt>
+                <dd>{tuition[1]}</dd>
+              </div>
+            </dl>
             <ul>
-              <li>16–22 horas lectivas · Ingreso desde agosto de 2018</li>
-              <li>Lima Norte · Marzo 2026</li>
+              {lines.slice(2).map((line) => (
+                <li key={line}>{line}</li>
+              ))}
             </ul>
-            <SourceLink url={utpCostSource}>Ver tarifario UTP</SourceLink>
+            <SourceLink url={tariffSources[offer.institucion_id]}>
+              Ver tarifario publicado
+            </SourceLink>
           </>
         ) : (
           <PublishedCosts offer={offer} />
@@ -342,7 +366,7 @@ function Modality({ offer }: { offer: Offer }) {
         <Icon size={33} aria-hidden="true" />
         <div>
           <p className="criterion-kicker">Modalidad de la oferta</p>
-          <h3>{known ? name : "Por confirmar"}</h3>
+          <h3>{known ? name : "Modalidad del programa"}</h3>
           <p>
             {known
               ? onsite
@@ -377,7 +401,17 @@ export function CriteriaGuide({
   ids: string;
   showFull: () => void;
 }) {
-  const [step, setStep] = useState(0);
+  const [params] = useSearchParams();
+  const activeByName = [
+    "duracion",
+    "enfoque",
+    "costos",
+    "ubicacion",
+    "modalidad",
+  ];
+  const [step, setStep] = useState(() =>
+    Math.max(0, activeByName.indexOf(params.get("criterio") ?? "")),
+  );
   const [year, setYear] = useState(0);
   const current = criteria[step];
   const Icon = current.icon;

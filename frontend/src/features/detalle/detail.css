@@ -365,3 +365,7 @@
     width: 100%;
   }
 }
+
+.published-cost-description {
+  white-space: pre-line;
+}

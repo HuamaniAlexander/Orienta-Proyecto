@@ -124,7 +124,12 @@ test("muestra la malla por año y distingue cuotas de créditos", async ({
       json: {
         ...original,
         opciones: [
-          { ...original.opciones[0], oferta_id: 9 },
+          {
+            ...original.opciones[0],
+            oferta_id: 9,
+            consulta_costos:
+              "Matrícula regular: S/ 398.00\nEnseñanza: S/ 815.00\nPor cuota · 5 cuotas",
+          },
           { ...ucss.oferta, oferta_id: 148 },
         ],
       },
