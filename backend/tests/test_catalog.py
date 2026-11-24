@@ -5,7 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.domain.catalog import CatalogFilters, CatalogPage, OfferNotFound, ServiceUnavailable
-from app.infrastructure.persistence.repository import InsforgeCatalog
+from app.infrastructure.persistence.repository import InsforgeCatalog, name_matches, search_words
 from app.main import Settings, create_app
 
 
@@ -13,8 +13,7 @@ def test_search_combines_filters_and_normalizes_text():
     def handle(request):
         assert request.url.params["distrito_id"] == "eq.5"
         assert request.url.params["tipo_id"] == "eq.1"
-        assert request.url.params["offset"] == "12"
-        assert request.url.params["and"] == "(busqueda.ilike.*ingenieria*,busqueda.ilike.*software*)"
+        assert request.url.params["offset"] == "0"
         return httpx.Response(200, json=[], headers={"content-range": "*/0"})
 
     async def run():
@@ -22,6 +21,15 @@ def test_search_combines_filters_and_normalizes_text():
             result = await InsforgeCatalog(client).search(CatalogFilters(q="Ingeniería % Software", distrito_id=5, tipo_id=1, page=2))
             assert result.total == 0 and result.page == 2
     asyncio.run(run())
+
+
+def test_name_search_matches_accents_without_matching_unrelated_words():
+    tokens = search_words("ingenieria software")
+    assert tokens == search_words("Ingeniería de Software")
+    assert name_matches("Ingeniería de Software", tokens)
+    assert not name_matches("Ingeniería Industrial", tokens)
+    assert not name_matches("Tecnología de la Información", search_words("logia"))
+    assert name_matches("Universidad Católica", search_words("universidad catolica"))
 
 
 def test_repository_does_not_expose_upstream_errors():

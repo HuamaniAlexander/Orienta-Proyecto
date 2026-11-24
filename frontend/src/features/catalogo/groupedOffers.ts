@@ -3,11 +3,30 @@ import type { CatalogPage, Offer } from "../../shared/types/catalog";
 
 export const OFFERS_PER_PAGE = 12;
 
+const connectors = new Set(["de", "del", "la", "las", "el", "los", "y", "en"]);
+function words(value: string) {
+  return (
+    value
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/\p{M}/gu, "")
+      .match(/[a-z0-9]+/g) ?? []
+  ).filter((word) => !connectors.has(word));
+}
+
+function matchesName(value: string, query: string[]) {
+  const name = words(value);
+  return name.some((_, start) =>
+    query.every((word, offset) => name[start + offset]?.startsWith(word)),
+  );
+}
+
 export async function groupedOffers(
   path: string,
   options?: RequestInit,
 ): Promise<Offer[]> {
   const params = new URLSearchParams(path.split("?")[1]);
+  const query = words(params.get("q") ?? "");
   params.set("page_size", "48");
   const load = (page: number) => {
     params.set("page", String(page));
@@ -17,6 +36,12 @@ export async function groupedOffers(
   const unique = new Map<string, Offer>();
   function add(items: Offer[]) {
     for (const offer of items) {
+      if (
+        query.length &&
+        !matchesName(offer.carrera_oficial, query) &&
+        !matchesName(offer.institucion, query)
+      )
+        continue;
       const key = `${offer.carrera_id}:${offer.institucion_id}`;
       if (!unique.has(key)) unique.set(key, offer);
     }

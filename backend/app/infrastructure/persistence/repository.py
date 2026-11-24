@@ -21,7 +21,8 @@ OFFER_COLUMNS = ",".join(field.name for field in fields(AcademicOffer))
 
 def search_words(value: str) -> list[str]:
     normalized = unicodedata.normalize("NFKD", value.casefold())
-    return re.findall(r"[a-z0-9]+", "".join(char for char in normalized if not unicodedata.combining(char)))
+    words = re.findall(r"[a-z0-9]+", "".join(char for char in normalized if not unicodedata.combining(char)))
+    return [word for word in words if word not in {"de", "del", "la", "las", "el", "los", "y", "en"}]
 
 
 def name_matches(value: str, tokens: list[str]) -> bool:
@@ -68,7 +69,7 @@ class InsforgeCatalog:
         self, filters: CatalogFilters, params: dict[str, str], tokens: list[str],
     ) -> CatalogPage:
         candidates = {**params, "limit": "200"}
-        matches = []
+        matches: list[AcademicOffer] = []
         offset = 0
         while True:
             candidates["offset"] = str(offset)
@@ -78,7 +79,7 @@ class InsforgeCatalog:
                 AcademicOffer(**row) for row in rows
                 if name_matches(row["carrera_oficial"], tokens) or name_matches(row["institucion"], tokens)
             )
-            if len(rows) < 200:
+            if len(rows) < int(candidates["limit"]):
                 break
             offset += len(rows)
         start = (filters.page - 1) * filters.page_size
