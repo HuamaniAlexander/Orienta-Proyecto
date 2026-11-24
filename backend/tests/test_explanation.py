@@ -59,6 +59,9 @@ def test_coalesces_concurrent_requests_and_caches_result():
     calls=[]
     async def handle(request):
         calls.append(request)
+        config = json.loads(request.content)['generationConfig']
+        assert config['responseMimeType'] == 'application/json'
+        assert config['responseJsonSchema'] == Explanation.model_json_schema()
         await asyncio.sleep(.02)
         return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output())}]}}]})
     async def run():

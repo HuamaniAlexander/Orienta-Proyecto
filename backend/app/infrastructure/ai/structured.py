@@ -1,7 +1,11 @@
+import logging
+
 import httpx
 from pydantic import BaseModel
 
 from app.domain.catalog import ServiceUnavailable
+
+logger = logging.getLogger(__name__)
 
 
 async def generate_structured[Result: BaseModel](
@@ -18,9 +22,8 @@ async def generate_structured[Result: BaseModel](
             "contents": [{"role": "user", "parts": [{"text": context}]}],
             "generationConfig": {
                 "temperature": 0.2, "maxOutputTokens": 1800,
-                "responseFormat": {"text": {
-                    "mimeType": "APPLICATION_JSON", "schema": schema.model_json_schema(),
-                }},
+                "responseMimeType": "application/json",
+                "responseJsonSchema": schema.model_json_schema(),
             },
         })
         response.raise_for_status()
@@ -30,5 +33,9 @@ async def generate_structured[Result: BaseModel](
         text = "".join(part.get("text", "") for part in candidate["content"]["parts"]
                        if not part.get("thought"))
         return schema.model_validate_json(text)
+    except httpx.HTTPStatusError as error:
+        logger.warning("Gemini generateContent rechazó la solicitud: HTTP %s (modelo %s)",
+                       error.response.status_code, model)
+        raise ServiceUnavailable(error_message) from error
     except (httpx.HTTPError, IndexError, KeyError, TypeError, ValueError) as error:
         raise ServiceUnavailable(error_message) from error

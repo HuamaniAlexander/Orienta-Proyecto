@@ -49,9 +49,12 @@ interface AnalysisResult {
     opciones: { carrera_id: number; terminos_compartidos: string[] }[];
   };
   modelo: string;
-  resumen_catalogo?: boolean;
+  motivo_resumen_catalogo?: string;
 }
-function catalogSummary(comparison: Comparison): AnalysisResult {
+function catalogSummary(
+  comparison: Comparison,
+  reason: string,
+): AnalysisResult {
   const offers = comparison.opciones;
   const rows = comparison.criterios.filter(
     (row) =>
@@ -87,7 +90,7 @@ function catalogSummary(comparison: Comparison): AnalysisResult {
     fuentes: [],
     contenido: { estado: "no_disponible", opciones: [] },
     modelo: "",
-    resumen_catalogo: true,
+    motivo_resumen_catalogo: reason,
   };
 }
 
@@ -267,9 +270,18 @@ function AnalysisContent({ ids }: { ids: string }) {
           : "No pudimos obtener la explicación.";
       if (
         comparison &&
-        message.includes("La respuesta de IA no superó la validación")
+        /La respuesta de IA no superó la validación|Gemini no está disponible|La IA devolvió una respuesta incompleta o inválida/.test(
+          message,
+        )
       ) {
-        setResult(catalogSummary(comparison));
+        setResult(
+          catalogSummary(
+            comparison,
+            message.includes("validación")
+              ? "La respuesta de Gemini quedó descartada por la validación."
+              : "Gemini no pudo generar la explicación en este momento.",
+          ),
+        );
         setSubmittedPriorities(general ? [] : priorities);
         setStep(1);
       } else {
@@ -584,13 +596,13 @@ function AnalysisContent({ ids }: { ids: string }) {
       {result && step === 1 && (
         <section className="analysis-step-panel" aria-live="polite">
           <h2>
-            {result.resumen_catalogo
+            {result.motivo_resumen_catalogo
               ? "Resumen del catálogo"
               : "Una mirada a tus diferencias."}
           </h2>
-          {result.resumen_catalogo && (
+          {result.motivo_resumen_catalogo && (
             <p>
-              La respuesta de Gemini quedó descartada por la validación.{" "}
+              {result.motivo_resumen_catalogo}{" "}
               <button
                 type="button"
                 className="text-link"

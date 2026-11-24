@@ -73,7 +73,9 @@ test("explicacion se solicita una vez y muestra sus limites", async ({
   ).toBeVisible();
   expect(calls).toBe(1);
 });
-test("Gemini no disponible conserva la comparacion", async ({ page }) => {
+test("Gemini no disponible conserva un resumen del catálogo", async ({
+  page,
+}) => {
   await page.route("**/api/explicaciones", (route) =>
     route.fulfill({
       status: 503,
@@ -85,11 +87,12 @@ test("Gemini no disponible conserva la comparacion", async ({ page }) => {
   );
   await page.goto("/analisis?opciones=10,110");
   await page.getByRole("button", { name: "Explicar con IA" }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "Gemini no está disponible",
-  );
+  await expect(
+    page.getByRole("heading", { name: "Resumen del catálogo" }),
+  ).toBeVisible();
   await page
-    .getByRole("link", { name: "Tu comparación básica sigue disponible" })
+    .getByRole("link", { name: "Volver al comparador" })
+    .first()
     .click();
   await expect(
     page.getByRole("region", { name: "Criterios de comparación" }),
@@ -115,10 +118,10 @@ test("explicacion permite reintentar tras un error temporal", async ({
   });
   await page.goto("/analisis?opciones=10,110");
   await page.getByRole("button", { name: "Explicar con IA" }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "Gemini no está disponible",
-  );
-  await page.getByRole("button", { name: "Volver a intentar" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Resumen del catálogo" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Reintentar con IA" }).click();
   await expect(
     page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
   ).toBeVisible();
