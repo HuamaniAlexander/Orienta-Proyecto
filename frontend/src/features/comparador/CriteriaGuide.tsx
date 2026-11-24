@@ -205,7 +205,9 @@ function PublishedCosts({ offer }: { offer: Offer }) {
       <>
         <h3>Matrícula y enseñanza</h3>
         <p>
-          {offer.consulta_costos ?? "Consulta los importes con la institución."}
+          {detail.loading
+            ? "Cargando tarifario…"
+            : "Importes sin publicación verificada."}
         </p>
         {detail.error && (
           <button type="button" className="text-link" onClick={detail.retry}>
@@ -249,6 +251,7 @@ function PublishedCosts({ offer }: { offer: Offer }) {
 const tariffSources: Partial<Record<number, string>> = {
   1: utpCostSource,
   2: "https://www.upn.edu.pe/transparencia/pensiones-tarifas",
+  4: "https://www.gob.pe/institucion/pronabec/normas-legales/7806685-698-2026-minedu-vmgi-pronabec-oaf",
   22: "https://www.cientifica.edu.pe/wp-content/uploads/2026/04/Categorias-2026-01-fv.pdf",
 };
 
@@ -258,7 +261,9 @@ function Cost({ offer }: { offer: Offer }) {
     /^(Matrícula(?: regular| de ingresante)?|Prematrícula): (S\/ .+)$/.exec(
       lines[0] ?? "",
     );
-  const tuition = /^Enseñanza: (S\/ .+)$/.exec(lines[1] ?? "");
+  const tuition = /^Enseñanza: (S\/ .+|Importe base no publicado)$/.exec(
+    lines[1] ?? "",
+  );
   return (
     <article className="cost-criterion" aria-label={offer.institucion}>
       <OfferLogo offer={offer} />
@@ -272,7 +277,15 @@ function Cost({ offer }: { offer: Offer }) {
               </div>
               <div>
                 <dt>Enseñanza</dt>
-                <dd>{tuition[1]}</dd>
+                <dd
+                  className={
+                    tuition[1].startsWith("S/")
+                      ? undefined
+                      : "cost-publication-status"
+                  }
+                >
+                  {tuition[1]}
+                </dd>
               </div>
             </dl>
             <ul>
@@ -281,7 +294,9 @@ function Cost({ offer }: { offer: Offer }) {
               ))}
             </ul>
             <SourceLink url={tariffSources[offer.institucion_id]}>
-              Ver tarifario publicado
+              {offer.institucion_id === 4
+                ? "Ver resolución de Pronabec"
+                : "Ver tarifario publicado"}
             </SourceLink>
           </>
         ) : (
@@ -343,9 +358,11 @@ function Location({ offer, index }: { offer: Offer; index: number }) {
 
 function Modality({ offer }: { offer: Offer }) {
   const name = offer.modalidad;
-  const known = /^(Presencial|Semipresencial|Virtual|A distancia)$/i.test(name);
+  const flexible = /^presencial y semipresencial$/i.test(name);
+  const known =
+    flexible || /^(Presencial|Semipresencial|Virtual|A distancia)$/i.test(name);
   const onsite = /^presencial$/i.test(name);
-  const mixed = /^semipresencial$/i.test(name);
+  const mixed = flexible || /^semipresencial$/i.test(name);
   const Icon = onsite ? Landmark : Laptop;
   const topics = onsite
     ? ["Sesiones en el campus", "Traslado a la sede", "Horarios de clases"]
@@ -366,15 +383,17 @@ function Modality({ offer }: { offer: Offer }) {
         <Icon size={33} aria-hidden="true" />
         <div>
           <p className="criterion-kicker">Modalidad de la oferta</p>
-          <h3>{known ? name : "Modalidad del programa"}</h3>
+          <h3>{known ? name : "Modalidad sin publicación verificada"}</h3>
           <p>
             {known
-              ? onsite
-                ? "Clases y actividades en el campus."
-                : mixed
-                  ? "Combina actividades presenciales y en línea."
-                  : "Clases y actividades a distancia."
-              : name}
+              ? flexible
+                ? "La sede ofrece un plan presencial y otro semipresencial."
+                : onsite
+                  ? "Clases y actividades en el campus."
+                  : mixed
+                    ? "Combina actividades presenciales y en línea."
+                    : "Clases y actividades a distancia."
+              : null}
           </p>
         </div>
       </div>
