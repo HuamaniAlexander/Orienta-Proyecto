@@ -315,3 +315,32 @@
     font-size: 0.72rem;
   }
 }
+
+.container.questionnaire-container {
+  width: min(90.5%, 1390px);
+}
+.questionnaire-title h1,
+.questionnaire-body h2,
+.questionnaire-route h2 {
+  color: #0c1330;
+}
+.questionnaire-body > .questionnaire-skip,
+.questionnaire-actions .text-link {
+  background: transparent;
+  border: 0;
+  padding: 0.2rem 0;
+  color: #174ba2;
+  font: inherit;
+}
+.questionnaire-body > .questionnaire-skip {
+  display: table;
+  margin-inline: auto;
+}
+.questionnaire-route li {
+  min-height: 4.05rem;
+}
+@media (min-width: 721px) {
+  .questionnaire-actions > div {
+    min-width: min(100%, 17rem);
+  }
+}
