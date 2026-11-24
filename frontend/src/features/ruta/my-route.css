@@ -1,5 +1,6 @@
 .my-route {
   color: #0d1530;
+  font-size: clamp(0.875rem, 0.84rem + 0.2vw, 1rem);
 }
 .my-route-header {
   display: flex;
@@ -32,7 +33,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  min-height: 3.2rem;
+  min-height: 3rem;
+  line-height: 1.3;
   border-radius: 0.55rem;
   text-decoration: none;
   padding: 0.4rem;
@@ -51,15 +53,15 @@
 }
 .my-route-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2.45fr) minmax(0, 1fr);
-  gap: 1rem;
-  align-items: start;
+  grid-template-columns: minmax(0, 2.45fr) minmax(16rem, 1fr);
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  align-items: stretch;
 }
 .my-route-layout.preferences-layout {
-  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 1fr);
 }
 .my-route-layout.conversation-layout {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2.25fr);
+  grid-template-columns: minmax(16rem, 1fr) minmax(0, 2.25fr);
 }
 .conversation-steps {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -67,9 +69,32 @@
 .my-route .route-panel {
   border: 1px solid #ccd8e9;
   border-radius: 0.8rem;
+  background: white;
+  padding: clamp(0.75rem, 1.5vw, 1.35rem);
+  align-content: start;
+}
+.my-route .route-stack {
+  gap: clamp(0.6rem, 1.05vw, 0.9rem);
+}
+.my-route :is(.route-panel, .my-route-row, .my-route-header) > * {
+  min-width: 0;
+}
+.my-route .route-actions {
+  margin-block: 0;
+  gap: 0.45rem;
+}
+.my-route .button {
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.25;
+  text-align: center;
+}
+.my-route .button svg {
+  flex-shrink: 0;
 }
 .my-route .route-panel h2 {
-  font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+  font-size: clamp(1.1rem, 0.96rem + 0.55vw, 1.45rem);
+  line-height: 1.24;
   letter-spacing: -0.025em;
   color: #0d1530;
 }
@@ -95,18 +120,22 @@
 }
 .my-route-offer {
   display: grid;
-  grid-template-columns: minmax(0, 30%) minmax(0, 1fr) max-content;
+  grid-template-columns: minmax(0, 26%) minmax(0, 1fr) minmax(8rem, 27%);
   gap: 0.8rem;
   align-items: center;
 }
 .my-route-offer img {
   width: 100%;
+  display: block;
   aspect-ratio: 2 / 1;
   object-fit: cover;
   border-radius: 0.5rem;
 }
+.my-route-offer > .route-stack > .button {
+  width: 100%;
+}
 .my-route-row .button {
-  min-height: 2.05rem;
+  min-height: 2.5rem;
   padding: 0.35rem 0.55rem;
   font-size: 0.8rem;
 }
@@ -200,6 +229,12 @@
 .conversation-questions li {
   margin-bottom: 0.4rem;
 }
+.conversation-questions li::marker {
+  font-weight: 650;
+}
+.conversation-questions li input {
+  min-height: 2.5rem;
+}
 .conversation-questions input {
   margin-bottom: 0.35rem;
 }
@@ -208,7 +243,7 @@
   margin-left: 0.5rem;
   gap: 0.3rem;
 }
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .my-route-layout,
   .my-route-layout.preferences-layout,
   .my-route-layout.conversation-layout {
@@ -218,17 +253,48 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width: 540px) {
+@media (max-width: 560px) {
+  .my-route-tabs a,
+  .my-route-tabs li {
+    gap: 0.35rem;
+    min-height: 2.8rem;
+  }
+  .my-route-tabs svg {
+    width: 1.05rem;
+  }
   .my-route-offer {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(4rem, 27%) minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
   }
   .my-route-offer img {
-    max-width: 16rem;
+    aspect-ratio: 1 / 1;
+  }
+  .my-route-offer > .route-stack {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .my-route-offer > .route-stack > button {
+    grid-column: 1 / -1;
   }
   .my-route-pair {
     grid-template-columns: minmax(0, 1fr);
   }
+  .my-route-question {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .my-route-question > div {
+    grid-column: 2 / -1;
+  }
+  .my-route-question > button:first-of-type {
+    grid-column: 2;
+    justify-self: start;
+  }
   .conversation-steps {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    font-size: 0.75rem;
+  }
+  .my-route .button {
+    min-height: 2.75rem;
   }
 }

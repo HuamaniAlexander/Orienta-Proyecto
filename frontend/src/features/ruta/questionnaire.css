@@ -46,7 +46,7 @@
   padding: clamp(1rem, 2vw, 1.65rem);
 }
 .questionnaire-form--questions {
-  height: 36rem;
+  height: clamp(29rem, 100svh - 13rem, 36rem);
 }
 .questionnaire-form--questions .questionnaire-body {
   min-height: 0;
@@ -308,7 +308,7 @@
 }
 @media (max-width: 720px) {
   .questionnaire-form--questions {
-    height: 40rem;
+    height: clamp(31rem, 100svh - 10rem, 40rem);
   }
   .questionnaire-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -332,7 +332,7 @@
 }
 
 .container.questionnaire-container {
-  width: min(90.5%, 1390px);
+  width: min(calc(100% - 2 * clamp(0.75rem, 3.2vw, 3rem)), 1390px);
 }
 .questionnaire-title h1,
 .questionnaire-body h2,
@@ -435,4 +435,19 @@
 }
 .questionnaire-review-sections li .button {
   margin-block: 0.25rem;
+}
+
+@media (max-width: 380px) {
+  .questionnaire-actions {
+    flex-wrap: wrap;
+  }
+  .questionnaire-actions > div {
+    flex: 1 1 9rem;
+  }
+  .questionnaire-position span {
+    font-size: 0.8rem;
+  }
+  .questionnaire-review-sections summary {
+    gap: 0.4rem;
+  }
 }

@@ -69,9 +69,9 @@
 }
 .discovery-results-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2.7fr) minmax(15.5rem, 1fr);
+  grid-template-columns: minmax(0, 2.55fr) minmax(16rem, 1fr);
   gap: 1rem;
-  align-items: start;
+  align-items: stretch;
 }
 .discovery-results-panel > header {
   margin-bottom: 1rem;
@@ -83,7 +83,7 @@
 }
 .discovery-career-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 .discovery-career-card {
@@ -96,7 +96,8 @@
 }
 .discovery-career-card > img {
   width: 100%;
-  aspect-ratio: 2 / 1;
+  display: block;
+  aspect-ratio: 2.75 / 1;
   object-fit: cover;
   background: #e8eef8;
 }
@@ -107,12 +108,13 @@
   align-items: start;
   flex: 1;
   gap: 0.45rem;
-  font-size: 0.86rem;
+  font-size: clamp(0.875rem, 0.84rem + 0.15vw, 0.98rem);
+  overflow-wrap: anywhere;
 }
 .discovery-career-content h3 {
   margin: 0;
   color: #0c1330;
-  font-size: clamp(1rem, 1.4vw, 1.23rem);
+  font-size: clamp(1.05rem, 0.96rem + 0.35vw, 1.25rem);
   line-height: 1.22;
 }
 .discovery-career-content p {
@@ -159,8 +161,16 @@
   gap: 0.4rem;
   width: 100%;
 }
+.discovery-career-content > .discovery-career-actions {
+  margin-top: auto;
+}
 .discovery-career-actions .button {
-  min-height: 2.15rem;
+  flex: 1 1 auto;
+  max-width: 100%;
+  min-height: 2.5rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
   padding: 0.4rem 0.55rem;
   font-size: 0.78rem;
 }
@@ -214,35 +224,6 @@
   margin: 1rem 0;
   flex-wrap: wrap;
 }
-@media (max-width: 1040px) {
-  .discovery-career-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 740px) {
-  .discovery-results-heading {
-    flex-wrap: wrap;
-  }
-  .discovery-results-layout,
-  .discovery-interest-bar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .discovery-interest-bar > div {
-    border-right: 0;
-  }
-}
-@media (max-width: 470px) {
-  .discovery-career-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.discovery-career-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.discovery-career-card > img {
-  aspect-ratio: 3.4 / 1;
-}
 .discovery-card-section {
   width: 100%;
   border-top: 1px solid #d1dbea;
@@ -265,8 +246,35 @@
 .discovery-interest-bar > .discovery-condition-badges {
   border-right: 0;
 }
-@media (max-width: 470px) {
+@media (max-width: 900px) {
+  .discovery-results-heading {
+    flex-wrap: wrap;
+  }
+  .discovery-results-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .discovery-interest-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+  .discovery-interest-bar > div {
+    border-right: 0;
+  }
+  .discovery-results-panel > header {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+}
+@media (max-width: 520px) {
   .discovery-career-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .discovery-career-card > img {
+    aspect-ratio: 2.3 / 1;
+  }
+  .discovery-career-actions .button {
+    min-height: 2.75rem;
   }
 }
