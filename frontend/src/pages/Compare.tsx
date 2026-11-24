@@ -1,7 +1,6 @@
 import { SaveComparison } from "../features/ruta/Progress";
 import { offerLabel } from "../shared/types/labels";
 import {
-  ArrowLeft,
   ArrowRight,
   Award,
   BookOpen,
@@ -36,11 +35,11 @@ const CRITERION_ICONS: Record<string, typeof Scale> = {
   nivel: Award,
   gestion: Building,
 };
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
-import { Institution } from "../shared/components/OfferCard";
+import { InstitutionLogo } from "../shared/components/InstitutionLogo";
 import { CriteriaGuide } from "../features/comparador/CriteriaGuide";
 import { useSelection } from "../features/comparador/Selection";
 import type { Offer, OfferDetail } from "../shared/types/catalog";
@@ -88,6 +87,7 @@ export function Compare() {
   }>({ loading: !!key });
   const [attempt, setAttempt] = useState(0);
   const [onlyDifferent, setOnlyDifferent] = useState(false);
+  const fullComparison = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const controller = new AbortController();
     if (!key) {
@@ -141,10 +141,13 @@ export function Compare() {
   const selected = state.data?.opciones ?? (state.single ? [state.single] : []);
   return (
     <div className="container compare-page">
-      <Link className="back-link" to="/carreras">
-        <ArrowLeft size={16} />
-        Volver al catálogo
-      </Link>
+      <nav className="compare-breadcrumb" aria-label="Ruta de navegación">
+        <Link aria-label="Volver al catálogo" to="/carreras">
+          Carreras
+        </Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Comparar</span>
+      </nav>
       <div className="page-heading">
         <h1>Compara a tu ritmo.</h1>
         <p>Un criterio a la vez, tus dos opciones siempre a la vista.</p>
@@ -163,8 +166,13 @@ export function Compare() {
           <div className="compare-options">
             {selected.map((offer) => (
               <article className="comparison-option" key={offer.oferta_id}>
+                <div className="compare-institution-logo">
+                  <InstitutionLogo
+                    id={offer.institucion_id}
+                    name={offer.institucion}
+                  />
+                </div>
                 <div>
-                  <Institution offer={offer} />
                   <div className="option-heading">
                     <h2>{offer.carrera_oficial}</h2>
                     <button
@@ -216,9 +224,21 @@ export function Compare() {
           </div>
           {state.data && (
             <>
-              <CriteriaGuide key={key} comparison={state.data} ids={key} />
-              <details className="comparison-complete">
-                <summary>Ver comparación completa</summary>
+              <CriteriaGuide
+                key={key}
+                comparison={state.data}
+                ids={key}
+                showFull={() => {
+                  if (fullComparison.current)
+                    fullComparison.current.open = true;
+                }}
+              />
+              <details
+                id="comparacion-completa"
+                className="comparison-complete"
+                ref={fullComparison}
+              >
+                <summary>Tabla detallada</summary>
                 <div className="comparison-intro">
                   <div>
                     <Check size={19} />

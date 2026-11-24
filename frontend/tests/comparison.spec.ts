@@ -1,4 +1,6 @@
 import { expect, test } from "./fixtures/test";
+import fixture from "./fixtures/catalog.json" with { type: "json" };
+import ucss from "./fixtures/ucss.json" with { type: "json" };
 test("footer compacto fuera del catálogo aunque existan selecciones", async ({
   page,
 }) => {
@@ -111,4 +113,42 @@ test("Ubicación enlaza las direcciones reales de ambas sedes", async ({
   await expect(
     page.getByRole("link", { name: "Explicar con IA" }),
   ).toHaveAttribute("href", "/analisis?opciones=10,110");
+});
+
+test("muestra la malla por año y distingue cuotas de créditos", async ({
+  page,
+}) => {
+  const original = fixture.comparisons["10,110"];
+  await page.route("**/api/comparaciones", (route) =>
+    route.fulfill({
+      json: {
+        ...original,
+        opciones: [
+          { ...original.opciones[0], oferta_id: 9 },
+          { ...ucss.oferta, oferta_id: 148 },
+        ],
+      },
+    }),
+  );
+  await page.route("**/api/ofertas/148", (route) =>
+    route.fulfill({ json: ucss }),
+  );
+  await page.goto("/comparar?opciones=9,148");
+  await expect(
+    page.getByText("Principios de Algoritmos", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "2.º año" }).click();
+  await expect(
+    page.getByText("Taller de Programación", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Ver malla curricular" }),
+  ).toHaveCount(2);
+  await page.getByRole("button", { name: "Costos", exact: true }).click();
+  await expect(page.getByText("S/ 815.00", { exact: true })).toBeVisible();
+  await expect(page.getByText("Por cuota · 5 cuotas")).toBeVisible();
+  await expect(page.getByText("S/ 38.50", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Tarifa por crédito", { exact: true }),
+  ).toBeVisible();
 });
