@@ -108,10 +108,15 @@ class OrientationStore:
                 raise SlotUnavailable from error
             return self.receipt(row)
 
-    @staticmethod
-    def receipt(row: sqlite3.Row) -> Receipt:
-        fields = {name: row[name] for name in Receipt.model_fields}
-        return Receipt.model_validate(fields)
+    def receipt(self, row: sqlite3.Row) -> Receipt:
+        advisor = self.advisors.get(row["advisor_id"])
+        return Receipt.model_validate({
+            **dict(row),
+            "advisor_name": advisor.name if advisor else None,
+            "advisor_focus": advisor.focus if advisor else None,
+            "advisor_photo_url": advisor.photo_url if advisor else None,
+            "guide_shared": bool(row["consent"]),
+        })
 
     def get_receipt(self, request_id: UUID) -> Receipt | None:
         with self.connect() as connection:

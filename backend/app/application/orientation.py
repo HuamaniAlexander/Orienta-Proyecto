@@ -27,6 +27,9 @@ class Advisor(BaseModel):
     focus: Text
     conditions: Text
     response_window: Text
+    photo_url: str | None = None
+    topics: list[Text] = Field(default_factory=list, max_length=8)
+    duration_minutes: int | None = Field(default=None, ge=5, le=120)
     active: bool = True
     accepts_text: bool = False
     slots: list[Slot] = Field(default_factory=list)
@@ -68,3 +71,7 @@ class Receipt(BaseModel):
     response_window: str
     response: str | None = None
     meeting_url: str | None = None
+    advisor_name: str | None = None
+    advisor_focus: str | None = None
+    advisor_photo_url: str | None = None
+    guide_shared: bool = False
