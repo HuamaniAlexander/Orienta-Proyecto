@@ -37,7 +37,6 @@ export function NotFound() {
   );
 }
 export function App() {
-  const isHome = useLocation().pathname === "/";
   const [menu, setMenu] = useState(false);
   const [lite, setLite] = useState(() => {
     try {
@@ -67,7 +66,7 @@ export function App() {
         Saltar al contenido
       </a>
       <ScrollReset />
-      <header className={isHome ? "site-header home-header" : "site-header"}>
+      <header className="site-header">
         <div className="container header-inner">
           <Link to="/" aria-label="ORIENTA, inicio" className="brand">
             <img
@@ -90,19 +89,15 @@ export function App() {
             <NavLink to="/comparar" onClick={() => setMenu(false)}>
               Comparar
             </NavLink>
-            {!isHome && (
-              <>
-                <NavLink to="/descubre" onClick={() => setMenu(false)}>
-                  Descubre
-                </NavLink>
-                <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>
-                  Mi ruta
-                </NavLink>
-                <NavLink to="/conecta" onClick={() => setMenu(false)}>
-                  Conecta
-                </NavLink>
-              </>
-            )}
+            <NavLink to="/descubre" onClick={() => setMenu(false)}>
+              Descubre
+            </NavLink>
+            <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>
+              Mi ruta
+            </NavLink>
+            <NavLink to="/conecta" onClick={() => setMenu(false)}>
+              Conecta
+            </NavLink>
           </nav>
           <div className="header-actions">
             <button
@@ -163,13 +158,6 @@ export function App() {
           </div>
         </div>
         <div className="container footer-bottom">
-          {isHome && (
-            <nav className="home-footer-nav" aria-label="Orientación y avance">
-              <Link to="/descubre">Descubre</Link>
-              <Link to="/mi-ruta">Mi ruta</Link>
-              <Link to="/conecta">Conecta</Link>
-            </nav>
-          )}
           <span>ORIENTA · Lima Norte</span>
           <span>La información orienta. Tú eliges tu camino.</span>
         </div>
