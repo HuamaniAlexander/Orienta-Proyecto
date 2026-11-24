@@ -1,0 +1,371 @@
+.connect {
+  color: #101634;
+  font-size: clamp(0.875rem, 0.84rem + 0.22vw, 1rem);
+  padding-bottom: 2.5rem;
+}
+.connect :is(h2, h3, p) {
+  margin: 0;
+}
+.connect h2 {
+  color: #101634;
+  font-size: clamp(1.25rem, 1rem + 0.75vw, 1.65rem);
+  line-height: 1.23;
+}
+.connect h3 {
+  color: #101634;
+  font-size: clamp(1.03rem, 0.95rem + 0.42vw, 1.3rem);
+  line-height: 1.25;
+}
+.connect h2 + p {
+  margin-top: 0.3rem;
+}
+.connect .button {
+  min-height: 2.65rem;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+}
+.connect .button:not(.secondary) {
+  background: #2157a8;
+}
+.connect .button:not(.secondary):hover {
+  background: #194685;
+}
+.connect svg {
+  flex-shrink: 0;
+}
+.connect-header,
+.connect-heading,
+.connect-inline,
+.connect-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.connect-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.connect-actions {
+  flex-wrap: wrap;
+}
+.connect-confirmed {
+  color: #168344;
+}
+.connect-steps,
+.connect-panel {
+  background: #fff;
+  border: 1px solid #c9d5e5;
+  border-radius: 0.85rem;
+  min-width: 0;
+}
+.connect-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 0.65rem;
+  list-style: none;
+  margin: 0 0 1rem;
+}
+.connect-steps li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  font-weight: 650;
+  padding: 0.3rem;
+  position: relative;
+}
+.connect-steps li > svg:first-child,
+.connect-topics li > svg {
+  color: #1851ba;
+  box-sizing: content-box;
+  padding: 0.45rem;
+  border-radius: 0.55rem;
+  background: #e9f1ff;
+}
+.connect-step-arrow {
+  position: absolute;
+  right: -0.5rem;
+  color: #526687;
+}
+.connect-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  margin-bottom: 1.3rem;
+}
+.connect :is(select, input:not([type="checkbox"]), textarea) {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid #a8bad7;
+  border-radius: 0.5rem;
+  color: inherit;
+  background: #fff;
+  min-height: 2.65rem;
+  padding: 0.5rem 0.65rem;
+}
+.connect-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.connect-search svg {
+  position: absolute;
+  left: 0.65rem;
+  color: #435b80;
+  pointer-events: none;
+}
+.connect .connect-search input {
+  padding-left: 2.35rem;
+}
+.connect-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0.75rem 0 1rem;
+}
+.connect-card {
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.connect-card-content {
+  flex: 1;
+  padding: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow-wrap: anywhere;
+}
+.connect-portrait {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #e7f0ff;
+  color: #24559b;
+  border-radius: 0.65rem;
+}
+.connect-card .connect-portrait {
+  aspect-ratio: 2.45 / 1;
+}
+.connect-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+.connect-portrait > svg {
+  width: 24%;
+  height: auto;
+}
+.connect-muted {
+  color: #415679;
+}
+.connect-card-content .connect-card-availability {
+  margin-top: auto;
+  padding-block: 0.55rem;
+  border-top: 1px solid #dce5f2;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.connect-card-availability svg,
+.connect-guide > svg {
+  color: #1454b7;
+}
+.connect-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.connect-tags li,
+.connect-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  border-radius: 1rem;
+  padding: 0.28rem 0.6rem;
+  background: #e7f0ff;
+  color: #163d7a;
+  font-size: 0.84rem;
+}
+.connect-guide,
+.connect-note {
+  padding: 0.85rem 1rem;
+}
+.connect-guide {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.connect-guide > div {
+  flex: 1 1 14rem;
+}
+.connect-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.connect-layout > .connect-panel,
+.connect-panel.connect-stack {
+  padding: clamp(0.8rem, 2vw, 1.45rem);
+}
+.connect-stack {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+.connect-profile {
+  display: grid;
+  grid-template-columns: minmax(0, 32%) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+.connect-profile .connect-portrait {
+  aspect-ratio: 1;
+}
+.connect-profile p {
+  margin-top: 0.4rem;
+  overflow-wrap: anywhere;
+}
+.connect-divider {
+  border-top: 1px solid #d5e0f0;
+  padding-top: 0.75rem;
+}
+.connect-topics {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+.connect-topics li,
+.connect-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.connect-checkbox input {
+  accent-color: #2157a8;
+  flex-shrink: 0;
+}
+.connect-guide-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+.connect-month {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+.connect-month .button {
+  padding: 0.4rem;
+}
+.connect-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.2rem), 1fr));
+  gap: 0.45rem;
+}
+.connect-choices .button {
+  padding: 0.4rem;
+}
+.connect-choices .button[aria-pressed="true"] {
+  background: #2157a8;
+  color: white;
+  border-color: #2157a8;
+}
+.connect-details {
+  display: grid;
+  grid-template-columns: minmax(0, 0.68fr) minmax(0, 1fr);
+  margin: 0.25rem 0 0;
+}
+.connect-details > * {
+  margin: 0;
+  border-bottom: 1px solid #e0e7f1;
+  padding: 0.35rem 0.15rem;
+  overflow-wrap: anywhere;
+}
+.connect-details dt {
+  font-weight: 650;
+}
+.connect-wide {
+  width: 100%;
+}
+.connect-receipt-photo {
+  width: 6rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.connect p.connect-note {
+  margin: 0.9rem 0;
+  background: #e9f1ff;
+}
+.connect .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+.connect-session-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem;
+  border: 1px solid #d6e1f0;
+  border-radius: 0.55rem;
+  text-decoration: none;
+}
+.connect-session-row span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.connect-session-row small {
+  display: block;
+}
+@media (max-width: 850px) {
+  .connect-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .connect-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .connect-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .connect-filters > label {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 530px) {
+  .connect-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .connect-steps li {
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: center;
+    font-size: 0.78rem;
+  }
+  .connect-step-arrow {
+    display: none;
+  }
+  .connect-profile {
+    align-items: start;
+    gap: 0.65rem;
+  }
+  .connect-guide .button {
+    width: 100%;
+  }
+}
