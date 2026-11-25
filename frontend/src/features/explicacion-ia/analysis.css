@@ -519,6 +519,69 @@ label.interests-label {
 }
 .analysis-result-section,
 .suggestion-panel,
+.analysis-source-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  flex-shrink: 0;
+}
+.analysis-source-logo img {
+  max-width: 90px;
+  max-height: 36px;
+  object-fit: contain;
+}
+.analysis-explainer-actions {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+.analysis-explainer-actions .button {
+  width: 100%;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 9px;
+  font-weight: 600;
+}
+.analysis-explainer-actions .save-toggle {
+  background: #2c4a7a;
+  border-color: #2c4a7a;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle:hover {
+  background: #1f375c;
+  border-color: #1f375c;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] {
+  background: #9e3b3b;
+  border-color: #9e3b3b;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle) {
+  background: #1549eb;
+  border-color: #1549eb;
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle):hover {
+  background: #103ba8;
+  border-color: #103ba8;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle) {
+  background: #fff;
+  border: 1px solid #b9cde9;
+  color: #15254a;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle):hover {
+  background: #eef4ff;
+  border-color: #1549eb;
+  color: #103ba8;
+}
 .analysis-source-row {
   border: 1px solid #c7d8f0;
   padding: 0.8rem;
@@ -713,6 +776,69 @@ label.interests-label {
   flex-shrink: 0;
   color: #1c4e98;
 }
+.analysis-source-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  flex-shrink: 0;
+}
+.analysis-source-logo img {
+  max-width: 90px;
+  max-height: 36px;
+  object-fit: contain;
+}
+.analysis-explainer-actions {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+.analysis-explainer-actions .button {
+  width: 100%;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 9px;
+  font-weight: 600;
+}
+.analysis-explainer-actions .save-toggle {
+  background: #2c4a7a;
+  border-color: #2c4a7a;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle:hover {
+  background: #1f375c;
+  border-color: #1f375c;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] {
+  background: #9e3b3b;
+  border-color: #9e3b3b;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle) {
+  background: #1549eb;
+  border-color: #1549eb;
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle):hover {
+  background: #103ba8;
+  border-color: #103ba8;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle) {
+  background: #fff;
+  border: 1px solid #b9cde9;
+  color: #15254a;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle):hover {
+  background: #eef4ff;
+  border-color: #1549eb;
+  color: #103ba8;
+}
 .analysis-source-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -794,7 +920,70 @@ label.interests-label {
     font-size: 0.78rem;
   }
   .result-grid,
-  .analysis-source-row {
+  .analysis-source-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  flex-shrink: 0;
+}
+.analysis-source-logo img {
+  max-width: 90px;
+  max-height: 36px;
+  object-fit: contain;
+}
+.analysis-explainer-actions {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+.analysis-explainer-actions .button {
+  width: 100%;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 9px;
+  font-weight: 600;
+}
+.analysis-explainer-actions .save-toggle {
+  background: #2c4a7a;
+  border-color: #2c4a7a;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle:hover {
+  background: #1f375c;
+  border-color: #1f375c;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] {
+  background: #9e3b3b;
+  border-color: #9e3b3b;
+  color: #fff;
+}
+.analysis-explainer-actions .save-toggle[aria-pressed="true"] > svg {
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle) {
+  background: #1549eb;
+  border-color: #1549eb;
+  color: #fff;
+}
+.analysis-explainer-actions .button:not(.secondary):not(.save-toggle):hover {
+  background: #103ba8;
+  border-color: #103ba8;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle) {
+  background: #fff;
+  border: 1px solid #b9cde9;
+  color: #15254a;
+}
+.analysis-explainer-actions .button.secondary:not(.save-toggle):hover {
+  background: #eef4ff;
+  border-color: #1549eb;
+  color: #103ba8;
+}
+.analysis-source-row {
     grid-template-columns: minmax(0, 1fr);
   }
 }

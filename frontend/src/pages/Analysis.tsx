@@ -29,6 +29,7 @@ import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { InstitutionLogo } from "../shared/components/InstitutionLogo";
 import { ComparisonSteps } from "../features/comparador/ComparisonSetup";
+import { SaveComparison } from "../features/ruta/Progress";
 import type { Facets, Source } from "../shared/types/catalog";
 import type { Comparison } from "./Compare";
 import { officialUrl } from "./Detail";
@@ -918,7 +919,12 @@ function AnalysisContent({ ids }: { ids: string }) {
             {sourceGroups.map(({ offer, links }) => (
               <article className="analysis-source-row" key={offer.oferta_id}>
                 <div className="analysis-source-identity">
-                  <Landmark size={27} aria-hidden="true" />
+                  <span className="analysis-source-logo">
+                    <InstitutionLogo
+                      id={offer.institucion_id}
+                      name={offer.institucion}
+                    />
+                  </span>
                   <div>
                     <strong>{offer.carrera_oficial}</strong>
                     <p>{offer.institucion}</p>
@@ -982,12 +988,15 @@ function AnalysisContent({ ids }: { ids: string }) {
                 </label>
               ))}
             </div>
-            <Link className="button" to={compareUrl}>
-              Volver a comparar <ArrowRight size={17} />
-            </Link>
-            <Link className="button secondary" to="/carreras">
-              Cambiar una opción
-            </Link>
+            <div className="analysis-explainer-actions">
+              <SaveComparison offers={offers} />
+              <Link className="button" to={compareUrl}>
+                Volver a comparar <ArrowRight size={17} />
+              </Link>
+              <Link className="button secondary" to="/carreras">
+                Cambiar una opción
+              </Link>
+            </div>
           </aside>
         </div>
       )}
@@ -999,8 +1008,8 @@ function AnalysisContent({ ids }: { ids: string }) {
           >
             <ArrowLeft size={17} /> {STEPS[step - 1]}
           </button>
-          <Link className="text-link" to={`${compareUrl}#comparacion-completa`}>
-            Ver comparación completa
+          <Link className="text-link" to="/mi-ruta?vista=comparaciones">
+            Ver mis comparaciones
           </Link>
           <button
             className="button"
