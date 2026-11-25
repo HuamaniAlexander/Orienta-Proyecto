@@ -217,6 +217,7 @@ function AnalysisContent({ ids }: { ids: string }) {
   const abort = useRef<AbortController | null>(null);
   const [step, setStep] = useState(0);
   const [summaryTab, setSummaryTab] = useState<"diff" | "same" | "guide">("diff");
+  const [meaningTab, setMeaningTab] = useState<"guide" | "analysis">("guide");
   const [submittedPriorities, setSubmittedPriorities] = useState<string[]>([]);
   const lastGeneral = useRef(false);
   const [sourceTarget, setSourceTarget] = useState<string>();
@@ -381,7 +382,8 @@ function AnalysisContent({ ids }: { ids: string }) {
       </button>
     );
   }
-  function points(title: string, items: Point[], isSame = false) {
+  function points(title: string, items: Point[], isSame = false, badgePrefix?: string) {
+    const labelBase = badgePrefix ?? (isSame ? "Coincidencia" : "Diferencia");
     return (
       items.length > 0 && (
         <section className="analysis-result-section">
@@ -397,9 +399,7 @@ function AnalysisContent({ ids }: { ids: string }) {
                   ) : (
                     <Scale size={13} aria-hidden="true" />
                   )}
-                  {isSame
-                    ? `Coincidencia ${index + 1}`
-                    : `Diferencia ${index + 1}`}
+                  {`${labelBase} ${index + 1}`}
                 </span>
                 <p className="point-body">
                   {readableText(item.texto, offers, result?.fuentes ?? [])}
@@ -750,17 +750,43 @@ function AnalysisContent({ ids }: { ids: string }) {
       {result && step === 2 && (
         <section className="analysis-step-panel">
           <div className="analysis-priority-summary">
-            <p>
-              <strong>Tus prioridades</strong> ·{" "}
-              {labeledPriorities.join(" · ") || "Explicación general"}
-            </p>
-            <button className="text-link" onClick={() => setStep(0)}>
-              Editar prioridades
-            </button>
+            <div>
+              <p>
+                <strong>Tus prioridades</strong> ·{" "}
+                {labeledPriorities.join(" · ") || "Explicación general"}
+              </p>
+              <button className="text-link" onClick={() => setStep(0)}>
+                Editar prioridades
+              </button>
+            </div>
+            <div
+              className="summary-tabs"
+              role="tablist"
+              aria-label="Secciones de prioridades"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={meaningTab === "guide"}
+                onClick={() => setMeaningTab("guide")}
+              >
+                Guía ({submittedPriorities.length})
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={meaningTab === "analysis"}
+                onClick={() => setMeaningTab("analysis")}
+              >
+                Análisis para ti
+              </button>
+            </div>
           </div>
-          <div className="result-grid analysis-priority-cards">
-            {PRIORITIES.filter(([id]) => submittedPriorities.includes(id)).map(
-              ([id, , Icon]) => {
+          {meaningTab === "guide" && (
+            <div className="result-grid analysis-priority-cards">
+              {PRIORITIES.filter(([id]) =>
+                submittedPriorities.includes(id),
+              ).map(([id, , Icon]) => {
                 const guide = priorityGuides[id];
                 return (
                   <article
@@ -768,13 +794,14 @@ function AnalysisContent({ ids }: { ids: string }) {
                     className="analysis-result-section priority-guide"
                   >
                     <h3>
-                      <Icon size={24} aria-hidden="true" /> {guide.title}
+                      <Icon size={22} aria-hidden="true" /> {guide.title}
                     </h3>
                     <h4>En qué fijarte</h4>
                     <ul>
                       {guide.checks.map((item) => (
                         <li key={item}>
-                          <Check size={16} aria-hidden="true" /> {item}
+                          <Check size={16} aria-hidden="true" />
+                          <span>{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -793,26 +820,40 @@ function AnalysisContent({ ids }: { ids: string }) {
                     </Link>
                   </article>
                 );
-              },
-            )}
-          </div>
-          <div className="result-grid">
-            {points(
-              "Qué significa para tus prioridades",
-              result.explicacion.relacion_preferencias,
-            )}
-            {points(
-              "Ventajas condicionadas",
-              result.explicacion.ventajas_condicionadas,
-            )}
-          </div>
-          {!result.explicacion.relacion_preferencias.length &&
-            !result.explicacion.ventajas_condicionadas.length && (
-              <p>
-                Revisa las diferencias del resumen y contrástalas con tus
-                condiciones de estudio.
-              </p>
-            )}
+              })}
+              {submittedPriorities.length === 0 && (
+                <p className="analysis-empty-note">
+                  Elegiste una explicación general. Revisa la pestaña{" "}
+                  <strong>Análisis para ti</strong> para ver las conclusiones.
+                </p>
+              )}
+            </div>
+          )}
+          {meaningTab === "analysis" && (
+            <>
+              <div className="result-grid">
+                {points(
+                  "Qué significa para tus prioridades",
+                  result.explicacion.relacion_preferencias,
+                  false,
+                  "Prioridad",
+                )}
+                {points(
+                  "Ventajas condicionadas",
+                  result.explicacion.ventajas_condicionadas,
+                  true,
+                  "Alternativa",
+                )}
+              </div>
+              {!result.explicacion.relacion_preferencias.length &&
+                !result.explicacion.ventajas_condicionadas.length && (
+                  <p>
+                    Revisa las diferencias del resumen y contrástalas con tus
+                    condiciones de estudio.
+                  </p>
+                )}
+            </>
+          )}
         </section>
       )}
       {result && step === 3 && (
