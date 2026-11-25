@@ -1,15 +1,16 @@
-import { ArrowRight, Check, Columns2, Plus, Scale, X } from "lucide-react";
+import { ArrowRight, Check, Plus, Scale, X } from "lucide-react";
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
+  useRef,
   type ReactNode,
 } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Institution } from "../../shared/components/OfferCard";
 import type { Offer } from "../../shared/types/catalog";
+import { InstitutionMark } from "../../shared/components/InstitutionLogo";
 
 interface Selection {
   items: Offer[];
@@ -104,111 +105,114 @@ export function SelectButton({ offer }: { offer: Offer }) {
     </button>
   );
 }
-export function SelectionTray({ embedded = false }: { embedded?: boolean }) {
+export function SelectionTray() {
   const { items, remove } = useSelection();
   const location = useLocation();
-  if (
-    !embedded &&
-    (!location.pathname.startsWith("/carreras") || !items.length)
-  )
-    return null;
+  const tray = useRef<HTMLElement>(null);
+  const visible = location.pathname.startsWith("/carreras");
+  useEffect(() => {
+    if (!visible || !tray.current) return;
+    const element = tray.current;
+    const updateHeight = () =>
+      document.documentElement.style.setProperty(
+        "--selection-tray-height",
+        `${element.offsetHeight}px`,
+      );
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+    updateHeight();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--selection-tray-height");
+    };
+  }, [visible]);
+  if (!visible) return null;
   const comparisonUrl = `/comparar?opciones=${items.map((item) => item.oferta_id).join(",")}`;
-  if (embedded) {
-    return (
-      <aside className="catalog-selection" aria-label="Opciones seleccionadas">
-        <header className="catalog-selection-heading">
-          <Columns2 size={31} aria-hidden="true" />
-          <div>
-            <h2>Compara 2 carreras</h2>
-            <p>Tus opciones, lado a lado.</p>
-          </div>
-        </header>
-        <div className="catalog-selection-body">
-          <p className="catalog-selection-count">
-            {items.length} de 2 opciones seleccionadas
-          </p>
-          <ol className="catalog-selection-list">
-            {[0, 1].map((index) => {
-              const offer = items[index];
-              return (
-                <li key={index}>
-                  <span className="catalog-selection-number" aria-hidden="true">
-                    {index + 1}
-                  </span>
-                  {offer ? (
-                    <>
-                      <div className="catalog-selection-offer">
-                        <strong>{offer.carrera_oficial}</strong>
-                        <Institution offer={offer} />
-                      </div>
-                      <button
-                        onClick={() => remove(offer.oferta_id)}
-                        aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
-                      >
-                        <X size={17} aria-hidden="true" />
-                      </button>
-                    </>
-                  ) : (
-                    <span>Elige una opción del catálogo</span>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-          <div className="catalog-selection-action">
-            {items.length === 2 ? (
-              <Link className="button" to={comparisonUrl}>
-                Comparar ahora <ArrowRight size={21} aria-hidden="true" />
-              </Link>
-            ) : (
-              <button className="button" disabled>
-                Comparar ahora
-              </button>
-            )}
-            <p>Verás duración, enfoque, costos, ubicación y modalidad.</p>
-          </div>
-        </div>
-      </aside>
-    );
-  }
-  const className = `selection-tray${location.pathname === "/carreras" ? " catalog-tray" : ""}`;
   return (
-    <aside className={className} aria-label="Opciones seleccionadas">
+    <aside
+      ref={tray}
+      className="selection-tray catalog-tray"
+      aria-label="Opciones seleccionadas"
+    >
       <div className="container tray-content">
         <div className="tray-title">
-          <Scale size={25} />
+          <Scale size={26} aria-hidden="true" />
           <div>
-            <strong>{items.length} de 2 opciones</strong>
-            <small>Tu próxima comparación</small>
+            <strong>Compara 2 carreras</strong>
+            <small role="status">
+              {items.length} de 2 opciones seleccionadas
+            </small>
           </div>
         </div>
         <div className="tray-items">
-          {items.map((offer) => (
-            <div key={offer.oferta_id}>
-              <span>
-                <strong>{offer.carrera_oficial}</strong>
-                <small>{offer.institucion}</small>
-              </span>
-              <button
-                onClick={() => remove(offer.oferta_id)}
-                aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
+          {[0, 1].map((index) => {
+            const offer = items[index];
+            return (
+              <div
+                key={index}
+                className={offer ? "tray-choice" : "tray-choice is-empty"}
+                data-option={index + 1}
               >
-                <X size={16} />
-              </button>
-            </div>
-          ))}
+                {!offer && (
+                  <span className="tray-choice-number" aria-hidden="true">
+                    {index + 1}
+                  </span>
+                )}
+                {offer ? (
+                  <>
+                    <span className="tray-logo-ring">
+                      <InstitutionMark
+                        id={offer.institucion_id}
+                        name={offer.institucion}
+                      />
+                      <span className="tray-logo-number" aria-hidden="true">
+                        {index + 1}
+                      </span>
+                    </span>
+                    <span
+                      className="tray-choice-copy"
+                      title={`${offer.carrera_oficial} · ${offer.institucion} · ${offer.sede} · ${offer.distrito}`}
+                    >
+                      <strong className="tray-choice-name">
+                        {offer.carrera_oficial}
+                      </strong>
+                      <small className="tray-choice-institution">
+                        {offer.institucion}
+                      </small>
+                      <small className="tray-choice-location">
+                        {offer.sede || offer.distrito}
+                        {offer.sede && offer.sede !== offer.distrito
+                          ? ` · ${offer.distrito}`
+                          : ""}
+                      </small>
+                    </span>
+                    <button
+                      onClick={() => remove(offer.oferta_id)}
+                      aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
+                    >
+                      <X size={18} aria-hidden="true" />
+                    </button>
+                  </>
+                ) : (
+                  <span>
+                    <strong>
+                      {index === 0 ? "Primera opción" : "Segunda opción"}
+                    </strong>
+                    <small>Elige una carrera del catálogo</small>
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
         {items.length === 2 ? (
           <Link className="button" to={comparisonUrl}>
-            Comparar opciones
+            Comparar ahora <ArrowRight size={18} aria-hidden="true" />
           </Link>
         ) : (
-          <span className="tray-prompt">
-            <Plus size={14} aria-hidden="true" />{" "}
-            {items.length
-              ? "Elige una segunda opción"
-              : "Añade dos opciones del catálogo"}
-          </span>
+          <button className="button" disabled>
+            Comparar ahora <ArrowRight size={18} aria-hidden="true" />
+          </button>
         )}
       </div>
     </aside>

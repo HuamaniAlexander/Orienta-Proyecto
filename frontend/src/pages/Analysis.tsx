@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Compass,
   ExternalLink,
   LoaderCircle,
   MapPin,
@@ -13,12 +14,19 @@ import {
   Banknote,
   Flag,
   FileText,
+  Info,
   MessageSquare,
+  Scale,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
+import { InstitutionLogo } from "../shared/components/InstitutionLogo";
+import { ComparisonSteps } from "../features/comparador/ComparisonSetup";
 import type { Facets, Source } from "../shared/types/catalog";
 import type { Comparison } from "./Compare";
 import { officialUrl } from "./Detail";
@@ -208,6 +216,7 @@ function AnalysisContent({ ids }: { ids: string }) {
   const busy = useRef(false);
   const abort = useRef<AbortController | null>(null);
   const [step, setStep] = useState(0);
+  const [summaryTab, setSummaryTab] = useState<"diff" | "same" | "guide">("diff");
   const [submittedPriorities, setSubmittedPriorities] = useState<string[]>([]);
   const lastGeneral = useRef(false);
   const [sourceTarget, setSourceTarget] = useState<string>();
@@ -330,26 +339,49 @@ function AnalysisContent({ ids }: { ids: string }) {
       return [{ href, label }];
     }),
   }));
+  function shortSourceText(fullLabel: string) {
+    const [prefix, rest] = fullLabel.split(": ");
+    if (!rest) return fullLabel;
+    const parts = rest.split(" · ");
+    const inst = parts[1] ?? parts[0] ?? rest;
+    const shortInst = inst
+      .replace(/^Universidad Tecnológica del Perú$/i, "UTP")
+      .replace(/^Universidad Privada del Norte$/i, "UPN")
+      .replace(/^Universidad César Vallejo$/i, "UCV")
+      .replace(/^Universidad de Ciencias y Humanidades$/i, "UCH")
+      .replace(/^Universidad Católica Sedes Sapientiae$/i, "UCSS")
+      .replace(/^Universidad Peruana Cayetano Heredia$/i, "Cayetano Heredia")
+      .replace(/^Universidad Científica del Sur$/i, "Científica del Sur")
+      .replace(/^Universidad Privada Norbert Wiener$/i, "Norbert Wiener")
+      .replace(/^Universidad de San Martín de Porres$/i, "USMP")
+      .replace(/^Universidad Continental$/i, "Continental")
+      .replace(/^Instituto de Educación Superior /i, "IES ")
+      .replace(/^Escuela de Educación Superior /i, "EES ");
+    return `${prefix} · ${shortInst}`;
+  }
   function sourceLink(id: number) {
     const source = result?.fuentes.find((item) => item.fuente_id === id);
     const canonical = source && sourceByUrl.get(officialUrl(source.url));
     if (!canonical) return null;
     const target = `fuente-ia-${canonical.fuente_id}`;
+    const full = sourceLabel(source, offers);
     return (
       <button
         type="button"
         key={id}
         className="text-link"
+        title={full}
         onClick={() => {
           setStep(3);
           setSourceTarget(target);
         }}
       >
-        {sourceLabel(source, offers)}
+        <FileText size={12} aria-hidden="true" />
+        {shortSourceText(full)}
       </button>
     );
   }
-  function points(title: string, items: Point[]) {
+  function points(title: string, items: Point[], isSame = false) {
     return (
       items.length > 0 && (
         <section className="analysis-result-section">
@@ -357,9 +389,21 @@ function AnalysisContent({ ids }: { ids: string }) {
           <ul>
             {items.map((item, index) => (
               <li key={index}>
-                <span>
-                  {readableText(item.texto, offers, result?.fuentes ?? [])}
+                <span
+                  className={isSame ? "point-badge is-same" : "point-badge"}
+                >
+                  {isSame ? (
+                    <Check size={13} aria-hidden="true" />
+                  ) : (
+                    <Scale size={13} aria-hidden="true" />
+                  )}
+                  {isSame
+                    ? `Coincidencia ${index + 1}`
+                    : `Diferencia ${index + 1}`}
                 </span>
+                <p className="point-body">
+                  {readableText(item.texto, offers, result?.fuentes ?? [])}
+                </p>
                 <div className="point-references">
                   {item.naturaleza !== "documentado" && (
                     <small>
@@ -395,10 +439,16 @@ function AnalysisContent({ ids }: { ids: string }) {
         <h1>Entiende tus opciones, paso a paso.</h1>
         <p>Una explicación clara de tus dos alternativas.</p>
       </div>
+      <ComparisonSteps current={3} />
       <div className="analysis-selected">
         {offers.map((offer) => (
           <div key={offer.oferta_id}>
-            <Landmark className="illustration" size={36} aria-hidden="true" />
+            <span className="analysis-selected-logo">
+              <InstitutionLogo
+                id={offer.institucion_id}
+                name={offer.institucion}
+              />
+            </span>
             <div>
               <strong>{offer.carrera_oficial}</strong>
               <span>{offer.institucion}</span>
@@ -425,143 +475,139 @@ function AnalysisContent({ ids }: { ids: string }) {
       </nav>
       {step === 0 && (
         <>
-          <div className="analysis-layout">
-            <form
-              className="preferences-panel"
-              id="analysis-priorities"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void submit();
-              }}
-            >
-              <header>
+          <form
+            className="preferences-panel"
+            id="analysis-priorities"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void submit();
+            }}
+          >
+            <header className="preferences-header">
+              <div>
                 <h2>¿En qué quieres centrar la explicación?</h2>
                 <p>
                   Elige hasta tres prioridades o continúa con una explicación
                   general.
                 </p>
-              </header>
-              <fieldset className="priority-options" disabled={pending}>
-                <legend className="sr-only">Tus prioridades</legend>
-                {PRIORITIES.map(([value, label, Icon]) => (
-                  <label
-                    key={value}
-                    className={priorities.includes(value) ? "checked" : ""}
+              </div>
+              <span className="preferences-counter">
+                {priorities.length} de 3 seleccionadas
+              </span>
+            </header>
+            <fieldset className="priority-options" disabled={pending}>
+              <legend className="sr-only">Tus prioridades</legend>
+              {PRIORITIES.map(([value, label, Icon]) => (
+                <label
+                  key={value}
+                  className={priorities.includes(value) ? "checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={priorities.includes(value)}
+                    disabled={
+                      !priorities.includes(value) && priorities.length >= 3
+                    }
+                    onChange={() =>
+                      setPriorities((current) =>
+                        current.includes(value)
+                          ? current.filter((item) => item !== value)
+                          : [...current, value],
+                      )
+                    }
+                  />
+                  <span className="priority-icon-badge" aria-hidden="true">
+                    <Icon size={17} />
+                  </span>
+                  <span>{label}</span>
+                  {priorities.includes(value) && (
+                    <Check size={16} aria-hidden="true" />
+                  )}
+                </label>
+              ))}
+            </fieldset>
+            <section
+              className="analysis-context"
+              aria-labelledby="context-heading"
+            >
+              <h3 id="context-heading">
+                <SlidersHorizontal size={17} aria-hidden="true" />
+                Añadir contexto personal <span>· Opcional</span>
+              </h3>
+              <div className="preference-selects">
+                <label>
+                  <span className="field-label-row">
+                    <MapPin size={15} aria-hidden="true" /> Distrito de
+                    preferencia
+                  </span>
+                  <select
+                    aria-label="Distrito preferido"
+                    disabled={pending}
+                    value={district}
+                    onChange={(event) => setDistrict(event.target.value)}
                   >
-                    <input
-                      type="checkbox"
-                      checked={priorities.includes(value)}
-                      disabled={
-                        !priorities.includes(value) && priorities.length >= 3
-                      }
-                      onChange={() =>
-                        setPriorities((current) =>
-                          current.includes(value)
-                            ? current.filter((item) => item !== value)
-                            : [...current, value],
-                        )
-                      }
-                    />
-                    <Icon size={23} aria-hidden="true" />
-                    <span>{label}</span>
-                    {priorities.includes(value) && (
-                      <Check size={17} aria-hidden="true" />
-                    )}
-                  </label>
-                ))}
-              </fieldset>
-              <details className="analysis-context" open>
-                <summary>
-                  Añadir contexto personal <span>· Opcional</span>
-                </summary>
-                <div className="preference-selects">
-                  <label>
-                    Distrito de preferencia
-                    <select
-                      aria-label="Distrito preferido"
-                      disabled={pending}
-                      value={district}
-                      onChange={(event) => setDistrict(event.target.value)}
-                    >
-                      <option value="">Sin preferencia</option>
-                      {facets.data?.distritos.map((item) => (
-                        <option key={item.distrito_id} value={item.distrito_id}>
-                          {item.distrito}
+                    <option value="">Sin preferencia</option>
+                    {facets.data?.distritos.map((item) => (
+                      <option key={item.distrito_id} value={item.distrito_id}>
+                        {item.distrito}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span className="field-label-row">
+                    <Laptop size={15} aria-hidden="true" /> Modalidad de
+                    preferencia
+                  </span>
+                  <select
+                    aria-label="Modalidad preferida"
+                    disabled={pending}
+                    value={modality}
+                    onChange={(event) => setModality(event.target.value)}
+                  >
+                    <option value="">Sin preferencia</option>
+                    {facets.data?.modalidades
+                      .filter((item) => item.codigo_id <= 3)
+                      .map((item) => (
+                        <option key={item.codigo_id} value={item.codigo_id}>
+                          {item.etiqueta}
                         </option>
                       ))}
-                    </select>
-                  </label>
-                  <label>
-                    Modalidad de preferencia
-                    <select
-                      aria-label="Modalidad preferida"
-                      disabled={pending}
-                      value={modality}
-                      onChange={(event) => setModality(event.target.value)}
-                    >
-                      <option value="">Sin preferencia</option>
-                      {facets.data?.modalidades
-                        .filter((item) => item.codigo_id <= 3)
-                        .map((item) => (
-                          <option key={item.codigo_id} value={item.codigo_id}>
-                            {item.etiqueta}
-                          </option>
-                        ))}
-                    </select>
-                  </label>
-                </div>
-                <label className="interests-label" htmlFor="intereses">
-                  ¿Qué te gustaría entender mejor?
+                  </select>
                 </label>
-                <textarea
-                  id="intereses"
-                  disabled={pending}
-                  value={interests}
-                  maxLength={1500}
-                  rows={2}
-                  onChange={(event) => setInterests(event.target.value)}
-                  placeholder="Escribe tu duda en una frase"
-                />
-                <p className="preferences-help">
-                  Al solicitar la explicación, el contexto indicado se envía a
-                  Gemini.
-                </p>
-              </details>
-            </form>
-            <aside className="analysis-explainer">
-              <h2>Tu explicación incluirá</h2>
-              <ul>
-                {[
-                  "Qué cambia y qué coincide",
-                  "Cómo interpretar las diferencias",
-                  "Fuentes para profundizar",
-                ].map((item) => (
-                  <li key={item}>
-                    <Check size={20} aria-hidden="true" /> {item}
-                  </li>
-                ))}
-              </ul>
-              <p>La decisión sigue siendo tuya.</p>
-              <button
-                type="button"
-                className="text-link"
+              </div>
+              <label className="interests-label" htmlFor="intereses">
+                <MessageSquare size={15} aria-hidden="true" /> ¿Qué te gustaría
+                entender mejor?
+              </label>
+              <textarea
+                id="intereses"
                 disabled={pending}
-                onClick={() => void submit(true)}
-              >
-                Continuar sin prioridades
-              </button>
-            </aside>
-          </div>
+                value={interests}
+                maxLength={1500}
+                rows={2}
+                onChange={(event) => setInterests(event.target.value)}
+                placeholder="Escribe tu duda en una frase"
+              />
+              <p className="preferences-help">
+                <ShieldCheck size={16} aria-hidden="true" /> Al solicitar la
+                explicación, el contexto indicado se envía a Gemini. La decisión
+                sigue siendo tuya.
+              </p>
+            </section>
+          </form>
           <div className="analysis-actions">
             <Link className="button secondary" to={compareUrl}>
               <ArrowLeft size={17} /> Volver al comparador
             </Link>
-            <Link
+            <button
+              type="button"
               className="text-link"
-              to={`${compareUrl}#comparacion-completa`}
+              disabled={pending}
+              onClick={() => void submit(true)}
             >
-              Ver comparación completa
-            </Link>
+              Continuar sin prioridades
+            </button>
             <button
               className="button"
               type="submit"
@@ -575,7 +621,8 @@ function AnalysisContent({ ids }: { ids: string }) {
                 </>
               ) : (
                 <>
-                  Explicar con IA <ArrowRight size={17} />
+                  <Sparkles size={17} aria-hidden="true" /> Explicar con IA{" "}
+                  <ArrowRight size={17} />
                 </>
               )}
             </button>
@@ -595,11 +642,43 @@ function AnalysisContent({ ids }: { ids: string }) {
       )}
       {result && step === 1 && (
         <section className="analysis-step-panel" aria-live="polite">
-          <h2>
-            {result.motivo_resumen_catalogo
-              ? "Resumen del catálogo"
-              : "Una mirada a tus diferencias."}
-          </h2>
+          <div className="summary-header-row">
+            <h2>
+              {result.motivo_resumen_catalogo
+                ? "Resumen del catálogo"
+                : "Una mirada a tus diferencias."}
+            </h2>
+            <div
+              className="summary-tabs"
+              role="tablist"
+              aria-label="Secciones del resumen"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={summaryTab === "diff"}
+                onClick={() => setSummaryTab("diff")}
+              >
+                Diferencias ({result.explicacion.diferencias_principales.length})
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={summaryTab === "same"}
+                onClick={() => setSummaryTab("same")}
+              >
+                En común ({result.explicacion.coincidencias.length})
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={summaryTab === "guide"}
+                onClick={() => setSummaryTab("guide")}
+              >
+                Orientación
+              </button>
+            </div>
+          </div>
           {result.motivo_resumen_catalogo && (
             <p>
               {result.motivo_resumen_catalogo}{" "}
@@ -612,37 +691,60 @@ function AnalysisContent({ ids }: { ids: string }) {
               </button>
             </p>
           )}
-          <div className="result-grid">
-            {points(
-              "Diferencias principales",
-              result.explicacion.diferencias_principales,
-            )}
-            {points("Lo que tienen en común", result.explicacion.coincidencias)}
-          </div>
-          <section className="suggestion-panel">
-            <div>
-              <h3>
-                {result.explicacion.sugerencia.oferta_id
-                  ? "Una orientación para seguir explorando"
-                  : "Sin una preferencia concluyente"}
-              </h3>
-              <p>
-                {readableText(
-                  result.explicacion.sugerencia.motivo,
-                  offers,
-                  result.fuentes,
-                )}
-              </p>
-              <div className="point-references">
-                {result.explicacion.sugerencia.fuente_ids.map(sourceLink)}
-              </div>
+          {summaryTab === "diff" && (
+            <div className="summary-tab-body">
+              {points(
+                "Diferencias principales",
+                result.explicacion.diferencias_principales,
+              )}
             </div>
-          </section>
-          <ul className="analysis-limit-list">
-            {result.explicacion.limites.map((limit, index) => (
-              <li key={index}>{readableText(limit, offers, result.fuentes)}</li>
-            ))}
-          </ul>
+          )}
+          {summaryTab === "same" && (
+            <div className="summary-tab-body summary-same">
+              {points(
+                "Lo que tienen en común",
+                result.explicacion.coincidencias,
+                true,
+              )}
+            </div>
+          )}
+          {summaryTab === "guide" && (
+            <div className="summary-tab-body summary-guide-grid">
+              <section className="suggestion-panel">
+                <h3>
+                  <Compass size={17} aria-hidden="true" />
+                  {result.explicacion.sugerencia.oferta_id
+                    ? "Una orientación para seguir explorando"
+                    : "Sin una preferencia concluyente"}
+                </h3>
+                <p className="point-body">
+                  {readableText(
+                    result.explicacion.sugerencia.motivo,
+                    offers,
+                    result.fuentes,
+                  )}
+                </p>
+                <div className="point-references">
+                  {result.explicacion.sugerencia.fuente_ids.map(sourceLink)}
+                </div>
+              </section>
+              {result.explicacion.limites.length > 0 && (
+                <section className="analysis-limits-card">
+                  <h3>
+                    <Info size={17} aria-hidden="true" /> Límites de la
+                    información
+                  </h3>
+                  <ul className="analysis-limit-list">
+                    {result.explicacion.limites.map((limit, index) => (
+                      <li key={index}>
+                        {readableText(limit, offers, result.fuentes)}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+          )}
         </section>
       )}
       {result && step === 2 && (

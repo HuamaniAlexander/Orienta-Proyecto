@@ -2,8 +2,12 @@ import {
   ArrowLeft,
   ArrowRight,
   Banknote,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   ExternalLink,
+  FileCheck2,
   Info,
   Laptop,
   Landmark,
@@ -11,7 +15,7 @@ import {
   MapPin,
   Target,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Comparison } from "../../pages/Compare";
 import { officialUrl } from "../../pages/Detail";
@@ -56,6 +60,27 @@ const criteria = [
     icon: Laptop,
     note: "Confirma la modalidad y sus condiciones para tu convocatoria.",
   },
+  {
+    label: "Ámbitos",
+    title: "Ámbitos de actividad",
+    description: "Explora dónde se aplica cada carrera y su clasificación.",
+    icon: BookOpen,
+    note: "Síntesis editorial basada en el área y perfil profesional.",
+  },
+  {
+    label: "Institución",
+    title: "Institución y nivel",
+    description: "Compara el tipo de institución, gestión y grado formativo.",
+    icon: Landmark,
+    note: "Datos institucionales y de licenciamiento registrados en el catálogo.",
+  },
+  {
+    label: "Fuentes",
+    title: "Fuentes y verificación",
+    description: "Revisa el respaldo oficial, periodo y fecha de consulta.",
+    icon: FileCheck2,
+    note: "Cada dato conserva su fuente oficial y fecha de verificación.",
+  },
 ];
 
 const years = ["1.er año", "2.º año", "3.er año", "4.º año", "5.º año"];
@@ -91,15 +116,17 @@ function OfferLogo({ offer }: { offer: Offer }) {
 
 function Duration({ offer, year }: { offer: Offer; year: number }) {
   const plan = programSources[offer.oferta_id];
-  const courses = plan?.years[year];
+  const dbYears = offer.plan_estudio?.plan_anual;
+  const courses = plan?.years[year] ?? dbYears?.[year];
+  const hasPlan = Boolean(plan || dbYears?.length);
   return (
     <article className="duration-criterion" aria-label={offer.institucion}>
       <div className="duration-value">
         <strong>
           {offer.duracion_valor != null
             ? `${offer.duracion_valor} ${offer.duracion_unidad}`
-            : plan
-              ? `${plan.years.length * 2} ciclos`
+            : hasPlan
+              ? `${(plan?.years.length ?? dbYears?.length ?? 5) * 2} ciclos`
               : "Plan de estudios"}
         </strong>
         <p>
@@ -114,7 +141,9 @@ function Duration({ offer, year }: { offer: Offer; year: number }) {
             <h3>
               {courses
                 ? `${years[year]} · Ciclos ${year * 2 + 1} y ${year * 2 + 2}`
-                : "Plan de estudios"}
+                : dbYears?.length
+                  ? `Plan de ${dbYears.length} años`
+                  : "Plan de estudios"}
             </h3>
             {courses ? (
               <ul>
@@ -137,6 +166,12 @@ function Duration({ offer, year }: { offer: Offer; year: number }) {
 
 function Focus({ offer }: { offer: Offer }) {
   const plan = programSources[offer.oferta_id];
+  const dbTopics = offer.plan_estudio?.temas;
+  const dbChallenge = offer.plan_estudio?.ejemplo_reto;
+  const topics = (plan?.topics ?? dbTopics ?? [offer.area, offer.nivel]).filter(
+    Boolean,
+  );
+  const challenge = plan?.example ?? dbChallenge;
   return (
     <article className="focus-criterion" aria-label={offer.institucion}>
       <p className="criterion-kicker">Qué aprenderías</p>
@@ -151,17 +186,17 @@ function Focus({ offer }: { offer: Offer }) {
         </div>
       </div>
       <ul className="focus-topics">
-        {(plan?.topics ?? [offer.area, offer.nivel])
-          .filter(Boolean)
-          .map((topic) => (
-            <li key={topic}>{topic}</li>
-          ))}
+        {topics.map((topic) => (
+          <li key={topic}>{topic}</li>
+        ))}
       </ul>
       <div className="focus-example">
-        <h4>{plan ? "Un reto que podrías abordar" : "Ámbitos de estudio"}</h4>
+        <h4>
+          {challenge ? "Un reto que podrías abordar" : "Ámbitos de estudio"}
+        </h4>
         <p>
-          {plan?.example ??
-            (offer.ambitos_editoriales || "Por confirmar con la institución.")}
+          {challenge ??
+            (offer.ambitos_editoriales || offer.enfoque_editorial)}
         </p>
       </div>
       <SourceLink url={plan?.curriculum ?? offer.ficha_url}>
@@ -252,18 +287,29 @@ const tariffSources: Partial<Record<number, string>> = {
   1: utpCostSource,
   2: "https://www.upn.edu.pe/transparencia/pensiones-tarifas",
   4: "https://www.gob.pe/institucion/pronabec/normas-legales/7806685-698-2026-minedu-vmgi-pronabec-oaf",
+  21: "https://drive.google.com/file/d/1CEZXOFj77P8wm3bYnubLtLJTH5unBEIP/view",
   22: "https://www.cientifica.edu.pe/wp-content/uploads/2026/04/Categorias-2026-01-fv.pdf",
 };
 
 function Cost({ offer }: { offer: Offer }) {
   const lines = offer.consulta_costos?.split("\n") ?? [];
   const enrollment =
-    /^(Matrícula(?: regular| de ingresante)?|Prematrícula): (S\/ .+)$/.exec(
+    /^(Matrícula(?: regular| de ingresante| semestral referencial| referencial)?|Prematrícula): (S\/ .+)$/.exec(
       lines[0] ?? "",
     );
-  const tuition = /^Enseñanza: (S\/ .+|Importe base no publicado)$/.exec(
-    lines[1] ?? "",
-  );
+  const tuition =
+    /^(Enseñanza(?: referencial)?): (S\/ .+|Importe base no publicado)$/.exec(
+      lines[1] ?? "",
+    );
+  const publicFree = /^Enseñanza gratuita/.exec(lines[0] ?? "");
+  const sourceLine = lines.find((line) => /^Fuente:\s*https?:\/\//i.test(line));
+  const inlineSourceUrl = sourceLine?.replace(/^Fuente:\s*/i, "").trim();
+  const bullets = lines
+    .slice(2)
+    .filter((line) => !/^Fuente:\s*https?:\/\//i.test(line));
+  const costLink =
+    inlineSourceUrl ?? tariffSources[offer.institucion_id] ?? offer.ficha_url;
+
   return (
     <article className="cost-criterion" aria-label={offer.institucion}>
       <OfferLogo offer={offer} />
@@ -276,28 +322,49 @@ function Cost({ offer }: { offer: Offer }) {
                 <dd>{enrollment[2]}</dd>
               </div>
               <div>
-                <dt>Enseñanza</dt>
+                <dt>{tuition[1]}</dt>
                 <dd
                   className={
-                    tuition[1].startsWith("S/")
+                    tuition[2].startsWith("S/")
                       ? undefined
                       : "cost-publication-status"
                   }
                 >
-                  {tuition[1]}
+                  {tuition[2]}
                 </dd>
               </div>
             </dl>
             <ul>
-              {lines.slice(2).map((line) => (
+              {bullets.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
-            <SourceLink url={tariffSources[offer.institucion_id]}>
+            <SourceLink url={costLink}>
               {offer.institucion_id === 4
                 ? "Ver resolución de Pronabec"
                 : "Ver tarifario publicado"}
             </SourceLink>
+          </>
+        ) : publicFree ? (
+          <>
+            <dl className="cost-values">
+              <div>
+                <dt>Enseñanza</dt>
+                <dd>Gratuita (pública)</dd>
+              </div>
+              {lines[1] && (
+                <div>
+                  <dt>Matrícula</dt>
+                  <dd>{lines[1].replace(/^Matrícula[^:]*:\s*/i, "")}</dd>
+                </div>
+              )}
+            </dl>
+            <ul>
+              {bullets.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <SourceLink url={costLink}>Ver ficha oficial</SourceLink>
           </>
         ) : (
           <PublishedCosts offer={offer} />
@@ -411,14 +478,87 @@ function Modality({ offer }: { offer: Offer }) {
   );
 }
 
+function Scopes({ offer }: { offer: Offer }) {
+  return (
+    <article className="focus-criterion" aria-label={offer.institucion}>
+      <p className="criterion-kicker">Campo y aplicación</p>
+      <div className="focus-title">
+        <BookOpen size={30} aria-hidden="true" />
+        <div>
+          <h3>{offer.area}</h3>
+          <p>{offer.ambitos_editoriales || offer.enfoque_editorial}</p>
+        </div>
+      </div>
+      <div className="focus-example">
+        <h4>Criterio de clasificación</h4>
+        <p>{offer.criterio_clasificacion || offer.nivel}</p>
+      </div>
+      <SourceLink url={offer.ficha_url}>Ver ficha oficial</SourceLink>
+    </article>
+  );
+}
+
+function InstitutionDetails({ offer }: { offer: Offer }) {
+  return (
+    <article className="focus-criterion" aria-label={offer.institucion}>
+      <p className="criterion-kicker">{offer.institucion}</p>
+      <div className="focus-title">
+        <Landmark size={30} aria-hidden="true" />
+        <div>
+          <h3>{offer.tipo}</h3>
+          <p>
+            Gestión {offer.gestion.toLowerCase()} · {offer.nivel}
+          </p>
+        </div>
+      </div>
+      <ul className="focus-topics">
+        <li>{offer.gestion}</li>
+        <li>{offer.nivel}</li>
+        <li>Sede {offer.sede}</li>
+      </ul>
+      <div className="focus-example">
+        <h4>Carrera oficial</h4>
+        <p>{offer.carrera_oficial}</p>
+      </div>
+      <SourceLink url={offer.ficha_url}>Ver ficha oficial</SourceLink>
+    </article>
+  );
+}
+
+function SourcesCard({ offer }: { offer: Offer }) {
+  return (
+    <article className="focus-criterion" aria-label={offer.institucion}>
+      <p className="criterion-kicker">Trazabilidad</p>
+      <div className="focus-title">
+        <FileCheck2 size={30} aria-hidden="true" />
+        <div>
+          <h3>{offer.institucion}</h3>
+          <p>Consulta verificada: {offer.fecha_consulta}</p>
+        </div>
+      </div>
+      <ul className="focus-topics">
+        {offer.periodo_fuente && <li>Periodo: {offer.periodo_fuente}</li>}
+        <li>Sede: {offer.sede}</li>
+      </ul>
+      {offer.evidencia_sede && (
+        <div className="focus-example">
+          <h4>Evidencia de sede</h4>
+          <p>{offer.evidencia_sede}</p>
+        </div>
+      )}
+      <SourceLink url={offer.ficha_url ?? offer.fuente_oferta_url}>
+        Abrir fuente oficial
+      </SourceLink>
+    </article>
+  );
+}
+
 export function CriteriaGuide({
   comparison,
   ids,
-  showFull,
 }: {
   comparison: Comparison;
   ids: string;
-  showFull: () => void;
 }) {
   const [params] = useSearchParams();
   const activeByName = [
@@ -427,40 +567,81 @@ export function CriteriaGuide({
     "costos",
     "ubicacion",
     "modalidad",
+    "ambitos",
+    "institucion",
+    "fuentes",
   ];
   const [step, setStep] = useState(() =>
     Math.max(0, activeByName.indexOf(params.get("criterio") ?? "")),
   );
   const [year, setYear] = useState(0);
+  const navRef = useRef<HTMLElement>(null);
   const current = criteria[step];
   const Icon = current.icon;
   const previous = criteria[step - 1]?.label;
   const next = criteria[step + 1]?.label;
   const showYears =
     step === 0 &&
-    comparison.opciones.some((offer) => programSources[offer.oferta_id]);
+    comparison.opciones.some(
+      (offer) =>
+        programSources[offer.oferta_id] ||
+        Boolean(offer.plan_estudio?.plan_anual?.length),
+    );
   const analysis = `/analisis?opciones=${ids}`;
+
+  function selectStep(nextStep: number) {
+    setStep(nextStep);
+    const button = navRef.current?.children[nextStep] as HTMLElement | undefined;
+    button?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }
+
+  function scrollNav(direction: -1 | 1) {
+    navRef.current?.scrollBy({ left: direction * 260, behavior: "smooth" });
+  }
+
   return (
     <>
-      <nav className="criteria-nav" aria-label="Criterios de comparación">
-        {criteria.map(({ icon: ItemIcon, label }, index) => (
-          <button
-            type="button"
-            key={label}
-            aria-pressed={step === index}
-            onClick={() => setStep(index)}
-          >
-            <ItemIcon size={20} aria-hidden="true" /> {label}
-          </button>
-        ))}
-      </nav>
+      <div className="criteria-nav-bar">
+        <button
+          type="button"
+          className="criteria-nav-arrow"
+          aria-label="Categorías anteriores"
+          onClick={() => scrollNav(-1)}
+        >
+          <ChevronLeft size={18} aria-hidden="true" />
+        </button>
+        <nav
+          ref={navRef}
+          className="criteria-nav"
+          aria-label="Criterios de comparación"
+        >
+          {criteria.map(({ icon: ItemIcon, label }, index) => (
+            <button
+              type="button"
+              key={label}
+              aria-pressed={step === index}
+              onClick={() => selectStep(index)}
+            >
+              <ItemIcon size={20} aria-hidden="true" /> {label}
+            </button>
+          ))}
+        </nav>
+        <button
+          type="button"
+          className="criteria-nav-arrow"
+          aria-label="Más categorías"
+          onClick={() => scrollNav(1)}
+        >
+          <ChevronRight size={18} aria-hidden="true" />
+        </button>
+      </div>
       <section className="criteria-guide" aria-label="Criterios de comparación">
         <header className="criteria-heading">
           <button
             type="button"
             className="criterion-step"
             disabled={!previous}
-            onClick={() => setStep(step - 1)}
+            onClick={() => selectStep(step - 1)}
           >
             <ArrowLeft size={21} aria-hidden="true" />
             <span>
@@ -486,7 +667,7 @@ export function CriteriaGuide({
             type="button"
             className="criterion-step next"
             disabled={!next}
-            onClick={() => setStep(step + 1)}
+            onClick={() => selectStep(step + 1)}
           >
             <span>
               Siguiente<strong>{next ?? "Final"}</strong>
@@ -527,8 +708,16 @@ export function CriteriaGuide({
                 return (
                   <Location key={offer.oferta_id} offer={offer} index={index} />
                 );
-              default:
+              case 4:
                 return <Modality key={offer.oferta_id} offer={offer} />;
+              case 5:
+                return <Scopes key={offer.oferta_id} offer={offer} />;
+              case 6:
+                return (
+                  <InstitutionDetails key={offer.oferta_id} offer={offer} />
+                );
+              default:
+                return <SourcesCard key={offer.oferta_id} offer={offer} />;
             }
           })}
         </div>
@@ -546,19 +735,12 @@ export function CriteriaGuide({
             type="button"
             className="button secondary"
             disabled={!previous}
-            onClick={() => setStep(step - 1)}
+            onClick={() => selectStep(step - 1)}
           >
             <ArrowLeft size={17} aria-hidden="true" />{" "}
             {previous ? `Anterior: ${previous}` : "Anterior"}
           </button>
           <div className="criteria-links">
-            <a
-              className="text-link"
-              href="#comparacion-completa"
-              onClick={showFull}
-            >
-              Ver comparación completa
-            </a>
             {next ? (
               <Link className="text-link" to={analysis}>
                 Explicar con IA
@@ -567,7 +749,7 @@ export function CriteriaGuide({
               <button
                 type="button"
                 className="text-link"
-                onClick={() => setStep(0)}
+                onClick={() => selectStep(0)}
               >
                 Volver a Duración
               </button>
@@ -577,7 +759,7 @@ export function CriteriaGuide({
             <button
               type="button"
               className="button"
-              onClick={() => setStep(step + 1)}
+              onClick={() => selectStep(step + 1)}
             >
               Siguiente: {next} <ArrowRight size={17} aria-hidden="true" />
             </button>
