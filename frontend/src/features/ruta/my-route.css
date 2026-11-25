@@ -482,12 +482,41 @@
   align-items: stretch;
   gap: 12px;
 }
-.route-question-tools .route-actions {
+#root .route-question-tools > .route-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
   margin: 0;
-  gap: 8px;
+  gap: 0;
+  border: 1px solid #d5e0ef;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8faff;
+}
+#root .route-question-tools > .route-actions > .button {
+  min-height: 40px;
+  padding: 8px 18px;
+  border: 0;
+  border-right: 1px solid #d5e0ef;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: 600;
+}
+#root .route-question-tools > .route-actions > .button:last-child {
+  border-right: 0;
+}
+#root .route-question-tools > .route-actions > .button.secondary {
+  background: #f8faff;
+  color: #152b4d;
+}
+#root .route-question-tools > .route-actions > .button.secondary:hover {
+  background: #edf3ff;
+}
+#root .route-question-tools > .route-actions > .button:not(.secondary) {
+  background: #0c44b8;
+  color: #fff;
 }
 .route-question-tools .button {
-  min-height: 44px;
+  min-height: 40px;
 }
 .my-route-question {
   grid-template-columns: 20px minmax(0, 1fr) 100px 44px;
@@ -503,6 +532,17 @@
 }
 .my-route-question > button {
   width: 100%;
+}
+#root .route-question-editor {
+  padding: 18px 24px;
+  gap: 10px;
+}
+#root .route-question-editor textarea {
+  min-height: 58px;
+  max-height: 110px;
+  padding: 10px 12px;
+  line-height: 1.45;
+  resize: vertical;
 }
 .route-question-editor > .button,
 .route-ai-questions > .button {
@@ -588,14 +628,43 @@
   justify-content: center;
   gap: 8px;
 }
-#root .my-route-offer > .route-stack > .button:first-child {
-  background: #123660;
-  border-color: #123660;
+#root .my-route-offer > .route-stack > .button:first-child,
+#root .my-route-offer > .route-stack > .button.secondary:first-child {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
   color: #fff;
+  box-shadow: 0 1px 2px rgba(29, 78, 216, 0.16);
 }
-#root .my-route-offer > .route-stack > .button:first-child:hover {
-  background: #1d487a;
-  border-color: #1d487a;
+#root .my-route-offer > .route-stack > .button:first-child:hover,
+#root .my-route-offer > .route-stack > .button.secondary:first-child:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+}
+#root .my-route-offer > .route-stack > .button.secondary:not(:first-child):not(.save-toggle) {
+  background: #eff6ff;
+  border-color: #dbeafe;
+  color: #1d4ed8;
+}
+#root .my-route-offer > .route-stack > .button.secondary:not(:first-child):not(.save-toggle):hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+#root .my-route-offer > .route-stack > .save-toggle[aria-pressed="true"] {
+  background: #fff;
+  border-color: #d5deed;
+  color: #475569;
+}
+#root .my-route-offer > .route-stack > .save-toggle[aria-pressed="true"] > svg {
+  color: #475569;
+}
+#root .my-route-offer > .route-stack > .save-toggle[aria-pressed="true"]:hover {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #be123c;
+}
+#root .my-route-offer > .route-stack > .save-toggle[aria-pressed="true"]:hover > svg {
+  color: #be123c;
 }
 .my-route-comparison .route-actions {
   margin: 0;
@@ -645,21 +714,63 @@
   min-height: 44px;
   gap: 8px;
 }
+#root .my-route-comparison-actions > .button:first-child {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(29, 78, 216, 0.16);
+}
+#root .my-route-comparison-actions > .button:first-child:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+}
+#root .my-route-comparison-actions > .button.secondary:not(:first-child):not(.save-toggle) {
+  background: #eff6ff;
+  border-color: #dbeafe;
+  color: #1d4ed8;
+}
+#root .my-route-comparison-actions > .button.secondary:not(:first-child):not(.save-toggle):hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+#root .my-route-comparison-actions > .save-toggle[aria-pressed="true"] {
+  background: #fff;
+  border-color: #d5deed;
+  color: #475569;
+}
+#root .my-route-comparison-actions > .save-toggle[aria-pressed="true"] > svg {
+  color: #475569;
+}
+#root .my-route-comparison-actions > .save-toggle[aria-pressed="true"]:hover {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #be123c;
+}
+#root .my-route-comparison-actions > .save-toggle[aria-pressed="true"]:hover > svg {
+  color: #be123c;
+}
 #root .route-ai-questions {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 14px 24px;
+  align-items: center;
+  gap: 6px 20px;
+  padding: 18px 24px;
+}
+#root .route-ai-questions header > p {
+  margin-top: 4px;
 }
 #root .route-ai-questions > .button {
   grid-column: 2;
-  grid-row: 1;
+  grid-row: 1 / 3;
   width: auto;
   min-width: 245px;
   min-height: 44px;
   align-self: center;
 }
-.route-ai-questions > .my-route-note,
+.route-ai-questions > .my-route-note {
+  grid-column: 1;
+}
 .route-ai-questions > p[role="status"],
 .route-ai-proposals {
   grid-column: 1 / -1;
@@ -803,4 +914,81 @@
     padding-right: 12px;
     min-height: 76px;
   }
+}
+.route-questions-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.route-questions-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.route-questions-count {
+  font-size: var(--font-caption);
+  font-weight: 600;
+  color: #425372;
+  min-width: 36px;
+  text-align: center;
+}
+.route-questions-track {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.route-questions-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid #d5deed;
+  background: #fff;
+  color: #1d4ed8;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    opacity 150ms ease;
+}
+.route-questions-arrow:hover:not(:disabled) {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+.route-questions-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+#root .route-preferences-panel,
+#root .route-data-panel {
+  padding: 20px 24px;
+  gap: 12px;
+}
+#root .route-preferences-panel hr,
+#root .route-data-panel hr {
+  margin: 2px 0;
+}
+.route-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.route-summary-copy {
+  display: grid;
+  gap: 4px;
+  flex: 1 1 280px;
+}
+.route-summary-copy h2,
+.route-summary-copy h3,
+.route-summary-copy p {
+  margin: 0;
+}
+.route-data-back {
+  width: 100%;
+  justify-content: center;
+  min-height: 42px;
 }

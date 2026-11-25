@@ -3,6 +3,8 @@ import {
   ArrowRight,
   Bookmark,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   GraduationCap,
   MapPin,
@@ -301,6 +303,7 @@ function RouteQuestions({ career }: { career: string }) {
   const [editing, setEditing] = useState("");
   const [offerId, setOfferId] = useState(career);
   const [filter, setFilter] = useState("Todas");
+  const [page, setPage] = useState(0);
   const [error, setError] = useState("");
   const items = progress.questions.filter(
     (item) =>
@@ -308,6 +311,18 @@ function RouteQuestions({ career }: { career: string }) {
   );
   const researched = items.filter(
     (item) => progress.questionDetails?.[item]?.researched,
+  );
+  const filteredItems = items.filter(
+    (item) =>
+      filter === "Todas" ||
+      researched.includes(item) === (filter === "Investigadas"),
+  );
+  const pageSize = 3;
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
+  const currentPage = Math.min(page, totalPages - 1);
+  const visibleItems = filteredItems.slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize,
   );
   function reset() {
     setEditing("");
@@ -333,7 +348,10 @@ function RouteQuestions({ career }: { career: string }) {
                     type="button"
                     className={`button ${filter === name ? "" : "secondary"}`}
                     aria-pressed={filter === name}
-                    onClick={() => setFilter(name)}
+                    onClick={() => {
+                      setFilter(name);
+                      setPage(0);
+                    }}
                   >
                     {name} ·{" "}
                     {
@@ -347,29 +365,59 @@ function RouteQuestions({ career }: { career: string }) {
                 ),
               )}
             </div>
-            <button
-              className="button secondary"
-              onClick={() => {
-                reset();
-                field.current?.focus();
-              }}
-            >
-              <Plus size={16} /> Añadir pregunta
-            </button>
+            <div className="route-questions-top-actions">
+              {totalPages > 1 && (
+                <div
+                  className="route-questions-nav"
+                  aria-label="Paginación de preguntas"
+                >
+                  <button
+                    type="button"
+                    className="route-questions-arrow"
+                    aria-label="Preguntas anteriores"
+                    disabled={currentPage === 0}
+                    onClick={() => setPage((value) => Math.max(0, value - 1))}
+                  >
+                    <ChevronLeft size={18} aria-hidden="true" />
+                  </button>
+                  <span className="route-questions-count">
+                    {currentPage + 1} / {totalPages}
+                  </span>
+                  <button
+                    type="button"
+                    className="route-questions-arrow"
+                    aria-label="Siguientes preguntas"
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() =>
+                      setPage((value) => Math.min(totalPages - 1, value + 1))
+                    }
+                  >
+                    <ChevronRight size={18} aria-hidden="true" />
+                  </button>
+                </div>
+              )}
+              <button
+                className="button secondary"
+                onClick={() => {
+                  reset();
+                  field.current?.focus();
+                }}
+              >
+                <Plus size={16} /> Añadir pregunta
+              </button>
+            </div>
           </div>
           {career && (
             <Link className="text-link" to="/mi-ruta?vista=preguntas">
               Ver todas las carreras
             </Link>
           )}
-          {!items.length && <p>Todavía no hay preguntas en esta vista.</p>}
-          {items
-            .filter(
-              (item) =>
-                filter === "Todas" ||
-                researched.includes(item) === (filter === "Investigadas"),
-            )
-            .map((item) => {
+          {!filteredItems.length && (
+            <p>Todavía no hay preguntas en esta vista.</p>
+          )}
+          {filteredItems.length > 0 && (
+            <div className="route-questions-track">
+              {visibleItems.map((item) => {
               const detail = progress.questionDetails?.[item];
               const offer = progress.offers.find(
                 (entry) => entry.oferta_id === detail?.offerId,
@@ -447,6 +495,8 @@ function RouteQuestions({ career }: { career: string }) {
                 </article>
               );
             })}
+            </div>
+          )}
         </section>
         <form
           className="route-panel route-stack route-question-editor"
@@ -492,6 +542,7 @@ function RouteQuestions({ career }: { career: string }) {
             <textarea
               aria-label="Escribe una nueva pregunta"
               placeholder="Escribe lo que quieres averiguar"
+              rows={2}
               ref={field}
               value={text}
               onChange={(event) => setText(event.target.value)}
@@ -823,17 +874,21 @@ function RoutePreferences() {
           {saved && <p role="status">Preferencias guardadas.</p>}
         </form>
         <hr />
-        <h2>Tus respuestas al cuestionario</h2>
-        <p>{answered} preguntas respondidas</p>
-        <Link
-          className="button secondary"
-          to="/descubre/preferencias?revisar=1"
-        >
-          Revisar mis respuestas <ArrowRight size={16} />
-        </Link>
-        <p>
-          Los cambios se aplicarán cuando solicites alternativas en Descubre.
-        </p>
+        <div className="route-summary-row">
+          <div className="route-summary-copy">
+            <h2>Tus respuestas al cuestionario</h2>
+            <p>
+              {answered} preguntas respondidas · Los cambios se aplicarán cuando
+              solicites alternativas en Descubre.
+            </p>
+          </div>
+          <Link
+            className="button secondary"
+            to="/descubre/preferencias?revisar=1"
+          >
+            Revisar mis respuestas <ArrowRight size={16} />
+          </Link>
+        </div>
       </section>
       <section className="route-panel route-stack route-data-panel">
         <h2>
@@ -859,42 +914,47 @@ function RoutePreferences() {
           esta pestaña.
         </p>
         <hr />
-        <h3>Eliminar datos guardados</h3>
-        <p>
-          {progress.offers.length} carreras · {progress.comparisons.length}{" "}
-          comparaciones · {progress.questions.length} preguntas
-        </p>
-        {confirm ? (
-          <div className="route-stack">
-            <strong>¿Quieres borrar tu avance?</strong>
-            <div className="route-actions">
-              <button
-                className="button secondary"
-                onClick={() => setConfirm(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                className="button danger"
-                onClick={() => {
-                  if (clear()) {
-                    setConfirm(false);
-                    setValue(INITIAL);
-                    setSaved(false);
-                  }
-                }}
-              >
-                Sí, borrar mi avance
-              </button>
-            </div>
+        <div className="route-summary-row">
+          <div className="route-summary-copy">
+            <h3>Eliminar datos guardados</h3>
+            <p>
+              {progress.offers.length} carreras · {progress.comparisons.length}{" "}
+              comparaciones · {progress.questions.length} preguntas
+            </p>
           </div>
-        ) : (
-          <button className="button danger" onClick={() => setConfirm(true)}>
-            <Trash2 size={16} /> Borrar avance de este dispositivo
-          </button>
-        )}
+          {confirm ? (
+            <div className="route-stack">
+              <strong>¿Quieres borrar tu avance?</strong>
+              <div className="route-actions">
+                <button
+                  className="button secondary"
+                  onClick={() => setConfirm(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="button danger"
+                  onClick={() => {
+                    if (clear()) {
+                      setConfirm(false);
+                      setValue(INITIAL);
+                      setSaved(false);
+                    }
+                  }}
+                >
+                  Sí, borrar mi avance
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button className="button danger" onClick={() => setConfirm(true)}>
+              <Trash2 size={16} /> Borrar avance de este dispositivo
+            </button>
+          )}
+        </div>
         {status.error && <p role="alert">{status.text}</p>}
-        <Link className="back-link" to="/mi-ruta">
+        <Link className="button route-data-back" to="/mi-ruta">
+          <ArrowLeft size={16} aria-hidden="true" />
           Volver a carreras guardadas
         </Link>
       </section>
