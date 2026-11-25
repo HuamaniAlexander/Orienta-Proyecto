@@ -9,6 +9,7 @@ from uuid import UUID
 from pydantic import TypeAdapter
 
 from app.application.orientation import Advisor, Receipt, RequestInput, State
+from app.infrastructure.orientation.zoom import ZoomProvisioner
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS requests (
@@ -46,9 +47,22 @@ class DuplicateRequest(Exception):
 
 
 class OrientationStore:
-    def __init__(self, path: Path, profiles: Path):
+    def __init__(
+        self,
+        path: Path,
+        profiles: Path | list[Advisor],
+        *,
+        auto_confirm_zoom: bool = False,
+        zoom_provisioner: ZoomProvisioner | None = None,
+    ):
         self.path = path
-        advisors: list[Advisor] = TypeAdapter(list[Advisor]).validate_json(profiles.read_text(encoding="utf-8"))
+        self.auto_confirm_zoom = auto_confirm_zoom
+        self.zoom_provisioner = zoom_provisioner or ZoomProvisioner()
+        advisors: list[Advisor] = (
+            TypeAdapter(list[Advisor]).validate_json(profiles.read_text(encoding="utf-8"))
+            if isinstance(profiles, Path)
+            else profiles
+        )
         self.advisors = {advisor.id: advisor for advisor in advisors if advisor.active}
         if len({advisor.id for advisor in advisors}) != len(advisors):
             raise ValueError("Los identificadores de orientadores deben ser únicos.")
@@ -57,6 +71,7 @@ class OrientationStore:
 
     @contextmanager
     def connect(self) -> Iterator[sqlite3.Connection]:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.touch(mode=0o600, exist_ok=True)
         connection = sqlite3.connect(self.path, timeout=5)
         connection.row_factory = sqlite3.Row
@@ -95,15 +110,25 @@ class OrientationStore:
             if request.channel == "zoom" and (slot is None or slot.starts_at <= datetime.now(UTC)):
                 raise SlotUnavailable
             starts_at = slot.starts_at.astimezone(UTC).isoformat() if slot else None
+            status: State = "recibida"
+            meeting_url: str | None = None
+            if request.channel == "zoom" and self.auto_confirm_zoom and slot is not None:
+                status = "confirmada"
+                meeting_url = self.zoom_provisioner.create_meeting(
+                    request.request_id,
+                    f"Orientación ORIENTA · {advisor.name} ({advisor.focus})",
+                    slot.starts_at.astimezone(UTC),
+                    advisor.duration_minutes or 30,
+                )
             try:
                 row = connection.execute("""
                     INSERT INTO requests (
-                        id, advisor_id, channel, starts_at, response_window, contact,
-                        slot_id, question, summary, consent, payload
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *
-                """, (request_id, advisor.id, request.channel, starts_at, advisor.response_window,
+                        id, advisor_id, channel, status, starts_at, response_window, contact,
+                        slot_id, question, summary, consent, payload, meeting_url
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *
+                """, (request_id, advisor.id, request.channel, status, starts_at, advisor.response_window,
                       request.contact, request.slot_id, request.question, request.summary,
-                      request.consent, payload)).fetchone()
+                      request.consent, payload, meeting_url)).fetchone()
             except sqlite3.IntegrityError as error:
                 raise SlotUnavailable from error
             return self.receipt(row)

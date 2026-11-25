@@ -15,3 +15,7 @@ class Settings(BaseSettings):
     gemini_model: str = 'gemini-3.5-flash-lite'
     orientation_db_path: Path | None = None
     orientation_profiles_path: Path | None = None
+    zoom_account_id: str = ""
+    zoom_client_id: str = ""
+    zoom_client_secret: SecretStr = SecretStr("")
+    schools_db_path: Path = Path(__file__).resolve().parents[2] / "data" / "colegios.sqlite3"

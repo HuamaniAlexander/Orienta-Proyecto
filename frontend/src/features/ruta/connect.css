@@ -1,6 +1,6 @@
 .connect {
   color: #101634;
-  font-size: clamp(0.875rem, 0.84rem + 0.22vw, 1rem);
+  font-size: clamp(0.9375rem, 0.8rem + 0.3vw, 1.125rem);
   padding-bottom: 2.5rem;
 }
 .connect :is(h2, h3, p) {
@@ -8,19 +8,19 @@
 }
 .connect h2 {
   color: #101634;
-  font-size: clamp(1.25rem, 1rem + 0.75vw, 1.65rem);
+  font-size: clamp(1.4rem, 1rem + 1.1vw, 1.9rem);
   line-height: 1.23;
 }
 .connect h3 {
   color: #101634;
-  font-size: clamp(1.03rem, 0.95rem + 0.42vw, 1.3rem);
+  font-size: clamp(1.15rem, 0.95rem + 0.65vw, 1.55rem);
   line-height: 1.25;
 }
 .connect h2 + p {
   margin-top: 0.3rem;
 }
 .connect .button {
-  min-height: 2.65rem;
+  min-height: 3rem;
   max-width: 100%;
   text-align: center;
   white-space: normal;
@@ -91,8 +91,8 @@
 .connect-filters {
   display: grid;
   grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr) minmax(0, 1fr) auto;
-  gap: 0.65rem;
-  margin-bottom: 1.3rem;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 .connect :is(select, input:not([type="checkbox"]), textarea) {
   min-width: 0;
@@ -101,7 +101,7 @@
   border-radius: 0.5rem;
   color: inherit;
   background: #fff;
-  min-height: 2.65rem;
+  min-height: 3rem;
   padding: 0.5rem 0.65rem;
 }
 .connect-search {
@@ -121,8 +121,8 @@
 .connect-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.85rem;
-  margin: 0.75rem 0 1rem;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
 }
 .connect-card {
   padding: 0.35rem;
@@ -132,10 +132,10 @@
 }
 .connect-card-content {
   flex: 1;
-  padding: 0.65rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.65rem;
   overflow-wrap: anywhere;
 }
 .connect-portrait {
@@ -153,7 +153,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 38%;
+  object-position: center 40%;
 }
 .connect-portrait > svg {
   width: 24%;
@@ -210,16 +210,16 @@
 .connect-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
 }
 .connect-layout > .connect-panel,
 .connect-panel.connect-stack {
-  padding: clamp(0.8rem, 2vw, 1.45rem);
+  padding: clamp(1rem, 2vw, 1.75rem);
 }
 .connect-stack {
   display: grid;
   align-content: start;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 .connect-profile {
   display: grid;
@@ -236,7 +236,7 @@
 }
 .connect-divider {
   border-top: 1px solid #d5e0f0;
-  padding-top: 0.75rem;
+  padding-top: 1.25rem;
 }
 .connect-topics {
   list-style: none;
@@ -302,7 +302,7 @@
   width: 100%;
 }
 .connect-receipt-photo {
-  width: 6rem;
+  width: clamp(6rem, 11vw, 10rem);
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
@@ -366,6 +366,180 @@
     gap: 0.65rem;
   }
   .connect-guide .button {
+    width: 100%;
+  }
+}
+
+.connect p {
+  line-height: 1.5;
+}
+.connect .questionnaire-title {
+  margin-block: 1.25rem;
+}
+.connect .questionnaire-title p {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+}
+.connect-card-content h3 {
+  font-size: clamp(1.4rem, 1.7vw, 1.75rem);
+}
+.connect-card-content .connect-muted {
+  margin-top: -0.4rem;
+  font-size: 0.95rem;
+}
+.connect-card-content > .button {
+  width: 100%;
+}
+.connect-profile h2 {
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+}
+.connect-profile .connect-muted {
+  margin-bottom: 1rem;
+}
+.connect-steps {
+  margin-bottom: 1.25rem;
+}
+.connect-profile {
+  gap: 1.75rem;
+}
+.connect-tags li {
+  font-size: 0.875rem;
+}
+.connect .connect-demo-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.65rem;
+  background: #e7effc;
+  color: #29466f;
+  font-size: 0.875rem;
+}
+.connect-empty {
+  padding: 2rem;
+  margin-top: 1rem;
+}
+.connect-receipt-person {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 0.5rem;
+}
+.connect-receipt-person h3 {
+  margin-bottom: 0.5rem;
+}
+.connect .connect-checkbox input {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.connect-topics li {
+  gap: 1rem;
+}
+.connect form > label:not(.connect-checkbox) {
+  display: grid;
+  gap: 0.4rem;
+}
+.connect .connect-choices .button {
+  min-height: 2.75rem;
+}
+@media (max-width: 530px) {
+  .connect-profile {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .connect-profile h2 {
+    font-size: 1.5rem;
+  }
+  .connect-profile .connect-muted {
+    margin-bottom: 0.5rem;
+  }
+  .connect-receipt-person {
+    gap: 1rem;
+  }
+  .connect-filters {
+    gap: 0.65rem;
+  }
+  .connect .connect-demo-notice {
+    align-items: start;
+  }
+}
+/* The person and specialty lead; detailed information stays in the profile. */
+.connect-card .connect-portrait {
+  height: 210px;
+  aspect-ratio: auto;
+}
+.connect-card .connect-portrait img {
+  object-position: center 28%;
+}
+#root .connect-card-content h3 {
+  font-size: var(--font-card-title);
+  line-height: 1.35;
+}
+.connect-card-content {
+  padding: 12px;
+  gap: 8px;
+}
+.connect-card-content > .connect-muted {
+  min-height: 44px;
+  line-height: 1.5;
+}
+.connect-card-content > .connect-tags {
+  min-height: 30px;
+  align-content: start;
+}
+.connect-card-content .connect-card-availability {
+  padding-block: 10px;
+}
+.connect-card-content > .button {
+  min-height: 44px;
+}
+@media (max-width: 600px) {
+  .connect-card .connect-portrait {
+    height: 230px;
+  }
+  .connect-card-content > .connect-muted {
+    min-height: 0;
+  }
+}
+.connect-session-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+.connect-session-info {
+  display: grid;
+  gap: 5px;
+}
+.connect-session-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.connect-session-actions > .button {
+  min-height: 44px;
+  gap: 8px;
+}
+#root .connect .connect-remove {
+  color: #a5222b;
+  border-color: #c33942;
+  background: #fff;
+}
+#root .connect .connect-remove:hover {
+  background: #fff0f1;
+  border-color: #a5222b;
+  color: #861b23;
+}
+@media (max-width: 1100px) {
+  .connect-session-actions {
+    grid-column: 2 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .connect-session-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     width: 100%;
   }
 }

@@ -117,9 +117,15 @@ function rememberSession(receipt: Receipt, advisor: Advisor) {
   }
 }
 
+function portraitUrl(value?: string | null) {
+  if (!value) return undefined;
+  if (value.startsWith("/images/")) return value;
+  return officialUrl(value);
+}
+
 function Portrait({ advisor }: { advisor: Advisor }) {
   const [failed, setFailed] = useState(false);
-  const source = officialUrl(advisor.photo_url ?? null);
+  const source = portraitUrl(advisor.photo_url);
   return (
     <div className="connect-portrait">
       {source && !failed ? (
@@ -195,7 +201,13 @@ function saveCalendar(receipt: Receipt) {
     `UID:${receipt.id}@orienta`,
     `DTSTAMP:${stamp(new Date())}`,
     `DTSTART:${stamp(new Date(receipt.starts_at))}`,
-    "SUMMARY:Sesión de orientación ORIENTA",
+    `SUMMARY:Sesión de orientación ORIENTA${receipt.advisor_name ? ` · ${receipt.advisor_name}` : ""}`,
+    ...(receipt.meeting_url
+      ? [
+          `LOCATION:${receipt.meeting_url}`,
+          `DESCRIPTION:Enlace de Zoom: ${receipt.meeting_url}`,
+        ]
+      : []),
     "END:VEVENT",
     "END:VCALENDAR",
     "",
@@ -335,12 +347,10 @@ export function Connect() {
                 <div className="connect-panel connect-guide" role="status">
                   <Info size={24} aria-hidden="true" />
                   <div>
-                    <h3>
-                      El directorio de orientadores aún no está disponible.
-                    </h3>
+                    <h3>No pudimos cargar el directorio de orientadores.</h3>
                     <p>
-                      Mientras tanto, puedes preparar tus preguntas desde Mi
-                      ruta.
+                      Intenta recargar la página o revisa tu conexión con el
+                      servidor.
                     </p>
                   </div>
                 </div>
@@ -722,7 +732,7 @@ function AdvisorProfile({
               </button>
               <p className="connect-muted">
                 {channel === "zoom"
-                  ? "El acceso a Zoom aparecerá cuando el orientador confirme."
+                  ? "Al reservar, recibirás tu enlace de Zoom y podrás añadir la sesión a tu calendario."
                   : advisor.response_window}
               </p>
             </>
@@ -773,6 +783,7 @@ function Sessions() {
 
 export function FollowUp() {
   const { id } = useParams();
+  const [copied, setCopied] = useState(false);
   const result = useApi<Receipt>(
     `/api/orientacion/solicitudes/${encodeURIComponent(id ?? "")}`,
   );
@@ -806,7 +817,7 @@ export function FollowUp() {
           <Failure
             message={
               result.status === 404 && result.error === "Not Found"
-                ? "El seguimiento de sesiones aún no está disponible en este servidor."
+                ? "No encontramos esta solicitud. Verifica el enlace o revisa Mis sesiones."
                 : result.error
             }
             retry={result.retry}
@@ -821,10 +832,10 @@ export function FollowUp() {
                     ? `Tu conversación con ${receipt.advisor_name ?? stored?.advisor_name}`
                     : "Tu solicitud de orientación"}
                 </h2>
-                {officialUrl(receipt.advisor_photo_url ?? null) && (
+                {portraitUrl(receipt.advisor_photo_url) && (
                   <img
                     className="connect-receipt-photo"
-                    src={officialUrl(receipt.advisor_photo_url ?? null)}
+                    src={portraitUrl(receipt.advisor_photo_url)}
                     alt=""
                   />
                 )}
@@ -861,15 +872,33 @@ export function FollowUp() {
                   <div className="connect-divider connect-stack">
                     <h3>Acceso a la sesión</h3>
                     {meeting ? (
-                      <a
-                        className="button connect-wide"
-                        href={meeting}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Video size={18} /> Abrir reunión en Zoom{" "}
-                        <ArrowRight size={17} />
-                      </a>
+                      <>
+                        <a
+                          className="button connect-wide"
+                          href={meeting}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Video size={18} /> Abrir reunión en Zoom{" "}
+                          <ArrowRight size={17} />
+                        </a>
+                        <div className="connect-actions">
+                          <code style={{ wordBreak: "break-all", fontSize: "0.85rem" }}>
+                            {meeting}
+                          </code>
+                          <button
+                            type="button"
+                            className="button secondary"
+                            onClick={() => {
+                              void navigator.clipboard?.writeText(meeting);
+                              setCopied(true);
+                              setTimeout(() => setCopied(false), 2500);
+                            }}
+                          >
+                            {copied ? "Enlace copiado" : "Copiar enlace"}
+                          </button>
+                        </div>
+                      </>
                     ) : (
                       <p>
                         {receipt.status === "recibida"
