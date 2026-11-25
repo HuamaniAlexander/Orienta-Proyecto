@@ -519,6 +519,13 @@ label.interests-label {
 }
 .analysis-result-section,
 .suggestion-panel,
+.analysis-source-row {
+  border: 1px solid #c7d8f0;
+  padding: 0.8rem;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+  background: #fafcff;
+}
 .analysis-source-logo {
   display: flex;
   align-items: center;
