@@ -4,15 +4,20 @@ import {
   ArrowRight,
   ArrowUp,
   Bookmark,
+  CheckCircle2,
+  Copy,
   MessageSquare,
   Plus,
+  Save,
   Sparkles,
   Trash2,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../features/ruta/Progress";
-import { api } from "../shared/api/client";
+import { InstitutionMark } from "../shared/components/InstitutionLogo";
+import { api, useApi } from "../shared/api/client";
+import type { Facets } from "../shared/types/catalog";
 
 interface DraftQuestion {
   text: string;
@@ -60,6 +65,7 @@ function ListPager({
 
 export function PrepareConversation() {
   const { progress, update, status } = useProgress();
+  const facets = useApi<Facets>("/api/filtros");
   const draft = progress.conversation;
   const [offers, setOffers] = useState(
     draft?.offers ??
@@ -220,7 +226,7 @@ export function PrepareConversation() {
         >
           <button
             type="button"
-            className="button secondary"
+            className="button"
             disabled={step === 1 || busy}
             onClick={() => {
               setStep(step - 1);
@@ -233,7 +239,7 @@ export function PrepareConversation() {
           <span>Paso {step} de 3</span>
           <button
             type="button"
-            className="button secondary"
+            className="button"
             disabled={
               step === 3 || busy || (!summary.trim() && !questions.length)
             }
@@ -267,27 +273,47 @@ export function PrepareConversation() {
                   />
                   {progress.offers
                     .slice(offerPage * 2, offerPage * 2 + 2)
-                    .map((offer) => (
-                      <label key={offer.oferta_id}>
-                        <input
-                          type="checkbox"
-                          checked={offers.includes(offer.oferta_id)}
-                          disabled={
-                            !offers.includes(offer.oferta_id) &&
-                            selectedOffers.length >= 12
-                          }
-                          onChange={(event) => {
-                            setStep(1);
-                            setOffers(
-                              event.target.checked
-                                ? [...offers, offer.oferta_id]
-                                : offers.filter((id) => id !== offer.oferta_id),
-                            );
-                          }}
-                        />{" "}
-                        {offer.carrera_oficial} · {offer.institucion}
-                      </label>
-                    ))}
+                    .map((offer) => {
+                      const institutionId =
+                        offer.institucion_id ??
+                        facets.data?.instituciones.find(
+                          (item) => item.nombre === offer.institucion,
+                        )?.institucion_id ??
+                        0;
+                      return (
+                        <label
+                          key={offer.oferta_id}
+                          className="conversation-offer-option"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={offers.includes(offer.oferta_id)}
+                            disabled={
+                              !offers.includes(offer.oferta_id) &&
+                              selectedOffers.length >= 12
+                            }
+                            onChange={(event) => {
+                              setStep(1);
+                              setOffers(
+                                event.target.checked
+                                  ? [...offers, offer.oferta_id]
+                                  : offers.filter(
+                                      (id) => id !== offer.oferta_id,
+                                    ),
+                              );
+                            }}
+                          />
+                          <InstitutionMark
+                            id={institutionId}
+                            name={offer.institucion}
+                          />
+                          <span className="conversation-offer-meta">
+                            <strong>{offer.carrera_oficial}</strong>
+                            <span>{offer.institucion}</span>
+                          </span>
+                        </label>
+                      );
+                    })}
                   {!progress.offers.length && (
                     <p>Todavía no tienes carreras guardadas.</p>
                   )}
@@ -333,32 +359,36 @@ export function PrepareConversation() {
                 </fieldset>
               </div>
               <div className="conversation-source-footer">
-                <p>
-                  {selectedOffers.length} carreras y {routeQuestions.length}{" "}
-                  preguntas seleccionadas
-                </p>
-                <p>
-                  Al pulsar Preparar con IA, Gemini recibe las carreras y
-                  preguntas que selecciones.
-                </p>
-                <button
-                  className="button secondary"
-                  disabled={
-                    busy || (!selectedOffers.length && !routeQuestions.length)
-                  }
-                  onClick={() => void prepare()}
-                >
-                  <Sparkles size={18} />{" "}
-                  {busy ? "Preparando…" : "Preparar con IA"}
-                </button>
-                {summary && step === 1 && (
+                <div className="conversation-source-summary">
+                  <strong>
+                    {selectedOffers.length} carreras y {routeQuestions.length}{" "}
+                    preguntas seleccionadas
+                  </strong>
+                  <p>
+                    Al pulsar Preparar con IA, Gemini recibe las carreras y
+                    preguntas que selecciones.
+                  </p>
+                </div>
+                <div className="conversation-source-actions">
+                  {summary && step === 1 && (
+                    <button
+                      className="button secondary conversation-back-draft"
+                      onClick={() => setStep(2)}
+                    >
+                      Volver al borrador actual
+                    </button>
+                  )}
                   <button
-                    className="button secondary"
-                    onClick={() => setStep(2)}
+                    className="button conversation-prepare-btn"
+                    disabled={
+                      busy || (!selectedOffers.length && !routeQuestions.length)
+                    }
+                    onClick={() => void prepare()}
                   >
-                    Volver al borrador actual
+                    <Sparkles size={18} />{" "}
+                    {busy ? "Preparando…" : "Preparar con IA"}
                   </button>
-                )}
+                </div>
               </div>
             </section>
           )}
@@ -369,17 +399,28 @@ export function PrepareConversation() {
             >
               {step === 3 ? (
                 <>
-                  <h2>Revisa lo que vas a compartir</h2>
-                  <ListPager
-                    page={activeQuestionPage}
-                    total={questions.length}
-                    onChange={setQuestionPage}
-                    label="Vista previa de preguntas"
-                  />
+                  <div className="my-route-header">
+                    <h2>
+                      <CheckCircle2 size={21} aria-hidden="true" />
+                      Revisa lo que vas a compartir
+                    </h2>
+                    <ListPager
+                      page={activeQuestionPage}
+                      total={questions.length}
+                      onChange={setQuestionPage}
+                      label="Vista previa de preguntas"
+                    />
+                  </div>
                   <div className="conversation-preview conversation-structured-preview">
-                    <h3>Resumen de mi ruta</h3>
+                    <h3>
+                      <Bookmark size={16} aria-hidden="true" />
+                      Resumen de mi ruta
+                    </h3>
                     <p>{summary}</p>
-                    <h3>Preguntas para conversar</h3>
+                    <h3>
+                      <MessageSquare size={16} aria-hidden="true" />
+                      Preguntas para conversar
+                    </h3>
                     <ol role="list">
                       {questions
                         .slice(
@@ -399,27 +440,41 @@ export function PrepareConversation() {
                         ))}
                     </ol>
                   </div>
-                  <p className="my-route-note">
-                    Al copiar se incluyen todas las preguntas de la guía.
-                  </p>
-                  <div className="route-actions">
-                    <button
-                      className="button secondary"
-                      onClick={() => {
-                        setMessage("");
-                        setStep(2);
-                      }}
-                    >
-                      Volver a editar
-                    </button>
-                    <button className="button" onClick={() => void copyDraft()}>
-                      Copiar guía
-                    </button>
+                  <div className="conversation-source-footer">
+                    <div className="conversation-source-summary">
+                      <strong>Guía lista para copiar</strong>
+                      <p>
+                        Al copiar se incluyen todas las preguntas de la guía.
+                        Nada se comparte automáticamente.
+                      </p>
+                    </div>
+                    <div className="conversation-source-actions">
+                      <button
+                        className="button secondary conversation-back-draft"
+                        onClick={() => {
+                          setMessage("");
+                          setStep(2);
+                        }}
+                      >
+                        <ArrowLeft size={16} aria-hidden="true" />
+                        Volver a editar
+                      </button>
+                      <button
+                        className="button conversation-prepare-btn"
+                        onClick={() => void copyDraft()}
+                      >
+                        <Copy size={16} aria-hidden="true" />
+                        Copiar guía
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <h2>Tu guía para conversar</h2>
+                  <h2>
+                    <MessageSquare size={21} aria-hidden="true" />
+                    Tu guía para conversar
+                  </h2>
                   <p>Puedes editar el resumen y cada pregunta.</p>
                   {step === 1 && !summary && !questions.length ? (
                     <p className="my-route-note">
@@ -548,6 +603,7 @@ export function PrepareConversation() {
                               setMessage("Borrador guardado.");
                           }}
                         >
+                          <Save size={16} aria-hidden="true" />
                           Guardar borrador
                         </button>
                         <button
@@ -574,7 +630,7 @@ export function PrepareConversation() {
               {(message || status.error) && (
                 <p role="status">{status.error ? status.text : message}</p>
               )}
-              <p>Nada se comparte automáticamente.</p>
+              {step !== 3 && <p>Nada se comparte automáticamente.</p>}
             </section>
           )}
         </div>
