@@ -30,6 +30,11 @@ export interface Offer {
   modalidad_id: number;
   distrito_id: number;
   evidencia_sede: string | null;
+  plan_estudio?: {
+    plan_anual: string[][];
+    temas: string[];
+    ejemplo_reto: string;
+  } | null;
 }
 export interface CatalogPage {
   items: Offer[];

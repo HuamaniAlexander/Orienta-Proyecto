@@ -2,7 +2,7 @@ import asyncio
 import re
 import time
 import unicodedata
-from dataclasses import fields
+from dataclasses import fields, replace
 from typing import Any
 
 import httpx
@@ -16,7 +16,7 @@ from app.domain.catalog import (
     ServiceUnavailable,
 )
 
-OFFER_COLUMNS = ",".join(field.name for field in fields(AcademicOffer))
+OFFER_COLUMNS = ",".join(field.name for field in fields(AcademicOffer) if field.name != "plan_estudio")
 
 
 def search_words(value: str) -> list[str]:
@@ -92,7 +92,19 @@ class InsforgeCatalog:
         rows = response.json()
         if not rows:
             raise OfferNotFound("Esta opción académica no está en el catálogo.")
-        return AcademicOffer(**rows[0])
+        offer = AcademicOffer(**rows[0])
+        try:
+            plan_resp = await self.client.get(
+                "/api/database/records/orienta_planes_estudio",
+                params={"select": "plan_anual,temas,ejemplo_reto", "carrera_id": f"eq.{offer.carrera_id}", "limit": "1"},
+            )
+            if plan_resp.status_code == 200:
+                plans = plan_resp.json()
+                if isinstance(plans, list) and plans and isinstance(plans[0], dict) and "plan_anual" in plans[0]:
+                    offer = replace(offer, plan_estudio=plans[0])
+        except Exception:
+            pass
+        return offer
 
     async def detail(self, offer_id: int) -> OfferDetail:
         offer = await self.get(offer_id)
