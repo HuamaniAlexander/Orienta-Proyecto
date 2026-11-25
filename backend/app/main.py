@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -80,7 +81,16 @@ def create_app(settings: Settings | None = None, repository: Any = None,
                 api.state.explainer = Explain(api.state.repository, provider, api.state.content)
                 api.state.gemini_model = config.gemini_model
                 api.state.gemini_client = gemini_client if config.gemini_api_key.get_secret_value() else None
-                yield
+                warmup_task = (
+                    asyncio.create_task(api.state.repository.warmup())
+                    if repository is None and config.insforge_base_url
+                    else None
+                )
+                try:
+                    yield
+                finally:
+                    if warmup_task and not warmup_task.done():
+                        warmup_task.cancel()
 
     api = FastAPI(title="ORIENTA", version="0.1.0", lifespan=lifespan)
     api.add_middleware(
