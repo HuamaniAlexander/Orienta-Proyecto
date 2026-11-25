@@ -470,6 +470,53 @@ label.interests-label {
   gap: 0.85rem;
   margin-block: 0.65rem;
 }
+.analysis-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e2eaf6;
+}
+.analysis-section-head h3 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.analysis-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+.analysis-pager span {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #314368;
+  min-width: 2.2rem;
+  text-align: center;
+}
+.analysis-pager button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #b9cde9;
+  background: #fff;
+  color: #1549eb;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.analysis-pager button:hover:not(:disabled) {
+  background: #d9e8ff;
+  border-color: #1549eb;
+}
+.analysis-pager button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
 .analysis-result-section,
 .suggestion-panel,
 .analysis-source-row {

@@ -3,6 +3,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Compass,
   ExternalLink,
   LoaderCircle,
@@ -218,6 +220,7 @@ function AnalysisContent({ ids }: { ids: string }) {
   const [step, setStep] = useState(0);
   const [summaryTab, setSummaryTab] = useState<"diff" | "same" | "guide">("diff");
   const [meaningTab, setMeaningTab] = useState<"guide" | "analysis">("guide");
+  const [pagedIndices, setPagedIndices] = useState<Record<string, number>>({});
   const [submittedPriorities, setSubmittedPriorities] = useState<string[]>([]);
   const lastGeneral = useRef(false);
   const [sourceTarget, setSourceTarget] = useState<string>();
@@ -382,14 +385,60 @@ function AnalysisContent({ ids }: { ids: string }) {
       </button>
     );
   }
-  function points(title: string, items: Point[], isSame = false, badgePrefix?: string) {
+  function points(
+    title: string,
+    items: Point[],
+    isSame = false,
+    badgePrefix?: string,
+    carouselKey?: string,
+  ) {
     const labelBase = badgePrefix ?? (isSame ? "Coincidencia" : "Diferencia");
+    const activeIndex = carouselKey
+      ? Math.min(pagedIndices[carouselKey] ?? 0, Math.max(0, items.length - 1))
+      : null;
+    const shownItems =
+      activeIndex !== null ? [{ item: items[activeIndex], index: activeIndex }] : items.map((item, index) => ({ item, index }));
     return (
       items.length > 0 && (
         <section className="analysis-result-section">
-          <h3>{title}</h3>
+          <div className="analysis-section-head">
+            <h3>{title}</h3>
+            {carouselKey && items.length > 1 && activeIndex !== null && (
+              <div className="analysis-pager" aria-label={`Navegar ${title}`}>
+                <button
+                  type="button"
+                  aria-label="Anterior"
+                  disabled={activeIndex === 0}
+                  onClick={() =>
+                    setPagedIndices((prev) => ({
+                      ...prev,
+                      [carouselKey]: Math.max(0, activeIndex - 1),
+                    }))
+                  }
+                >
+                  <ChevronLeft size={16} aria-hidden="true" />
+                </button>
+                <span>
+                  {activeIndex + 1} / {items.length}
+                </span>
+                <button
+                  type="button"
+                  aria-label="Siguiente"
+                  disabled={activeIndex >= items.length - 1}
+                  onClick={() =>
+                    setPagedIndices((prev) => ({
+                      ...prev,
+                      [carouselKey]: Math.min(items.length - 1, activeIndex + 1),
+                    }))
+                  }
+                >
+                  <ChevronRight size={16} aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </div>
           <ul>
-            {items.map((item, index) => (
+            {shownItems.map(({ item, index }) => (
               <li key={index}>
                 <span
                   className={isSame ? "point-badge is-same" : "point-badge"}
@@ -837,12 +886,14 @@ function AnalysisContent({ ids }: { ids: string }) {
                   result.explicacion.relacion_preferencias,
                   false,
                   "Prioridad",
+                  "prioridades",
                 )}
                 {points(
                   "Ventajas condicionadas",
                   result.explicacion.ventajas_condicionadas,
                   true,
                   "Alternativa",
+                  "ventajas",
                 )}
               </div>
               {!result.explicacion.relacion_preferencias.length &&
