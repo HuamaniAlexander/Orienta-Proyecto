@@ -53,7 +53,7 @@ def default_advisors() -> list[Advisor]:
             "carlos-paredes",
             "Carlos Paredes",
             "Derecho y Comunicaciones",
-            None,
+            "/images/orientadores/carlos.jpg",
             "Sesión individual de 30 minutos por Zoom para resolver dudas sobre ramas del Derecho, medios digitales y comunicación.",
             [
                 "Especialidades en Derecho y gestión pública",
@@ -66,7 +66,7 @@ def default_advisors() -> list[Advisor]:
             "sofia-quispe",
             "Sofía Quispe",
             "Ingeniería Industrial, Civil y Arquitectura",
-            None,
+            "/images/orientadores/sofia.jpg",
             "Sesión individual de 30 minutos por Zoom sobre diseño, obras, procesos productivos y logística.",
             [
                 "Diferencias entre Ingeniería Industrial, Civil y Arquitectura",

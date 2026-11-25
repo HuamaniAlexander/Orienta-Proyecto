@@ -7,9 +7,12 @@ import {
   CircleCheck,
   Clock,
   Info,
+  GraduationCap,
+  ClipboardList,
   MessageSquare,
   Search,
   Sparkles,
+  Trash2,
   UserRound,
   Video,
 } from "lucide-react";
@@ -21,6 +24,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useProgress } from "../features/ruta/Progress";
+import { ORIENTATION_ZOOM_URL } from "../features/ruta/zoom";
 import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { officialUrl } from "./Detail";
@@ -125,13 +129,59 @@ function portraitUrl(value?: string | null) {
 
 function Portrait({ advisor }: { advisor: Advisor }) {
   const [failed, setFailed] = useState(false);
-  const source = portraitUrl(advisor.photo_url);
+  const localPortraits: Record<string, string> = {
+    "carlos-paredes": "/images/orientadores/carlos.jpg",
+    "sofia-quispe": "/images/orientadores/sofia.jpg",
+  };
+  const source = portraitUrl(advisor.photo_url) ?? localPortraits[advisor.id];
   return (
     <div className="connect-portrait">
       {source && !failed ? (
         <img src={source} alt="" onError={() => setFailed(true)} />
       ) : (
         <UserRound aria-hidden="true" />
+      )}
+    </div>
+  );
+}
+
+function GuidePreview({ guide, summary }: { guide: string; summary: string }) {
+  const intro = summary.trim()
+    ? guide.slice(0, Math.min(summary.trim().length, guide.length))
+    : "";
+  const items = guide
+    .slice(intro.length)
+    .trim()
+    .split(/\n\s*\n/)
+    .filter(Boolean);
+  return (
+    <div className="connect-guide-preview-body">
+      {intro && (
+        <section>
+          <h4>
+            <ClipboardList size={17} aria-hidden="true" />
+            Resumen de mi ruta
+          </h4>
+          <p>{intro}</p>
+        </section>
+      )}
+      {items.length > 0 && (
+        <section>
+          <h4>
+            <MessageSquare size={17} aria-hidden="true" />
+            Preguntas para conversar
+          </h4>
+          <ol role="list">
+            {items.map((text, index) => (
+              <li key={index}>
+                <span className="connect-question-number" aria-hidden="true">
+                  {index + 1}
+                </span>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
       )}
     </div>
   );
@@ -186,40 +236,35 @@ function Header({
   );
 }
 
-function saveCalendar(receipt: Receipt) {
-  if (!receipt.starts_at) return;
-  const stamp = (date: Date) =>
-    date
-      .toISOString()
-      .replace(/[-:]/g, "")
-      .replace(/\.\d{3}/, "");
-  const calendar = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//ORIENTA//Conecta//ES",
-    "BEGIN:VEVENT",
-    `UID:${receipt.id}@orienta`,
-    `DTSTAMP:${stamp(new Date())}`,
-    `DTSTART:${stamp(new Date(receipt.starts_at))}`,
-    `SUMMARY:Sesión de orientación ORIENTA${receipt.advisor_name ? ` · ${receipt.advisor_name}` : ""}`,
-    ...(receipt.meeting_url
-      ? [
-          `LOCATION:${receipt.meeting_url}`,
-          `DESCRIPTION:Enlace de Zoom: ${receipt.meeting_url}`,
-        ]
-      : []),
-    "END:VEVENT",
-    "END:VCALENDAR",
-    "",
-  ].join("\r\n");
-  const url = URL.createObjectURL(
-    new Blob([calendar], { type: "text/calendar;charset=utf-8" }),
+function forgetSession(id: string) {
+  try {
+    localStorage.setItem(
+      sessionsKey,
+      JSON.stringify(savedSessions().filter((item) => item.id !== id)),
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function ZoomButton({ meeting = ORIENTATION_ZOOM_URL }: { meeting?: string }) {
+  return meeting ? (
+    <a className="button" href={meeting} target="_blank" rel="noreferrer">
+      <Video size={18} aria-hidden="true" />
+      Ir a la reunión en Zoom
+      <ArrowRight size={17} aria-hidden="true" />
+    </a>
+  ) : (
+    <button
+      className="button"
+      disabled
+      title="El enlace aparecerá cuando la reunión esté confirmada"
+    >
+      <Video size={18} aria-hidden="true" />
+      Ir a la reunión en Zoom
+    </button>
   );
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "sesion-orienta.ics";
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 const directoryLink = (
@@ -385,23 +430,32 @@ export function Connect() {
                     <div className="connect-card-content">
                       <h3>{item.name}</h3>
                       <p className="connect-muted">
-                        Orientación · {item.focus}
+                        <GraduationCap size={16} aria-hidden="true" />
+                        {item.focus}
                       </p>
-                      <p>{item.conditions}</p>
-                      {!!item.topics?.length && (
-                        <ul className="connect-tags">
-                          {item.topics.map((topic) => (
-                            <li key={topic}>{topic}</li>
-                          ))}
-                        </ul>
-                      )}
                       <p className="connect-card-availability">
-                        <CalendarDays size={17} aria-hidden="true" />
+                        <CalendarDays size={16} aria-hidden="true" />
                         {item.slots.length
                           ? "Horarios disponibles"
                           : item.accepts_text
                             ? "Preguntas por escrito"
                             : "Sin horarios disponibles"}
+                      </p>
+                      <p className="connect-card-facts">
+                        {item.duration_minutes && (
+                          <span>
+                            <Clock size={15} aria-hidden="true" />
+                            {item.duration_minutes} min
+                          </span>
+                        )}
+                        <span>
+                          {item.slots.length ? (
+                            <Video size={15} aria-hidden="true" />
+                          ) : (
+                            <MessageSquare size={15} aria-hidden="true" />
+                          )}
+                          {item.slots.length ? "Zoom" : "Orientación"}
+                        </span>
                       </p>
                       <Link
                         className="button"
@@ -558,9 +612,12 @@ function AdvisorProfile({
               Incluir mi guía de conversación
             </label>
             {guide ? (
-              <details>
-                <summary>Revisar el texto que se enviará</summary>
-                <pre className="connect-guide-text">{guide}</pre>
+              <details className="connect-guide-preview">
+                <summary className="button secondary">
+                  <ClipboardList size={18} aria-hidden="true" />
+                  Revisar el texto que se enviará
+                </summary>
+                <GuidePreview guide={guide} summary={draft?.summary ?? ""} />
               </details>
             ) : (
               <p className="connect-muted">
@@ -744,8 +801,49 @@ function AdvisorProfile({
   );
 }
 
+function SessionRow({
+  item,
+  remove,
+}: {
+  item: Session;
+  remove: (id: string) => void;
+}) {
+  const meeting = item.channel === "zoom" ? ORIENTATION_ZOOM_URL : undefined;
+  return (
+    <article className="connect-session-row">
+      <CalendarDays size={21} aria-hidden="true" />
+      <div className="connect-session-info">
+        <strong>{item.advisor_name ?? "Solicitud de orientación"}</strong>
+        {item.starts_at && (
+          <small>
+            {dateLabel(item.starts_at)} · {time(item.starts_at)}
+          </small>
+        )}
+      </div>
+      <div className="connect-session-actions">
+        <Link
+          className="button secondary"
+          to={`/conecta/solicitudes/${item.id}`}
+        >
+          Ver sesión
+          <ArrowRight size={17} aria-hidden="true" />
+        </Link>
+        {item.channel === "zoom" && <ZoomButton meeting={meeting} />}
+        <button
+          className="button secondary connect-remove"
+          onClick={() => remove(item.id)}
+        >
+          <Trash2 size={17} aria-hidden="true" />
+          Eliminar de Mis sesiones
+        </button>
+      </div>
+    </article>
+  );
+}
+
 function Sessions() {
-  const sessions = savedSessions();
+  const [sessions, setSessions] = useState(savedSessions);
+  const [error, setError] = useState("");
   return (
     <>
       <Header
@@ -755,27 +853,27 @@ function Sessions() {
         action={directoryLink}
       />
       <section className="connect-panel connect-stack">
+        <p className="connect-muted">
+          Eliminar una sesión de esta lista no cancela la cita con el
+          orientador.
+        </p>
         {!sessions.length && (
           <p>Aún no tienes solicitudes guardadas en este navegador.</p>
         )}
         {sessions.map((item) => (
-          <Link
+          <SessionRow
             key={item.id}
-            className="connect-session-row"
-            to={`/conecta/solicitudes/${item.id}`}
-          >
-            <CalendarDays size={21} />
-            <span>
-              <strong>{item.advisor_name ?? "Solicitud de orientación"}</strong>
-              {item.starts_at && (
-                <small>
-                  {dateLabel(item.starts_at)} · {time(item.starts_at)}
-                </small>
-              )}
-            </span>
-            <ArrowRight size={17} />
-          </Link>
+            item={item}
+            remove={(id) => {
+              if (forgetSession(id)) {
+                setSessions(savedSessions());
+                setError("");
+              } else
+                setError("No pudimos eliminar la sesión de este dispositivo.");
+            }}
+          />
         ))}
+        {error && <p role="alert">{error}</p>}
       </section>
     </>
   );
@@ -783,6 +881,8 @@ function Sessions() {
 
 export function FollowUp() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [removeError, setRemoveError] = useState("");
   const [copied, setCopied] = useState(false);
   const result = useApi<Receipt>(
     `/api/orientacion/solicitudes/${encodeURIComponent(id ?? "")}`,
@@ -791,9 +891,7 @@ export function FollowUp() {
   const stored = savedSessions().find((item) => item.id === id);
   const receipt = result.data;
   const meeting =
-    receipt?.status === "confirmada"
-      ? officialUrl(receipt.meeting_url)
-      : undefined;
+    receipt?.channel === "zoom" ? ORIENTATION_ZOOM_URL : undefined;
   return (
     <div className="questionnaire-page">
       <div className="container questionnaire-container connect">
@@ -879,11 +977,16 @@ export function FollowUp() {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <Video size={18} /> Abrir reunión en Zoom{" "}
+                          <Video size={18} /> Ir a la reunión en Zoom{" "}
                           <ArrowRight size={17} />
                         </a>
                         <div className="connect-actions">
-                          <code style={{ wordBreak: "break-all", fontSize: "0.85rem" }}>
+                          <code
+                            style={{
+                              wordBreak: "break-all",
+                              fontSize: "0.85rem",
+                            }}
+                          >
                             {meeting}
                           </code>
                           <button
@@ -912,15 +1015,22 @@ export function FollowUp() {
                   <p>{receipt.response_window}</p>
                 )}
                 {receipt.response && <p>{receipt.response}</p>}
+                {removeError && <p role="alert">{removeError}</p>}
                 <div className="connect-actions">
-                  {receipt.status === "confirmada" && receipt.starts_at && (
-                    <button
-                      className="button secondary"
-                      onClick={() => saveCalendar(receipt)}
-                    >
-                      <CalendarDays size={17} /> Añadir al calendario
-                    </button>
-                  )}
+                  <button
+                    className="button secondary connect-remove"
+                    onClick={() => {
+                      if (id && forgetSession(id))
+                        navigate("/conecta?mis-sesiones=1");
+                      else
+                        setRemoveError(
+                          "No pudimos eliminar la sesión de este dispositivo.",
+                        );
+                    }}
+                  >
+                    <Trash2 size={17} aria-hidden="true" />
+                    Eliminar de Mis sesiones
+                  </button>
                   <button className="button secondary" onClick={result.retry}>
                     Actualizar estado
                   </button>

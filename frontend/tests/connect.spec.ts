@@ -1,3 +1,4 @@
+import { ORIENTATION_ZOOM_URL } from "../src/features/ruta/zoom";
 import { expect, test } from "./fixtures/test";
 
 for (const width of [375, 1440]) {
@@ -81,13 +82,13 @@ for (const width of [375, 1440]) {
       page.getByRole("heading", { name: "Solicitud recibida" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Abrir reunión en Zoom" }),
-    ).toHaveCount(0);
+      page.getByRole("link", { name: "Ir a la reunión en Zoom" }),
+    ).toHaveAttribute("href", ORIENTATION_ZOOM_URL);
     confirmed = true;
     await page.getByRole("button", { name: "Actualizar estado" }).click();
     await expect(
-      page.getByRole("link", { name: "Abrir reunión en Zoom" }),
-    ).toHaveAttribute("href", "https://zoom.us/j/123456");
+      page.getByRole("link", { name: "Ir a la reunión en Zoom" }),
+    ).toHaveAttribute("href", ORIENTATION_ZOOM_URL);
     await checkWidth();
     await page.getByRole("link", { name: "Mis sesiones" }).click();
     const session = page
@@ -98,7 +99,7 @@ for (const width of [375, 1440]) {
     ).toBeVisible();
     await expect(
       session.getByRole("link", { name: "Ir a la reunión en Zoom" }),
-    ).toHaveAttribute("href", "https://zoom.us/j/123456");
+    ).toHaveAttribute("href", ORIENTATION_ZOOM_URL);
     await expect(
       page.getByRole("button", { name: /Añadir.*calendario/ }),
     ).toHaveCount(0);
