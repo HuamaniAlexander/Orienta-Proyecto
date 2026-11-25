@@ -1,0 +1,655 @@
+/* One type scale for the same roles across every ORIENTA screen. */
+:root {
+  --font-page-title: 2rem;
+  --font-section-title: 1.375rem;
+  --font-card-title: 1.125rem;
+  --font-body: 0.875rem;
+  --font-caption: 0.75rem;
+  --font-control: 0.875rem;
+  --control-height: 2.75rem;
+  --control-border: #b8c7dc;
+  --control-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23425372' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+#root {
+  font-size: var(--font-body);
+  line-height: 1.6;
+}
+#root main .container {
+  width: min(1200px, calc(100% - 64px));
+}
+#root h1 {
+  font-size: var(--font-page-title);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+#root h2 {
+  font-size: var(--font-section-title);
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+#root h3 {
+  font-size: var(--font-card-title);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+#root h4 {
+  font-size: var(--font-body);
+  line-height: 1.5;
+}
+#root :is(p, li, dt, dd, label, legend, summary) {
+  font-size: var(--font-body);
+}
+#root p {
+  line-height: 1.6;
+}
+#root
+  :is(
+    .button,
+    .text-link,
+    .back-link,
+    .main-nav a,
+    .lite-button,
+    .select-button,
+    .criteria-nav button,
+    .my-route-tabs a
+  ) {
+  font-size: var(--font-control);
+}
+#root :is(input, select, textarea) {
+  font-size: var(--font-control);
+}
+#root
+  :is(
+    small,
+    .eyebrow,
+    .my-route-badge,
+    .discovery-tag,
+    .connect-pill,
+    .connect-tags li,
+    .compare-breadcrumb,
+    .questionnaire-breadcrumb
+  ) {
+  font-size: var(--font-caption);
+}
+#root :is(.cost-values dd, .duration-value strong) {
+  font-size: var(--font-section-title);
+}
+#root .button {
+  min-height: var(--control-height);
+  padding: 10px 18px;
+}
+#root
+  :is(
+    .compare-setup-heading p,
+    .questionnaire-title p,
+    .page-heading > p,
+    .hero > p,
+    .hero-description
+  ) {
+  font-size: var(--font-body);
+}
+#root :is(.compare-setup-count, .compare-setup-summary h2 > span) {
+  font-size: var(--font-body);
+}
+#root .compare-setup-panel {
+  padding: 24px;
+}
+#root .compare-setup-panel > header {
+  gap: 18px;
+  margin-bottom: 24px;
+}
+#root .compare-setup-form :is(input, select) {
+  height: var(--control-height);
+}
+#root .compare-setup-search-actions > .button {
+  min-width: min(100%, 280px);
+}
+#root .compare-setup-steps {
+  margin-block: 24px 32px;
+}
+#root .compare-setup-steps .compare-step-number {
+  width: 34px;
+  height: 34px;
+}
+#root .compare-setup-number {
+  width: 42px;
+  height: 42px;
+  font-size: 1rem;
+}
+#root .compare-setup-continue {
+  min-width: 280px;
+}
+#root .questionnaire-form--questions {
+  min-height: 30rem;
+}
+
+#root .catalog-search {
+  padding: 4px 8px 4px 14px;
+  gap: 12px;
+}
+#root .catalog-search input {
+  padding-block: 8px;
+}
+#root .catalog-search .button {
+  min-height: 38px;
+  padding-block: 7px;
+}
+#root .catalog-page .filters-fields select {
+  min-height: 38px;
+  padding-block: 7px;
+}
+@media (max-width: 720px) {
+  #root .catalog-search .button,
+  #root .catalog-page .filters-fields select {
+    min-height: 44px;
+  }
+  #root .catalog-page .filters-panel {
+    padding: 8px 12px;
+  }
+  #root .catalog-page .filters-panel > summary {
+    min-height: 44px;
+  }
+  #root .catalog-page .filters-title button {
+    min-height: 44px;
+  }
+}
+
+/* Keep actual select elements: forms, keyboard, screen readers and mobile pickers
+   retain their native behavior. The arrow has identical geometry on every page. */
+#root select {
+  appearance: none;
+  min-height: var(--control-height);
+  min-width: 0;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  padding-block: 9px;
+  padding-inline-end: 44px;
+  background-color: #fff;
+  background-image: var(--control-arrow);
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: right 14px center;
+  color: #122445;
+  cursor: pointer;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+}
+#root select:hover:not(:disabled) {
+  border-color: #6986b6;
+}
+#root select:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 3px;
+}
+#root select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+#root .home-district select {
+  padding-inline-start: 40px;
+}
+#root .home-district > svg {
+  inset-inline: 14px auto;
+  left: 14px;
+  right: auto;
+  width: 18px;
+  height: 18px;
+}
+
+/* The comparison is always visible while browsing the catalogue, even empty. */
+#root:has(.selection-tray) {
+  padding-bottom: var(--selection-tray-height, 120px);
+}
+#root .selection-tray ~ .site-footer {
+  padding-bottom: 24px;
+}
+#root .selection-tray {
+  display: block;
+  background: #f3f7ff;
+  border-top: 3px solid #1d4ed8;
+  backdrop-filter: none;
+  box-shadow: 0 -8px 28px #12244514;
+}
+#root .tray-content {
+  width: min(1200px, calc(100% - 40px));
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 14px;
+}
+#root .tray-title {
+  display: flex;
+  min-width: 0;
+  color: #164bc9;
+  flex-shrink: 0;
+  gap: 10px;
+}
+#root .tray-title strong {
+  font-size: var(--font-card-title);
+  color: #122445;
+}
+#root .tray-title small {
+  font-size: var(--font-caption);
+  color: #425372;
+}
+#root .tray-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+#root .tray-items > div {
+  background: white;
+  border: 1px solid #becde3;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+#root .tray-items > .is-empty {
+  border-style: dashed;
+  background: #f8faff;
+}
+#root .tray-items strong {
+  font-size: var(--font-body);
+  color: #122445;
+  font-weight: 600;
+}
+#root .tray-items small {
+  display: block;
+  font-size: var(--font-caption);
+  color: #425372;
+}
+#root .tray-title > div {
+  min-width: 0;
+}
+#root .tray-items .tray-choice:not(.is-empty) {
+  border-color: #93ade0;
+  gap: 12px;
+  padding: 10px 12px;
+}
+#root .tray-items .tray-choice[data-option="2"]:not(.is-empty) {
+  border-color: #8bbcb7;
+}
+#root .tray-logo-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: 2px solid #b1c8f3;
+  border-radius: 50%;
+  background: #fff;
+  padding: 6px;
+}
+#root .institution-mark {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  color: #164bc9;
+  font-size: 11px;
+  font-weight: 700;
+}
+#root .institution-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#root .tray-logo-number {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #164bc9;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+#root [data-option="2"] .tray-logo-ring {
+  border-color: #9fcfc9;
+}
+#root [data-option="2"] .tray-logo-number {
+  background: #11665f;
+}
+#root .tray-choice-copy {
+  min-width: 0;
+  flex: 1;
+}
+#root .tray-items .tray-choice-name {
+  font-weight: 700;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  overflow: visible;
+}
+#root .tray-items .tray-choice-institution {
+  margin-top: 4px;
+}
+#root .tray-items .tray-choice-location {
+  color: #526989;
+  margin-top: 2px;
+}
+@media (max-width: 850px) {
+  #root .tray-items .tray-choice:not(.is-empty) {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 28px;
+    gap: 6px;
+    padding: 8px;
+    align-items: start;
+  }
+  #root .tray-logo-ring {
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+  }
+  #root .tray-logo-number {
+    width: 17px;
+    height: 17px;
+    font-size: 9px;
+  }
+  #root .tray-items .tray-choice-copy {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  #root .tray-items .tray-choice-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  #root .tray-choice:not(.is-empty) > button {
+    grid-column: 3;
+    grid-row: 1;
+    min-width: 28px;
+    min-height: 36px;
+    padding: 4px;
+  }
+}
+#root .tray-choice-number {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #164bc9;
+  background: #e7efff;
+  font-weight: 600;
+}
+#root .tray-items button {
+  min-width: 36px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+#root .tray-content > .button {
+  flex-shrink: 0;
+}
+#root .tray-content > .button:disabled {
+  background: #dce4f3;
+  color: #526989;
+  border-color: #c8d5e9;
+  opacity: 1;
+}
+@media (max-width: 850px) {
+  #root .tray-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    padding-block: 10px;
+  }
+  #root .tray-items {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  #root .tray-title strong {
+    font-size: var(--font-body);
+  }
+  #root .tray-content > .button {
+    grid-column: 2;
+    grid-row: 1;
+    padding-inline: 12px;
+  }
+  #root .tray-items > div {
+    padding: 6px 8px;
+    gap: 6px;
+  }
+  #root .tray-choice-number {
+    display: none;
+  }
+  #root .tray-items strong {
+    font-size: var(--font-caption);
+  }
+}
+
+/* Modern browsers expose the native options popup for styling; browsers without
+   this feature continue to use the operating system's accessible picker. */
+@supports (appearance: base-select) {
+  #root select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+  #root select {
+    align-items: center;
+  }
+  #root select::picker-icon {
+    display: none;
+  }
+  ::picker(select) {
+    background: #fff;
+    border: 1px solid var(--control-border);
+    border-radius: 10px;
+    padding: 6px;
+    margin-block: 6px;
+    box-shadow: 0 10px 28px #12244524;
+    max-height: min(22rem, 60vh);
+    max-width: calc(100vw - 24px);
+    overflow-y: auto;
+    font:
+      var(--font-control)/1.5 "Inter",
+      system-ui,
+      sans-serif;
+    color: #122445;
+    scrollbar-width: thin;
+    scrollbar-color: #b8c7dc #fff;
+  }
+  #root select option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+  #root select option:is(:hover, :focus-visible) {
+    background: #eef3fd;
+    color: #123f9e;
+  }
+  #root select option:checked {
+    background: #e7efff;
+    color: #123f9e;
+    font-weight: 600;
+  }
+  #root select option::checkmark {
+    color: #164bc9;
+  }
+}
+
+#root details > summary {
+  list-style: none;
+}
+#root details > summary::-webkit-details-marker {
+  display: none;
+}
+#root details:not(.filters-panel) > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+#root details > summary::after {
+  content: "";
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-inline-start: auto;
+  background: var(--control-arrow) center / 18px 18px no-repeat;
+}
+#root details[open] > summary::after {
+  transform: rotate(180deg);
+}
+#root summary > svg:last-child:not(:first-child) {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --font-page-title: 1.75rem;
+    --font-body: 0.9375rem;
+    --font-control: 1rem;
+    --control-height: 2.75rem;
+  }
+  #root main .container {
+    width: calc(100% - 32px);
+  }
+  #root .compare-setup-continue {
+    min-width: 0;
+  }
+  #root .compare-setup-panel {
+    padding: 22px 18px;
+  }
+  #root .compare-setup-search-actions > .button {
+    min-width: 0;
+  }
+  #root .questionnaire-form--questions {
+    min-height: 0;
+  }
+  #root :is(.main-nav a, .my-route-tabs a, .lite-button) {
+    font-size: var(--font-body);
+  }
+}
+@media (forced-colors: active) {
+  #root select {
+    appearance: auto;
+    background-image: none;
+  }
+  ::picker(select) {
+    appearance: auto;
+  }
+}
+/* Save state shared by the catalogue, suggestions and Mi ruta. */
+#root .save-toggle {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+#root .save-toggle[aria-pressed="true"] {
+  background: #fff7e1;
+  border-color: #fdba30;
+  color: #754808;
+}
+#root .save-toggle[aria-pressed="true"] > svg {
+  color: #fdba30;
+  animation: route-bookmark-save 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+#root .save-offer-icon[aria-pressed="true"] {
+  color: #fdba30;
+}
+@keyframes route-bookmark-save {
+  0% {
+    transform: scale(0.8) rotate(-8deg);
+  }
+  65% {
+    transform: scale(1.14) rotate(3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+#root .comparison-save-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  border: 1px solid #cbd7e6;
+  border-left: 4px solid #2c4a7a;
+  background: #f8fafd;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-block: 20px;
+}
+#root .comparison-save-bar p {
+  margin: 0;
+  color: #102342;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+#root .comparison-save-bar p > svg {
+  color: #2c4a7a;
+  flex-shrink: 0;
+}
+#root .comparison-save-bar .route-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+#root .comparison-save-bar .button {
+  min-height: 36px;
+  padding: 6px 14px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+#root .comparison-save-bar .button.secondary {
+  background: #fff;
+  border: 1.5px solid #2c4a7a;
+  color: #1a365d;
+}
+#root .comparison-save-bar .button.secondary:hover {
+  background: #2c4a7a;
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle {
+  background: #2c4a7a;
+  border-color: #2c4a7a;
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle > svg {
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle:hover {
+  background: #1f375c;
+  border-color: #1f375c;
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle[aria-pressed="true"] {
+  background: #9e3b3b;
+  border-color: #9e3b3b;
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle[aria-pressed="true"] > svg {
+  color: #fff;
+}
+#root .comparison-save-bar .button.save-toggle[aria-pressed="true"]:hover {
+  background: #7f2d2d;
+  border-color: #7f2d2d;
+}
+@media (prefers-reduced-motion: reduce) {
+  #root .save-toggle,
+  #root .save-toggle > svg {
+    animation: none;
+    transition: none;
+  }
+}

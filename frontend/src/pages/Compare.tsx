@@ -1,49 +1,24 @@
+import { SaveComparison } from "../features/ruta/Progress";
 import { offerLabel } from "../shared/types/labels";
 import {
-  ArrowLeft,
   ArrowRight,
-  Award,
-  BookOpen,
-  Building,
-  Building2,
-  Check,
-  Clock,
-  Coins,
-  ExternalLink,
-  GraduationCap,
-  Landmark,
-  Laptop,
-  Lightbulb,
+  Bookmark,
   MapPin,
-  Navigation,
-  Scale,
   Search,
-  Sparkles,
   X,
 } from "lucide-react";
-
-const CRITERION_ICONS: Record<string, typeof Scale> = {
-  carrera_oficial: GraduationCap,
-  enfoque_editorial: Lightbulb,
-  ambitos_editoriales: BookOpen,
-  duracion: Clock,
-  costos: Coins,
-  modalidad: Laptop,
-  distrito: MapPin,
-  institucion: Building2,
-  tipo: Landmark,
-  sede: Navigation,
-  nivel: Award,
-  gestion: Building,
-};
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
-import { careerImage, Institution } from "../shared/components/OfferCard";
+import { InstitutionLogo } from "../shared/components/InstitutionLogo";
+import { CriteriaGuide } from "../features/comparador/CriteriaGuide";
 import { useSelection } from "../features/comparador/Selection";
+import {
+  ComparisonSetup,
+  ComparisonSteps,
+} from "../features/comparador/ComparisonSetup";
 import type { Offer, OfferDetail } from "../shared/types/catalog";
-import { officialUrl } from "./Detail";
 import "../features/comparador/compare.css";
 
 export interface Comparison {
@@ -63,6 +38,7 @@ export interface Comparison {
 }
 export function Compare() {
   const [params, setParams] = useSearchParams();
+  const hasOptions = params.has("opciones");
   const { items, remove, replaceAll } = useSelection();
   const paramIds = (params.get("opciones") ?? "")
     .split(",")
@@ -86,10 +62,9 @@ export function Compare() {
     loading: boolean;
   }>({ loading: !!key });
   const [attempt, setAttempt] = useState(0);
-  const [onlyDifferent, setOnlyDifferent] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
-    if (!key) {
+    if (!key || !hasOptions) {
       setState({ loading: false });
       return;
     }
@@ -129,7 +104,7 @@ export function Compare() {
       );
     }
     return () => controller.abort();
-  }, [key, attempt, replaceAll]);
+  }, [key, attempt, replaceAll, hasOptions]);
   function change(offer: Offer) {
     remove(offer.oferta_id);
     const remaining = ids.filter((id) => id !== offer.oferta_id);
@@ -138,22 +113,55 @@ export function Compare() {
     });
   }
   const selected = state.data?.opciones ?? (state.single ? [state.single] : []);
+  if (
+    (!hasOptions || (validIds && paramIds.length === 1)) &&
+    !state.loading &&
+    !state.error
+  ) {
+    return (
+      <ComparisonSetup
+        offers={hasOptions ? selected : items}
+        onChange={(offers) => {
+          replaceAll(offers);
+          if (hasOptions) setParams({}, { replace: true });
+        }}
+        onCompare={() =>
+          setParams({ opciones: items.map((item) => item.oferta_id).join(",") })
+        }
+      />
+    );
+  }
   return (
     <div className="container compare-page">
-      <Link className="back-link" to="/carreras">
-        <ArrowLeft size={16} />
-        Volver al catálogo
-      </Link>
+      <nav className="compare-breadcrumb" aria-label="Ruta de navegación">
+        <Link aria-label="Volver al catálogo" to="/carreras">
+          Carreras
+        </Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Comparar</span>
+      </nav>
       <div className="page-heading">
-        <p className="eyebrow">
-          <Scale size={15} /> DOS OPCIONES, MÁS PERSPECTIVA
-        </p>
-        <h1>Compara. Descubre qué cambia.</h1>
-        <p>
-          Primero la carrera. Después, la oferta que mejor encaja con tus
-          prioridades.
-        </p>
+        <h1>Compara a tu ritmo.</h1>
+        <p>Un criterio a la vez, tus dos opciones siempre a la vista.</p>
       </div>
+      <ComparisonSteps current={2} />
+      {state.data && !state.loading && !state.error && (
+        <div className="comparison-save-bar">
+          <p>
+            <Bookmark size={18} aria-hidden="true" />
+            Guarda estas dos opciones para retomarlas en Mi ruta.
+          </p>
+          <div className="route-actions">
+            <SaveComparison offers={state.data.opciones} />
+            <Link
+              className="button secondary"
+              to="/mi-ruta?vista=comparaciones"
+            >
+              Ver mis comparaciones <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      )}
       {params.has("opciones") && !validIds ? (
         <Failure message="El enlace debe contener una o dos opciones diferentes. Elige de nuevo desde el catálogo." />
       ) : state.loading ? (
@@ -168,14 +176,11 @@ export function Compare() {
           <div className="compare-options">
             {selected.map((offer) => (
               <article className="comparison-option" key={offer.oferta_id}>
-                <div className="comparison-option-image illustration">
-                  <img
-                    src={careerImage(offer)}
-                    alt=""
-                    width="640"
-                    height="400"
+                <div className="compare-institution-logo">
+                  <InstitutionLogo
+                    id={offer.institucion_id}
+                    name={offer.institucion}
                   />
-                  <span>{offer.institucion}</span>
                 </div>
                 <div>
                   <div className="option-heading">
@@ -187,9 +192,8 @@ export function Compare() {
                       <X size={18} />
                     </button>
                   </div>
-                  <Institution offer={offer} />
                   <p className="option-meta">
-                    {offer.distrito} · {offer.modalidad}
+                    <MapPin size={15} aria-hidden="true" /> {offer.distrito}
                   </p>
                   <Link
                     className="text-link"
@@ -202,7 +206,7 @@ export function Compare() {
                       );
                     }}
                   >
-                    Cambiar carrera <ArrowRight size={15} />
+                    Cambiar opción <ArrowRight size={15} />
                   </Link>
                 </div>
               </article>
@@ -230,110 +234,7 @@ export function Compare() {
           </div>
           {state.data && (
             <>
-              <div className="comparison-intro">
-                <div>
-                  <Check size={19} />
-                  <p>{state.data.explicacion}</p>
-                </div>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={onlyDifferent}
-                    onChange={(event) => setOnlyDifferent(event.target.checked)}
-                  />
-                  Solo diferencias
-                </label>
-              </div>
-              <section
-                className="comparison-table"
-                aria-label="Criterios de comparación"
-              >
-                <div className="comparison-table-head">
-                  <span>Criterio</span>
-                  {state.data.opciones.map((offer) => (
-                    <strong key={offer.oferta_id}>{offerLabel(offer)}</strong>
-                  ))}
-                </div>
-                {state.data.criterios
-                  .filter((row) => !onlyDifferent || row.different)
-                  .map((row) => {
-                    const CriterionIcon = CRITERION_ICONS[row.key] ?? Scale;
-                    return (
-                      <div
-                        className={
-                          row.different
-                            ? "comparison-row different"
-                            : "comparison-row"
-                        }
-                        key={row.key}
-                      >
-                        <div className="criterion-title">
-                          <div className="criterion-header">
-                            <CriterionIcon
-                              size={15}
-                              className="criterion-icon"
-                              aria-hidden="true"
-                            />
-                            <strong>{row.title}</strong>
-                          </div>
-                          {row.editorial && <small>Síntesis editorial</small>}
-                          {row.different && (
-                            <span className="difference-label">Diferencia</span>
-                          )}
-                        </div>
-                        <p>{row.a ?? "Consulta este dato con la institución"}</p>
-                        <p>{row.b ?? "Consulta este dato con la institución"}</p>
-                      </div>
-                    );
-                  })}
-              </section>
-              {state.data.diferencia_duracion && (
-                <p className="duration-note">
-                  {state.data.diferencia_duracion}
-                </p>
-              )}
-              <div className="info-note">
-                Los años y ciclos se conservan como unidades distintas. Los
-                costos requieren confirmar concepto, categoría y periodo; no se
-                calcula una diferencia con datos incompletos.
-              </div>
-              <section className="comparison-pending">
-                <h2>Lo que falta confirmar.</h2>
-                <p>
-                  Consulta las fuentes para revisar{" "}
-                  {state.data.pendientes.join(", ").toLowerCase()}. Las síntesis
-                  editoriales no sustituyen esos documentos.
-                </p>
-                <div>
-                  {state.data.opciones.map((offer) => (
-                    <a
-                      className="button secondary"
-                      key={offer.oferta_id}
-                      href={officialUrl(offer.ficha_url)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Programa de {offerLabel(offer)}
-                      <ExternalLink size={15} />
-                    </a>
-                  ))}
-                </div>
-              </section>
-              <section className="ai-callout">
-                <span>
-                  <Sparkles size={29} />
-                </span>
-                <div>
-                  <h2>¿Qué diferencias importan para ti?</h2>
-                  <p>
-                    Cuéntanos tus prioridades y explora esta comparación con
-                    ayuda de la IA.
-                  </p>
-                </div>
-                <Link className="button" to={`/analisis?opciones=${key}`}>
-                  Explorar con IA <ArrowRight size={17} />
-                </Link>
-              </section>
+              <CriteriaGuide key={key} comparison={state.data} ids={key} />
             </>
           )}
         </>

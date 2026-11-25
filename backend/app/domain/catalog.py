@@ -57,6 +57,7 @@ class AcademicOffer:
     modalidad_id: int
     distrito_id: int
     evidencia_sede: str | None = None
+    plan_estudio: dict[str, Any] | None = None
 
 
 @dataclass

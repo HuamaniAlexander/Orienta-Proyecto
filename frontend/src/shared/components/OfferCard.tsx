@@ -2,6 +2,8 @@ import { ArrowRight, BookOpen, MapPin, Monitor } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { duration, type Offer } from "../types/catalog";
+import { SaveOffer } from "../../features/ruta/Progress";
+import { InstitutionLogo } from "./InstitutionLogo";
 
 const AREA_IMAGES = [
   "tecnologia",
@@ -15,7 +17,7 @@ const AREA_IMAGES = [
   "ambiente",
   "humanidades",
 ];
-export function careerImage(offer: Offer) {
+export function careerImage(offer: Pick<Offer, "area_id" | "carrera_oficial">) {
   const name = offer.carrera_oficial
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
@@ -80,15 +82,14 @@ export function OfferCard({
         <span className="area-badge">{offer.area}</span>
       </div>
       <div className="offer-body">
-        <span
-          className={`type-badge ${
-            offer.tipo.toLowerCase().includes("universidad")
-              ? "tipo-universidad"
-              : "tipo-instituto"
-          }`}
-        >
-          {offer.tipo}
-        </span>
+        <div className="offer-card-tools">
+          <span
+            className={`type-badge ${offer.tipo.toLowerCase().includes("universidad") ? "tipo-universidad" : "tipo-instituto"}`}
+          >
+            {offer.tipo}
+          </span>
+          <SaveOffer offer={offer} iconOnly />
+        </div>
         <h3>
           <Link
             to={`/carreras/${offer.oferta_id}`}
@@ -97,32 +98,37 @@ export function OfferCard({
             {offer.carrera_oficial}
           </Link>
         </h3>
-        <Institution offer={offer} />
         <div className="offer-facts">
           <span>
             <MapPin size={14} />
             {offer.distrito}
           </span>
-          <span>
+          <span className="offer-modality">
             <Monitor size={14} />
             {offer.modalidad}
           </span>
-          <span>
+          <span className="offer-duration">
             <BookOpen size={14} />
             {duration(offer)}
           </span>
         </div>
-        <div className="offer-actions">
+        <div className="offer-details">
+          <div className="offer-institution-footer">
+            <InstitutionLogo
+              id={offer.institucion_id}
+              name={offer.institucion}
+            />
+          </div>
           <Link
-            className="text-link"
+            className="button offer-view-button"
             to={`/carreras/${offer.oferta_id}`}
             state={{ from: location.pathname + location.search }}
           >
-            Ver detalles <ArrowRight size={16} />
+            Ver carrera <ArrowRight size={16} aria-hidden="true" />
           </Link>
-          {action}
         </div>
       </div>
+      {action && <div className="offer-actions">{action}</div>}
     </article>
   );
 }

@@ -45,7 +45,7 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Compara carreras.",
+      "Descubre qué estudiar.",
     );
     await expect
       .poll(() =>
@@ -79,3 +79,40 @@ test("ruta inexistente permite volver", async ({ page }) => {
   await page.getByRole("link", { name: "Volver al inicio" }).click();
   await expect(page).toHaveURL("/");
 });
+
+for (const width of [390, 900, 1440]) {
+  test(`la navegación conserva sus enlaces y medidas a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const routes = {
+      Inicio: "/",
+      Carreras: "/carreras",
+      Comparar: "/comparar",
+      Descubre: "/descubre",
+      "Mi ruta": "/mi-ruta",
+      Conecta: "/conecta",
+      Colegios: "/colegios",
+    };
+    const header = page.getByRole("banner");
+    const nav = header.getByRole("navigation", {
+      name: "Navegación principal",
+    });
+    for (const [label, path] of Object.entries(routes)) {
+      await page.goto(path);
+      if (width < 900)
+        await header.getByRole("button", { name: "Abrir menú" }).click();
+      await expect(nav.getByRole("link")).toHaveText(Object.keys(routes));
+      await expect(
+        nav.getByRole("link", { name: label, exact: true }),
+      ).toHaveAttribute("aria-current", "page");
+      await expect(
+        header.getByRole("button", { name: "Modo ligero" }),
+      ).toBeVisible();
+      await expect(header).toHaveCSS("height", "70px");
+      expect(
+        await header.evaluate((element) => element.scrollWidth),
+      ).toBeLessThanOrEqual(width);
+    }
+  });
+}

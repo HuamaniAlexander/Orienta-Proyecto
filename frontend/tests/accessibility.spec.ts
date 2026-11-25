@@ -4,7 +4,7 @@ const pages = [
   ["inicio", "/", ".hero"],
   ["catalogo", "/carreras?q=software&distrito_id=5", ".offer-card"],
   ["detalle", "/carreras/10", ".source-list"],
-  ["comparador", "/comparar?opciones=10,110", ".comparison-table"],
+  ["comparador", "/comparar?opciones=10,110", ".criteria-guide"],
   ["preferencias", "/analisis?opciones=10,110", ".preferences-panel"],
 ];
 test("enlace para saltar al contenido tiene foco visible por teclado", async ({

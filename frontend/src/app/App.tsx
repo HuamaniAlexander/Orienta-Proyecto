@@ -1,6 +1,11 @@
 import { ArrowRight, Compass, Leaf, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
+import { PrepareConversation } from "../pages/PrepareConversation";
+import { MyRoute, ProgressSettings } from "../pages/MyRoute";
+import { Discover, PreferenceForm } from "../pages/Discover";
+import { Connect, FollowUp } from "../pages/Connect";
+import { Schools } from "../pages/Schools";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
@@ -34,6 +39,7 @@ export function NotFound() {
   );
 }
 export function App() {
+  const { pathname } = useLocation();
   const [menu, setMenu] = useState(false);
   const [lite, setLite] = useState(() => {
     try {
@@ -83,8 +89,26 @@ export function App() {
             <NavLink to="/carreras" onClick={() => setMenu(false)}>
               Carreras
             </NavLink>
-            <NavLink to="/comparar" onClick={() => setMenu(false)}>
+            <NavLink
+              to="/comparar"
+              className={({ isActive }) =>
+                isActive || pathname === "/analisis" ? "active" : ""
+              }
+              onClick={() => setMenu(false)}
+            >
               Comparar
+            </NavLink>
+            <NavLink to="/descubre" onClick={() => setMenu(false)}>
+              Descubre
+            </NavLink>
+            <NavLink to="/mi-ruta" onClick={() => setMenu(false)}>
+              Mi ruta
+            </NavLink>
+            <NavLink to="/conecta" onClick={() => setMenu(false)}>
+              Conecta
+            </NavLink>
+            <NavLink to="/colegios" onClick={() => setMenu(false)}>
+              Colegios
             </NavLink>
           </nav>
           <div className="header-actions">
@@ -97,9 +121,6 @@ export function App() {
               <Leaf size={16} />
               <span>Modo ligero</span>
             </button>
-            <Link className="button header-cta" to="/carreras">
-              Explorar carreras <ArrowRight size={16} />
-            </Link>
             <button
               className="menu-button"
               aria-expanded={menu}
@@ -118,6 +139,14 @@ export function App() {
           <Route path="/carreras/:id" element={<Detail />} />
           <Route path="/comparar" element={<Compare />} />
           <Route path="/analisis" element={<Analysis />} />
+          <Route path="/descubre" element={<Discover />} />
+          <Route path="/descubre/preferencias" element={<PreferenceForm />} />
+          <Route path="/mi-ruta" element={<MyRoute />} />
+          <Route path="/mi-ruta/preparar" element={<PrepareConversation />} />
+          <Route path="/mi-ruta/avance" element={<ProgressSettings />} />
+          <Route path="/conecta" element={<Connect />} />
+          <Route path="/conecta/solicitudes/:id" element={<FollowUp />} />
+          <Route path="/colegios" element={<Schools />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -139,7 +168,9 @@ export function App() {
           </p>
           <div>
             <Link to="/carreras">Explorar carreras</Link>
-            <Link to="/#como-funciona">Cómo funciona</Link>
+            <Link to="/descubre">Test vocacional</Link>
+            <Link to="/conecta">Orientadores Zoom</Link>
+            <Link to="/colegios">Planes para colegios</Link>
           </div>
         </div>
         <div className="container footer-bottom">
