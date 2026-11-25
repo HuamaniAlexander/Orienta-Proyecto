@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Bookmark,
   MapPin,
-  Scale,
   Search,
   X,
 } from "lucide-react";

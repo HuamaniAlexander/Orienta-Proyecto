@@ -9,7 +9,6 @@ import {
   ExternalLink,
   LoaderCircle,
   MapPin,
-  Landmark,
   Lightbulb,
   Laptop,
   Clock,
