@@ -19,3 +19,20 @@ coverage/
 ml/artifacts/
 data/private/
 *.log
+
+# Archivos locales del kit Antigravity (skills y prompts de trabajo)
+/.agents/
+/PROMPT_MAESTRO.md
+/PROMPT_MAESTRO*.md
+/PROMPTS_POR_FASE.md
+/PROMPT_ANTIGRAVITY*.md
+/README_INSTALACION.md
+/MATRIZ_MEJORAS.csv
+/GITIGNORE_RECOMENDADO.txt
+/orienta_antigravity/
+/ORIENTA_Antigravity_Skills_Prompts/
+/ORIENTA_Antigravity_Skills_Prompts*.zip
+/.run-descubre/
+/backend/data/
+frontend/.env.local
+.orientation-demo.sqlite3*
