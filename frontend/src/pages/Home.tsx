@@ -3,7 +3,6 @@ import {
   BookOpen,
   Building2,
   ChartNoAxesCombined,
-  ChevronDown,
   Cpu,
   Cross,
   Settings,
@@ -17,6 +16,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import type { Facets } from "../shared/types/catalog";
+import {
+  SearchInput,
+  catalogSuggestions,
+} from "../shared/components/SearchInput";
 import { AnimatedCount } from "../features/inicio/AnimatedCount";
 import { InstitutionCarousel } from "../features/inicio/InstitutionCarousel";
 import "../features/inicio/home.css";
@@ -86,12 +89,14 @@ export function Home() {
             <div className="home-search-fields">
               <div className="home-field">
                 <Search size={24} aria-hidden="true" />
-                <input
+                <SearchInput
                   id="home-career"
                   name="q"
                   type="search"
                   maxLength={120}
                   placeholder="Ej. Ingeniería de Sistemas"
+                  suggestions={catalogSuggestions(data)}
+                  submitOnChoose
                 />
               </div>
               <div className="home-field home-district">
@@ -107,7 +112,6 @@ export function Home() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={20} aria-hidden="true" />
               </div>
               <button className="button home-search-button">
                 Explorar carreras <ArrowRight size={28} aria-hidden="true" />

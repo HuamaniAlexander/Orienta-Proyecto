@@ -2,16 +2,22 @@ import {
   ArrowLeft,
   ArrowRight,
   Bookmark,
+  Check,
+  Clock3,
+  GraduationCap,
+  MapPin,
+  ShieldCheck,
   Laptop,
   MessageSquare,
   Pencil,
   Plus,
+  RefreshCw,
   Scale,
   SlidersHorizontal,
   Sparkles,
   Trash2,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   comparisonKey,
@@ -21,8 +27,8 @@ import {
 } from "../features/ruta/Progress";
 import { INITIAL } from "../features/ruta/discovery";
 import { questions } from "../features/ruta/questions";
-import { careerImage } from "../shared/components/OfferCard";
-import { useApi } from "../shared/api/client";
+import { InstitutionLogo } from "../shared/components/InstitutionLogo";
+import { api, useApi } from "../shared/api/client";
 import type { Facets } from "../shared/types/catalog";
 import "../features/ruta/route.css";
 import "../features/ruta/my-route.css";
@@ -38,6 +44,7 @@ const criteriaKeys = [
 
 export function MyRoute() {
   const { progress, persistent } = useProgress();
+  const facets = useApi<Facets>("/api/filtros");
   const [params] = useSearchParams();
   const tabs = [
     ["carreras", `Carreras guardadas · ${progress.offers.length}`, Bookmark],
@@ -93,21 +100,39 @@ export function MyRoute() {
                 </Link>
               </header>
               {!progress.offers.length && (
-                <p>Todavía no has guardado carreras.</p>
+                <div className="my-route-empty">
+                  <Bookmark size={36} strokeWidth={1.5} aria-hidden="true" />
+                  <h3>Tu próxima opción empieza con curiosidad.</h3>
+                  <p>
+                    Todavía no has guardado carreras. Explora el catálogo y
+                    guarda las que quieras conocer mejor; aquí podrás retomarlas
+                    y anotar tus preguntas.
+                  </p>
+                  <Link className="button" to="/carreras">
+                    Encontrar carreras <ArrowRight size={18} />
+                  </Link>
+                  <Link className="text-link" to="/descubre">
+                    ¿No sabes por dónde empezar? Descubre tus intereses
+                  </Link>
+                </div>
               )}
               {progress.offers.map((offer) => (
                 <article
                   className="my-route-row my-route-offer"
                   key={offer.oferta_id}
                 >
-                  <img
-                    src={careerImage({
-                      area_id: offer.area_id ?? 0,
-                      carrera_oficial: offer.carrera_oficial,
-                    })}
-                    alt=""
-                    loading="lazy"
-                  />
+                  <div className="my-route-saved-logo">
+                    <InstitutionLogo
+                      id={
+                        offer.institucion_id ??
+                        facets.data?.instituciones.find(
+                          (item) => item.nombre === offer.institucion,
+                        )?.institucion_id ??
+                        0
+                      }
+                      name={offer.institucion}
+                    />
+                  </div>
                   <div>
                     {offer.area && (
                       <span className="my-route-badge">{offer.area}</span>
@@ -150,25 +175,6 @@ export function MyRoute() {
                 </article>
               ))}
             </section>
-            <aside className="route-panel route-stack">
-              <h2>Tu próximo paso</h2>
-              <Link className="my-route-row" to="/descubre">
-                <Laptop size={21} /> Conoce las actividades
-              </Link>
-              <Link className="my-route-row" to="/carreras">
-                <Bookmark size={21} /> Revisa dónde estudiar
-              </Link>
-              <Link className="my-route-row" to="/comparar">
-                <Scale size={21} /> Compara dos opciones
-              </Link>
-              <Link className="button" to="/carreras">
-                Explorar instituciones <ArrowRight size={17} />
-              </Link>
-              <p className="my-route-note">
-                Puedes guardar nuevas opciones y retirar las que ya no quieras
-                explorar.
-              </p>
-            </aside>
           </div>
         )}
         {active === "comparaciones" && (
@@ -179,26 +185,61 @@ export function MyRoute() {
                   <h2>Tus opciones, listas para retomar.</h2>
                   <p>Vuelve al criterio que quieras revisar.</p>
                 </div>
-                <Link className="button secondary" to="/carreras">
+                <Link className="button secondary" to="/comparar">
                   Crear comparación <Plus size={17} />
                 </Link>
               </header>
               {!progress.comparisons.length && (
-                <p>Todavía no has guardado comparaciones.</p>
+                <div className="my-route-empty">
+                  <Scale size={36} strokeWidth={1.5} aria-hidden="true" />
+                  <h3>Mira tus opciones lado a lado.</h3>
+                  <p>
+                    Todavía no has guardado comparaciones. Compara dos opciones
+                    y pulsa «Guardar comparación» en el resultado para
+                    retomarlas aquí.
+                  </p>
+                  <Link
+                    className="button"
+                    to={
+                      progress.offers.length >= 2
+                        ? `/comparar?opciones=${progress.offers
+                            .slice(0, 2)
+                            .map((offer) => offer.oferta_id)
+                            .join(",")}`
+                        : "/comparar"
+                    }
+                  >
+                    {progress.offers.length >= 2
+                      ? "Comparar mis carreras guardadas"
+                      : "Elegir dos opciones"}{" "}
+                    <ArrowRight size={18} />
+                  </Link>
+                </div>
               )}
               {progress.comparisons.map((pair) => {
                 const ids = pair.map((offer) => offer.oferta_id).join(",");
                 const url = `/comparar?opciones=${ids}`;
                 return (
                   <article
-                    className="my-route-row route-stack"
+                    className="my-route-row route-stack my-route-comparison"
                     key={comparisonKey(pair)}
                   >
                     <span className="my-route-badge">Comparación guardada</span>
                     <div className="my-route-pair">
-                      {pair.map((offer, index) => (
+                      {pair.map((offer) => (
                         <div key={offer.oferta_id}>
-                          {index === 1 && <span>vs</span>}
+                          <div className="my-route-university-logo">
+                            <InstitutionLogo
+                              id={
+                                offer.institucion_id ??
+                                facets.data?.instituciones.find(
+                                  (item) => item.nombre === offer.institucion,
+                                )?.institucion_id ??
+                                0
+                              }
+                              name={offer.institucion}
+                            />
+                          </div>
                           <div>
                             <strong>{offer.carrera_oficial}</strong>
                             <p>{offer.institucion}</p>
@@ -217,14 +258,15 @@ export function MyRoute() {
                         </Link>
                       ))}
                     </div>
-                    <div className="route-actions">
+                    <div className="route-actions my-route-comparison-actions">
                       <Link className="button" to={url}>
                         Retomar comparación <ArrowRight size={16} />
                       </Link>
                       <Link
-                        className="text-link"
+                        className="button secondary"
                         to={`/analisis?opciones=${ids}`}
                       >
+                        <Sparkles size={17} aria-hidden="true" />
                         Explicar con IA
                       </Link>
                       <SaveComparison offers={pair} />
@@ -233,15 +275,6 @@ export function MyRoute() {
                 );
               })}
             </section>
-            <aside className="route-panel route-stack">
-              <h2>¿Qué quieres revisar?</h2>
-              <p className="my-route-row">Lo que aprenderás</p>
-              <p className="my-route-row">La experiencia de estudio</p>
-              <p className="my-route-row">Tus condiciones para estudiar</p>
-              <Link className="button secondary" to="/carreras">
-                Explorar carreras <ArrowRight size={16} />
-              </Link>
-            </aside>
           </div>
         )}
         {active === "preguntas" && (
@@ -283,139 +316,140 @@ function RouteQuestions({ career }: { career: string }) {
     setError("");
   }
   return (
-    <div className="my-route-layout">
-      <section className="route-panel route-stack">
-        <header>
-          <h2>Lo que quieres averiguar.</h2>
-          <p>Guarda tus dudas y marca las que ya investigaste.</p>
-        </header>
-        <div className="my-route-header">
-          <div className="route-actions">
-            {(["Todas", "Pendientes", "Investigadas"] as const).map(
-              (name, index) => (
-                <button
-                  key={name}
-                  type="button"
-                  className={`button ${filter === name ? "" : "secondary"}`}
-                  aria-pressed={filter === name}
-                  onClick={() => setFilter(name)}
-                >
-                  {name} ·{" "}
-                  {
-                    [
-                      items.length,
-                      items.length - researched.length,
-                      researched.length,
-                    ][index]
-                  }
-                </button>
-              ),
-            )}
-          </div>
-          <button
-            className="button secondary"
-            onClick={() => {
-              reset();
-              field.current?.focus();
-            }}
-          >
-            <Plus size={16} /> Añadir pregunta
-          </button>
-        </div>
-        {career && (
-          <Link className="text-link" to="/mi-ruta?vista=preguntas">
-            Ver todas las carreras
-          </Link>
-        )}
-        {!items.length && <p>Todavía no hay preguntas en esta vista.</p>}
-        {items
-          .filter(
-            (item) =>
-              filter === "Todas" ||
-              researched.includes(item) === (filter === "Investigadas"),
-          )
-          .map((item) => {
-            const detail = progress.questionDetails?.[item];
-            const offer = progress.offers.find(
-              (entry) => entry.oferta_id === detail?.offerId,
-            );
-            return (
-              <article
-                className={`my-route-row my-route-question ${detail?.researched ? "researched" : ""}`}
-                key={item}
-              >
-                <input
-                  type="checkbox"
-                  aria-label={`Investigada: ${item}`}
-                  checked={Boolean(detail?.researched)}
-                  onChange={(event) => {
-                    const checked = event.target.checked;
-                    update((previous) => ({
-                      ...previous,
-                      questionDetails: {
-                        ...previous.questionDetails,
-                        [item]: {
-                          ...previous.questionDetails?.[item],
-                          researched: checked,
-                        },
-                      },
-                    }));
-                  }}
-                />
-                <div>
-                  {detail?.researched && (
-                    <span className="my-route-badge">Investigada</span>
-                  )}
-                  <strong>{item}</strong>
-                  {offer && (
-                    <span className="my-route-badge">
-                      {offer.carrera_oficial}
-                    </span>
-                  )}
-                </div>
-                <button
-                  className="button secondary"
-                  aria-label={`Editar pregunta: ${item}`}
-                  onClick={() => {
-                    setError("");
-                    setEditing(item);
-                    setText(item);
-                    setOfferId(detail?.offerId ? String(detail.offerId) : "");
-                    field.current?.focus();
-                  }}
-                >
-                  <Pencil size={16} /> Editar
-                </button>
-                <button
-                  className="button secondary"
-                  aria-label={`Retirar pregunta: ${item}`}
-                  onClick={() => {
-                    if (
-                      update((previous) => {
-                        const details = { ...previous.questionDetails };
-                        delete details[item];
-                        return {
-                          ...previous,
-                          questions: previous.questions.filter(
-                            (entry) => entry !== item,
-                          ),
-                          questionDetails: details,
-                        };
-                      }) &&
-                      editing === item
-                    )
-                      reset();
-                  }}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </article>
-            );
-          })}
-      </section>
+    <div className="my-route-layout route-questions-layout">
+      <AIQuestions career={career} />
       <div className="route-stack">
+        <section className="route-panel route-stack">
+          <header>
+            <h2>Lo que quieres averiguar.</h2>
+            <p>Guarda tus dudas y marca las que ya investigaste.</p>
+          </header>
+          <div className="my-route-header route-question-tools">
+            <div className="route-actions">
+              {(["Todas", "Pendientes", "Investigadas"] as const).map(
+                (name, index) => (
+                  <button
+                    key={name}
+                    type="button"
+                    className={`button ${filter === name ? "" : "secondary"}`}
+                    aria-pressed={filter === name}
+                    onClick={() => setFilter(name)}
+                  >
+                    {name} ·{" "}
+                    {
+                      [
+                        items.length,
+                        items.length - researched.length,
+                        researched.length,
+                      ][index]
+                    }
+                  </button>
+                ),
+              )}
+            </div>
+            <button
+              className="button secondary"
+              onClick={() => {
+                reset();
+                field.current?.focus();
+              }}
+            >
+              <Plus size={16} /> Añadir pregunta
+            </button>
+          </div>
+          {career && (
+            <Link className="text-link" to="/mi-ruta?vista=preguntas">
+              Ver todas las carreras
+            </Link>
+          )}
+          {!items.length && <p>Todavía no hay preguntas en esta vista.</p>}
+          {items
+            .filter(
+              (item) =>
+                filter === "Todas" ||
+                researched.includes(item) === (filter === "Investigadas"),
+            )
+            .map((item) => {
+              const detail = progress.questionDetails?.[item];
+              const offer = progress.offers.find(
+                (entry) => entry.oferta_id === detail?.offerId,
+              );
+              return (
+                <article
+                  className={`my-route-row my-route-question ${detail?.researched ? "researched" : ""}`}
+                  key={item}
+                >
+                  <input
+                    type="checkbox"
+                    aria-label={`Investigada: ${item}`}
+                    checked={Boolean(detail?.researched)}
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+                      update((previous) => ({
+                        ...previous,
+                        questionDetails: {
+                          ...previous.questionDetails,
+                          [item]: {
+                            ...previous.questionDetails?.[item],
+                            researched: checked,
+                          },
+                        },
+                      }));
+                    }}
+                  />
+                  <div>
+                    {detail?.researched && (
+                      <span className="my-route-badge">Investigada</span>
+                    )}
+                    <strong>{item}</strong>
+                    {offer && (
+                      <span className="my-route-badge">
+                        {offer.carrera_oficial}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    className="button secondary"
+                    aria-label={`Editar pregunta: ${item}`}
+                    onClick={() => {
+                      setError("");
+                      setEditing(item);
+                      setText(item);
+                      setOfferId(detail?.offerId ? String(detail.offerId) : "");
+                      field.current?.focus();
+                    }}
+                  >
+                    <Pencil size={16} /> Editar
+                  </button>
+                  <button
+                    className="button secondary"
+                    aria-label={`Retirar pregunta: ${item}`}
+                    onClick={() => {
+                      if (
+                        update((previous) => {
+                          const details = { ...previous.questionDetails };
+                          delete details[item];
+                          return {
+                            ...previous,
+                            questions: previous.questions.filter(
+                              (entry) => entry !== item,
+                            ),
+                            questionDetails: details,
+                          };
+                        }) &&
+                        editing === item
+                      )
+                        reset();
+                    }}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </article>
+              );
+            })}
+        </section>
         <form
-          className="route-panel route-stack"
+          className="route-panel route-stack route-question-editor"
           onSubmit={(event) => {
             event.preventDefault();
             const question = text.trim();
@@ -449,7 +483,10 @@ function RouteQuestions({ career }: { career: string }) {
               reset();
           }}
         >
-          <h2>{editing ? "Edita tu pregunta" : "Añade una pregunta"}</h2>
+          <h2>
+            <Pencil size={21} aria-hidden="true" />
+            {editing ? "Edita tu pregunta" : "Añade una pregunta"}
+          </h2>
           <label>
             Tu pregunta
             <textarea
@@ -489,14 +526,179 @@ function RouteQuestions({ career }: { career: string }) {
           )}
           <p>Márcala como investigada cuando encuentres una respuesta útil.</p>
         </form>
-        <aside className="route-panel route-stack my-route-note">
-          <h2>Lleva tus preguntas a una conversación.</h2>
-          <Link className="button" to="/mi-ruta/preparar">
-            <Sparkles size={18} /> Preparar mi conversación
-          </Link>
-        </aside>
       </div>
+      <Link
+        className="button secondary route-conversation-link"
+        to="/mi-ruta/preparar"
+      >
+        <MessageSquare size={18} aria-hidden="true" />
+        Preparar mi conversación
+        <ArrowRight size={17} aria-hidden="true" />
+      </Link>
     </div>
+  );
+}
+
+function AIQuestions({ career }: { career: string }) {
+  const { progress, update } = useProgress();
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [generated, setGenerated] = useState(false);
+  const seen = useRef<string[]>([]);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+  const pending = useRef<AbortController | null>(null);
+  useEffect(() => () => pending.current?.abort(), []);
+  async function generate() {
+    if (pending.current) return;
+    const controller = new AbortController();
+    pending.current = controller;
+    setBusy(true);
+    setMessage("");
+    try {
+      const result = await api<{ questions: string[] }>(
+        "/api/orientacion/preparar",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            question_count: 3,
+            exclude_questions: seen.current.slice(-30),
+            offers: progress.offers
+              .filter((offer) => !career || String(offer.oferta_id) === career)
+              .slice(0, 12)
+              .map((offer) =>
+                `${offer.carrera_oficial} (${offer.institucion})`.slice(0, 300),
+              ),
+            questions: progress.questions
+              .slice(0, 12)
+              .map((text) => text.slice(0, 300)),
+            comparisons: progress.comparisons.slice(0, 8).map((pair) =>
+              pair
+                .map(
+                  (offer) => `${offer.carrera_oficial} (${offer.institucion})`,
+                )
+                .join(" y ")
+                .slice(0, 300),
+            ),
+          }),
+          signal: controller.signal,
+        },
+      );
+      if (controller.signal.aborted) return;
+      const fresh = [
+        ...new Set(result.questions.map((text) => text.trim()).filter(Boolean)),
+      ].filter(
+        (text) =>
+          !progress.questions.includes(text) && !seen.current.includes(text),
+      );
+      if (fresh.length !== 3)
+        throw new Error("Se necesitan tres preguntas nuevas");
+      seen.current = [...seen.current, ...fresh].slice(-30);
+      setGenerated(true);
+      setSuggestions(fresh);
+      setMessage(
+        fresh.length
+          ? "Revisa las propuestas y añade las que te sirvan."
+          : "Las propuestas ya están en tus preguntas. Puedes escribir una nueva.",
+      );
+    } catch {
+      if (!controller.signal.aborted)
+        setMessage(
+          "No pudimos generar preguntas con IA. Inténtalo de nuevo o escribe tu pregunta.",
+        );
+    } finally {
+      if (!controller.signal.aborted) setBusy(false);
+      pending.current = null;
+    }
+  }
+  return (
+    <section
+      className="route-panel route-stack route-ai-questions"
+      aria-labelledby="route-ai-title"
+    >
+      <header>
+        <h2 id="route-ai-title">
+          <Sparkles size={21} aria-hidden="true" />
+          Ideas para tus preguntas
+        </h2>
+        <p>
+          Gemini usa tus carreras, comparaciones y preguntas guardadas para
+          proponer nuevas dudas.
+        </p>
+      </header>
+      <button
+        className="button"
+        onClick={() => void generate()}
+        disabled={busy}
+      >
+        {generated ? (
+          <RefreshCw size={18} aria-hidden="true" />
+        ) : (
+          <Sparkles size={18} aria-hidden="true" />
+        )}
+        {busy
+          ? "Generando preguntas…"
+          : generated
+            ? "Generar nuevas preguntas"
+            : "Generar preguntas con IA"}
+      </button>
+      <p className="my-route-note">
+        Tres propuestas por tanda. Edita y añade las que te sirvan; genera otras
+        si quieres explorar nuevas ideas.
+      </p>
+      {message && <p role="status">{message}</p>}
+      <div className="route-ai-proposals">
+        {suggestions.map((suggestion, index) => (
+          <div className="route-ai-proposal" key={index}>
+            <label>
+              Pregunta sugerida {index + 1}
+              <textarea
+                maxLength={300}
+                value={suggestion}
+                onChange={(event) =>
+                  setSuggestions((previous) =>
+                    previous.map((text, item) =>
+                      item === index ? event.target.value : text,
+                    ),
+                  )
+                }
+              />
+            </label>
+            <button
+              className="button secondary"
+              disabled={!suggestion.trim()}
+              onClick={() => {
+                const text = suggestion.trim();
+                if (progress.questions.includes(text)) {
+                  setMessage("Esta pregunta ya está guardada.");
+                  return;
+                }
+                if (
+                  update((previous) => ({
+                    ...previous,
+                    questions: [...previous.questions, text],
+                    questionDetails: {
+                      ...previous.questionDetails,
+                      [text]: {
+                        offerId: career ? Number(career) : undefined,
+                        researched: false,
+                      },
+                    },
+                  }))
+                ) {
+                  setSuggestions((previous) =>
+                    previous.filter((_, item) => item !== index),
+                  );
+                  setMessage("Pregunta añadida a tu ruta.");
+                }
+              }}
+            >
+              <Plus size={16} aria-hidden="true" />
+              Añadir a mis preguntas
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -515,10 +717,14 @@ function RoutePreferences() {
     ).length + Number(Boolean(progress.current?.preferences.district));
   return (
     <div className="my-route-layout preferences-layout">
-      <section className="route-panel route-stack">
-        <h2>Tus preferencias de exploración</h2>
+      <section className="route-panel route-stack route-preferences-panel">
+        <h2>
+          <SlidersHorizontal size={22} aria-hidden="true" />
+          Tus preferencias de exploración
+        </h2>
         <form
-          className="route-stack"
+          className="route-preferences-form"
+          onChange={() => setSaved(false)}
           onSubmit={(event) => {
             event.preventDefault();
             setSaved(
@@ -531,7 +737,10 @@ function RoutePreferences() {
         >
           <h3>Condiciones de estudio</h3>
           <label>
-            Distrito
+            <span>
+              <MapPin size={17} aria-hidden="true" />
+              Distrito
+            </span>
             <select
               value={value.district}
               onChange={(event) =>
@@ -553,8 +762,31 @@ function RoutePreferences() {
               ))}
             </select>
           </label>
+          <label>
+            <span>
+              <Clock3 size={17} aria-hidden="true" />
+              Horario
+            </span>
+            <select
+              value={value.availability}
+              onChange={(event) =>
+                setValue({ ...value, availability: event.target.value })
+              }
+            >
+              <option value="">Sin preferencia</option>
+              {value.availability &&
+                !questions[22].choices.includes(value.availability) && (
+                  <option>{value.availability}</option>
+                )}
+              {questions[22].choices.map((label) => (
+                <option key={label}>{label}</option>
+              ))}
+            </select>
+          </label>
           <fieldset className="route-actions">
-            <legend>Modalidad</legend>
+            <legend>
+              <GraduationCap size={17} aria-hidden="true" /> Modalidad
+            </legend>
             {questions[21].choices.slice(0, 3).map((label, index) => (
               <label key={label}>
                 <input
@@ -573,25 +805,7 @@ function RoutePreferences() {
               </label>
             ))}
           </fieldset>
-          <label>
-            Horario
-            <select
-              value={value.availability}
-              onChange={(event) =>
-                setValue({ ...value, availability: event.target.value })
-              }
-            >
-              <option value="">Sin preferencia</option>
-              {value.availability &&
-                !questions[22].choices.includes(value.availability) && (
-                  <option>{value.availability}</option>
-                )}
-              {questions[22].choices.map((label) => (
-                <option key={label}>{label}</option>
-              ))}
-            </select>
-          </label>
-          <label>
+          <label className="route-flexible-choice">
             <input
               type="checkbox"
               checked={value.flexible}
@@ -602,7 +816,10 @@ function RoutePreferences() {
             />{" "}
             Considerar otros distritos
           </label>
-          <button className="button">Guardar cambios</button>
+          <button className="button">
+            <Check size={17} aria-hidden="true" />
+            Guardar cambios
+          </button>
           {saved && <p role="status">Preferencias guardadas.</p>}
         </form>
         <hr />
@@ -618,8 +835,11 @@ function RoutePreferences() {
           Los cambios se aplicarán cuando solicites alternativas en Descubre.
         </p>
       </section>
-      <section className="route-panel route-stack">
-        <h2>Tus datos, bajo tu control.</h2>
+      <section className="route-panel route-stack route-data-panel">
+        <h2>
+          <ShieldCheck size={22} aria-hidden="true" />
+          Tus datos, bajo tu control.
+        </h2>
         <p>
           Tu ruta se guarda en este navegador. Si cambias de dispositivo o
           borras los datos del navegador, no aparecerá automáticamente.

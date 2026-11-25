@@ -9,6 +9,7 @@ import { ProgressProvider } from "./features/ruta/Progress";
 import { App } from "./app/App";
 import { SelectionProvider } from "./features/comparador/Selection";
 import "./shared/styles/global.css";
+import "./shared/styles/ui-system.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

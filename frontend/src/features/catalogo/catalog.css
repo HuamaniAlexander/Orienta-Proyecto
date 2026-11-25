@@ -529,263 +529,213 @@ select {
 .catalog-selection {
   display: none;
 }
-@media (min-width: 900px) {
-  .catalog-page.container {
-    width: min(1368px, calc(100% - 64px));
+
+/* Published catalogue cards, with filters across the top and a persistent tray. */
+#contenido:has(> .catalog-page) {
+  background: #f8fafc;
+}
+.catalog-page .catalog-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+.catalog-page .catalog-filters {
+  grid-column: 1 / -1;
+}
+.catalog-page .filters-panel {
+  padding: 12px 16px;
+}
+.catalog-page .filters-title {
+  margin-bottom: 8px;
+}
+.catalog-page .filters-title button {
+  font: inherit;
+  min-height: 32px;
+}
+.catalog-page .filters-fields {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+}
+.catalog-page .filter-select .filter-icon {
+  color: #526989;
+}
+.catalog-page .offer-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: visible;
+  max-height: none;
+  gap: 20px;
+}
+.catalog-page .offer-card {
+  display: flex;
+  flex-direction: column;
+}
+.catalog-page .offer-banner img {
+  height: 150px;
+}
+.catalog-page .offer-body {
+  padding: 14px;
+}
+.catalog-page .offer-body h3 {
+  min-height: 0;
+  margin-block: 6px 12px;
+}
+.catalog-page .institution {
+  min-height: 44px;
+  margin-block: 14px;
+  font-size: 0.8125rem;
+}
+.catalog-page .offer-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  font-size: 0.8125rem;
+}
+.catalog-page .offer-details {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.catalog-page .offer-actions {
+  padding: 0 14px 14px;
+  border: 0;
+}
+.catalog-page .select-button {
+  width: 100%;
+  justify-content: center;
+  min-height: 44px;
+  border: 1.5px solid #2c4a7a;
+  background: #f2f6fc;
+  color: #1a365d;
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.catalog-page .select-button:hover:not(:disabled) {
+  background: #2c4a7a;
+  border-color: #2c4a7a;
+  color: #fff;
+}
+.catalog-page .select-button.selected {
+  background: #102d56;
+  border-color: #102d56;
+  color: #fff;
+}
+.catalog-page .select-button.selected:hover:not(:disabled) {
+  background: #0b203f;
+  border-color: #0b203f;
+}
+.catalog-page .select-button:disabled {
+  opacity: 0.78;
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #475569;
+}
+.catalog-page .type-badge {
+  width: fit-content;
+  font-size: 0.75rem;
+}
+.catalog-page .area-badge {
+  font-size: 0.6875rem;
+}
+.catalog-page .catalog-caption {
+  margin-top: 24px;
+}
+.offer-card-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.offer-card-tools .type-badge {
+  margin: 0;
+}
+.save-offer-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 9px;
+  background: white;
+  color: #526989;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.save-offer-icon:hover {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  color: #d97706;
+}
+.save-offer-icon[aria-pressed="true"] {
+  color: #f59e0b;
+  border: 1.5px solid #f59e0b;
+  background: #fff7e1;
+}
+.save-offer-icon[aria-pressed="true"] svg {
+  stroke: #f59e0b;
+}
+.save-offer-icon[aria-pressed="true"]:hover {
+  background: #ffefc2;
+  border-color: #d97706;
+}
+.offer-institution-footer {
+  min-width: 0;
+  flex: 1;
+}
+.offer-institution-footer img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 36px;
+  object-fit: contain;
+  object-position: left center;
+}
+.offer-institution-footer .institution-logo-dark {
+  background: #101724;
+  padding: 5px;
+  border-radius: 5px;
+}
+.offer-institution-footer .institution-name {
+  font-size: var(--font-caption);
+  color: #425372;
+  line-height: 1.4;
+}
+#root .offer-details .offer-view-button {
+  flex-shrink: 0;
+  gap: 10px;
+  padding-inline: 16px;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .catalog-page .offer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .catalog-layout {
-    grid-template-columns: minmax(0, 2fr) minmax(255px, 1fr);
-    column-gap: 24px;
-    row-gap: 24px;
-  }
-  .catalog-filters {
-    grid-column: 1 / -1;
-  }
-  .filters-panel {
-    border: 0;
-    background: transparent;
-    padding: 0;
-  }
-  .catalog-filter-controls {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .filters-title {
-    order: 1;
-    margin: 0;
-  }
-  .filters-title h2 {
-    display: none;
-  }
-  .filters-title button {
-    font-size: 0.88rem;
-    text-decoration: underline;
-  }
-  .filters-fields {
-    flex: 1;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .filters-fields select {
-    min-height: 41px;
-    padding-inline-start: 11px;
-    font-size: 0.84rem;
-  }
-  .filters-fields .filter-icon {
-    display: none;
-  }
-  .results-toolbar {
-    margin-bottom: 12px;
-  }
-  .results-toolbar h2 {
-    font-size: clamp(1.35rem, 1.85vw, 1.75rem);
-  }
-  .catalog-results .offer-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    max-height: clamp(17rem, calc(100dvh - 25rem), 36rem);
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    scrollbar-gutter: stable;
-    padding: 5px 9px 5px 5px;
-    margin-inline-start: -5px;
-  }
-  .catalog-results .offer-card {
-    display: grid;
-    grid-template-columns: clamp(105px, 13vw, 200px) minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 12px;
-    padding: 9px;
-    min-height: 142px;
-  }
-  .catalog-results .offer-banner {
-    align-self: stretch;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .catalog-results .offer-banner img {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-  }
-  .catalog-results .area-badge {
-    display: none;
-  }
-  .catalog-results .offer-body {
-    padding: 0;
-    min-width: 0;
-  }
-  .catalog-results .institution {
-    min-height: 0;
-    margin: 0 0 4px;
-    font-size: 0.75rem;
-  }
-  .catalog-results .offer-body h3 {
-    font-size: clamp(0.97rem, 1.45vw, 1.33rem);
-    line-height: 1.15;
-    overflow-wrap: anywhere;
-  }
-  .catalog-results .offer-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 12px;
-    font-size: 0.74rem;
-  }
-  .catalog-results .offer-modality,
-  .catalog-results .offer-duration {
-    display: none;
-  }
-  .catalog-results .offer-details .text-link {
-    font-size: 0.88rem;
-  }
-  .catalog-results .offer-actions {
-    justify-content: center;
-    border-inline-start: 1px solid var(--border);
-    padding: 8px 0 8px 12px;
-  }
-  [data-lite="true"] .catalog-results .offer-card {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .catalog-tray {
-    display: none;
-  }
-  .catalog-selection {
-    display: block;
-    position: sticky;
-    top: 1rem;
-    border: 1px solid #a7bdd9;
-    border-radius: 15px;
-    background: #fff;
-  }
-  .catalog-selection-heading {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: #275899;
-    color: #fff;
-    padding: 15px 18px;
-    border-radius: 14px 14px 0 0;
-  }
-  .catalog-selection-heading > svg {
-    flex-shrink: 0;
-  }
-  .catalog-selection-heading > div {
-    padding-inline-start: 14px;
-    border-inline-start: 1px solid #c4d4e9;
-  }
-  .catalog-selection-heading h2 {
-    color: inherit;
-    font-size: clamp(1.12rem, 1.65vw, 1.6rem);
-  }
-  .catalog-selection-heading p {
-    font-size: 0.94rem;
-    margin-top: 3px;
-  }
-  .catalog-selection-body {
-    padding: 16px;
-  }
-  .catalog-selection-count {
-    width: fit-content;
-    margin: 0 auto 14px;
-    padding: 6px 13px;
-    border-radius: 99px;
-    color: #234f89;
-    background: #eaf1fa;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  .catalog-selection-list {
-    list-style: none;
-    display: grid;
-    gap: 9px;
-    margin: 0;
-    padding: 0;
-  }
-  .catalog-selection-list li {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    border: 1px solid #d8e2ef;
-    border-radius: 9px;
-    min-height: 58px;
-    background: #f7f9fc;
-    padding: 8px;
-    font-size: 0.83rem;
-  }
-  .catalog-selection-number {
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    flex-shrink: 0;
-    background: #275899;
-    color: #fff;
-    border-radius: 50%;
-    font-weight: 700;
-  }
-  .catalog-selection-offer {
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }
-  .catalog-selection-offer strong {
-    display: block;
-  }
-  .catalog-selection-offer .institution {
-    margin: 3px 0 0;
-    min-height: 20px;
-  }
-  .catalog-selection-offer .institution img {
-    width: 20px;
-    height: 20px;
-  }
-  .catalog-selection-list button {
-    margin-inline-start: auto;
-    padding: 6px;
-    background: transparent;
-    color: #1b447c;
-  }
-  .catalog-selection-action {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-  .catalog-selection-action .button {
-    width: 100%;
-    font-size: 1.04rem;
-  }
-  .catalog-selection-action .button:disabled {
-    opacity: 0.55;
-  }
-  .catalog-selection-action p {
-    margin-top: 10px;
-    color: var(--muted);
-    font-size: 0.82rem;
+  .catalog-page .filters-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (min-width: 900px) and (max-width: 1150px) {
-  .filters-fields {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .catalog-results .offer-card {
-    grid-template-columns: 93px minmax(0, 1fr);
-    min-height: 0;
-  }
-  .catalog-results .offer-banner {
-    grid-row: span 2;
-  }
-  .catalog-results .offer-actions {
-    grid-column: 2;
-    justify-content: flex-start;
-    border: 0;
-    padding: 6px 0 0;
-  }
-  [data-lite="true"] .catalog-results .offer-card {
+@media (max-width: 560px) {
+  .catalog-page .offer-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  [data-lite="true"] .catalog-results .offer-actions {
-    grid-column: 1;
+  .catalog-page .filters-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .catalog-page .filters-panel {
+    padding: 16px;
+  }
+  .catalog-page .catalog-search {
+    gap: 8px;
+    padding-left: 12px;
+  }
+  .catalog-page .catalog-search .button {
+    min-width: 0;
+    padding-inline: 12px;
+  }
+  .catalog-page .sort-label {
+    flex-wrap: wrap;
+    justify-content: end;
   }
 }

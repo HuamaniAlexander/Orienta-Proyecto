@@ -4,8 +4,17 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
+  Banknote,
+  Building2,
+  Layers,
+  Clock,
+  Info,
+  BriefcaseBusiness,
+  ClipboardList,
+  Award,
+  FileText,
+  Files,
   CalendarDays,
-  CheckCircle2,
   ExternalLink,
   GraduationCap,
   MapPin,
@@ -15,7 +24,7 @@ import {
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
-import { careerImage, Institution } from "../shared/components/OfferCard";
+import { InstitutionLogo } from "../shared/components/InstitutionLogo";
 import { duration, type OfferDetail } from "../shared/types/catalog";
 import "../features/detalle/detail.css";
 
@@ -33,6 +42,14 @@ export function dateLabel(value: string) {
     timeZone: "UTC",
   }).format(new Date(value));
 }
+
+const currency = (value: number | null | undefined) =>
+  value == null
+    ? "No publicado"
+    : new Intl.NumberFormat("es-PE", {
+        style: "currency",
+        currency: "PEN",
+      }).format(value);
 
 export function Detail() {
   const { id } = useParams();
@@ -53,7 +70,8 @@ export function Detail() {
     return (
       <div className="container section">
         <Link className="text-link" to={from}>
-          <ArrowLeft size={17} /> Volver al catálogo
+          <ArrowLeft size={17} />
+          Volver al catálogo
         </Link>
         <Failure
           message={result.error ?? "No encontramos esta opción."}
@@ -62,224 +80,308 @@ export function Detail() {
       </div>
     );
   const { oferta: offer, fuentes: sources, tarifas: tariffs } = result.data;
+  const program = officialUrl(offer.ficha_url);
+  const site = officialUrl(offer.fuente_oferta_url);
+  const topics = (offer.ambitos_editoriales || "")
+    .split(/[;\n]+/)
+    .map((text) => text.trim())
+    .filter(Boolean);
   return (
     <div className="container detail-page">
-      <Link className="back-link" to={from}>
-        <ArrowLeft size={16} /> Volver al catálogo
-      </Link>
-      <section className="detail-hero">
-        <div>
-          <p className="eyebrow">{offer.area}</p>
-          <h1>{offer.carrera_oficial}</h1>
-          <Institution offer={offer} />
-          <div className="detail-tags">
-            <span>
-              <GraduationCap size={15} />
-              {offer.tipo}
-            </span>
-            <span>
-              <MapPin size={15} />
-              {offer.distrito}
-            </span>
-            <span>{offer.gestion}</span>
+      <nav className="detail-breadcrumb" aria-label="Ruta de navegación">
+        <Link className="back-link" to={from}>
+          <ArrowLeft size={16} aria-hidden="true" />
+          Volver al catálogo
+        </Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Ficha de carrera</span>
+      </nav>
+      <header className="detail-hero">
+        <div className="detail-identity">
+          <div className="detail-institution-logo">
+            <InstitutionLogo
+              id={offer.institucion_id}
+              name={offer.institucion}
+            />
           </div>
-          <p className="detail-intro">
-            Conoce cómo se ofrece esta carrera y qué aspectos conviene revisar
-            antes de decidir.
-          </p>
-          <Link className="button" to={`/comparar?opciones=${offer.oferta_id}`}>
-            <Scale size={18} /> Agregar al comparador
-          </Link>
-          <SaveOffer offer={offer} />
-          <p className="source-date">
-            <CheckCircle2 size={14} /> Consulta de la fuente:{" "}
-            {dateLabel(offer.fecha_consulta)}
-          </p>
-        </div>
-        <figure className="detail-image illustration">
-          <img
-            src={careerImage(offer)}
-            alt={`Ilustración del área de ${offer.area}`}
-            width="640"
-            height="400"
-          />
-        </figure>
-      </section>
-      <div className="detail-layout">
-        <div>
-          <section className="detail-section">
-            <div className="section-heading">
-              <p className="eyebrow">LA OPCIÓN, EN CONTEXTO</p>
-              <h2>Lo esencial para empezar.</h2>
+          <div className="detail-title">
+            <h1>{offer.carrera_oficial}</h1>
+            <p>{offer.institucion}</p>
+            <div className="detail-tags">
+              <span>
+                <Layers size={15} aria-hidden="true" />
+                {offer.area}
+              </span>
+              <span>
+                <Building2 size={15} aria-hidden="true" />
+                {offer.tipo} · {offer.gestion}
+              </span>
             </div>
-            <div className="essentials-grid">
-              <article>
-                <BookOpen size={23} />
-                <span>Duración publicada</span>
-                <strong>{duration(offer)}</strong>
-              </article>
-              <article>
-                <Monitor size={23} />
-                <span>Modalidad</span>
-                <strong>{offer.modalidad}</strong>
-              </article>
-              <article>
-                <MapPin size={23} />
-                <span>Ubicación</span>
-                <strong>{offer.distrito}</strong>
-                <small>{offer.sede}</small>
-              </article>
-              <article>
-                <GraduationCap size={23} />
-                <span>Nivel formativo</span>
-                <strong>{offer.nivel}</strong>
-              </article>
-            </div>
-          </section>
-          <section className="detail-section editorial-panel">
-            <span className="type-badge">Síntesis editorial ORIENTA</span>
-            <h2>¿Qué explora esta carrera?</h2>
-            <p>{offer.enfoque_editorial}</p>
-            <h3>Ámbitos de actividad</h3>
-            <p>{offer.ambitos_editoriales}</p>
-            <p className="editorial-note">
-              Esta síntesis ayuda a explorar diferencias. No sustituye el perfil
-              de egreso ni la malla oficial y no garantiza empleo.
-            </p>
-          </section>
-          <section className="detail-section">
-            <h2>Costos y condiciones.</h2>
-            <p className="section-intro published-cost-description">
-              {offer.consulta_costos ??
-                "Solicita a la institución los costos vigentes de esta oferta."}
-            </p>
-            <div className="info-note">
-              Distingue admisión, matrícula, enseñanza y otros derechos. No hay
-              un monto comparable de enseñanza publicado para todas las opciones
-              del catálogo.
-            </div>
-            {tariffs.length > 0 && (
-              <div className="tariff-panel">
-                <h3>Referencia UCSS · {tariffs[0].periodo}</h3>
-                <p>
-                  Tarifa por crédito según categoría. La categoría aplicable y
-                  la cantidad de créditos deben ser confirmadas con la
-                  institución.
-                </p>
-                <ul>
-                  {tariffs.map((item) => (
-                    <li key={item.categoria}>
-                      Categoría {item.categoria}:{" "}
-                      <strong>
-                        S/ {item.tarifa_por_credito_pen} por crédito
-                      </strong>{" "}
-                      · matrícula de referencia S/ {item.matricula_pen}
-                    </li>
-                  ))}
-                </ul>
-                <p>{tariffs[0].aplicacion}</p>
-              </div>
-            )}
-          </section>
-          <section className="detail-section">
-            <h2>Antes de elegir, pregunta.</h2>
-            <p className="section-intro">
-              El libro de datos no documenta todos los aspectos de cada
-              programa. Consulta estas condiciones directamente con la
-              institución.
-            </p>
-            <div className="questions-grid">
-              {[
-                "Malla curricular y perfil de egreso",
-                "Requisitos de admisión",
-                "Horarios y prácticas",
-                "Acreditaciones y convenios",
-                "Bolsa laboral y datos de empleabilidad",
-                "Costos completos de tu convocatoria",
-              ].map((label) => (
-                <div key={label}>
-                  <CheckCircle2 size={17} />
-                  {label}
-                </div>
-              ))}
-            </div>
-            {officialUrl(offer.ficha_url) && (
-              <a
-                className="text-link"
-                href={officialUrl(offer.ficha_url)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Consultar el programa oficial <ExternalLink size={16} />
-              </a>
-            )}
-          </section>
-          <section className="detail-section" id="fuentes">
-            <h2>Fuentes de esta opción.</h2>
-            <div className="source-list">
-              {sources.map((source) => (
-                <a
-                  key={source.fuente_id}
-                  href={officialUrl(source.url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="source-icon">
-                    <ExternalLink size={19} />
-                  </span>
-                  <div>
-                    <strong>{sourceLabel(source, [offer])}</strong>
-                    <span>{source.url}</span>
-                    <small>
-                      <CalendarDays size={12} />
-                      {source.fecha_o_periodo_fuente} · Consulta{" "}
-                      {dateLabel(source.fecha_consulta)}
-                    </small>
-                  </div>
-                  <ArrowRight size={16} />
-                </a>
-              ))}
-            </div>
-          </section>
-        </div>
-        <aside className="detail-sidebar">
-          <div className="aside-card">
-            <span className="step-icon">
-              <MapPin size={24} />
-            </span>
-            <h3>Tu lugar de estudio</h3>
-            <strong>{offer.distrito}</strong>
-            <p>
-              {offer.direccion ??
-                "Consulta la dirección del local con la institución."}
-            </p>
-            <small>Sede: {offer.sede}</small>
-            {officialUrl(offer.fuente_oferta_url) && (
-              <a
-                className="text-link"
-                href={officialUrl(offer.fuente_oferta_url)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Consultar sede <ExternalLink size={15} />
-              </a>
-            )}
           </div>
-          <div className="aside-card aside-blue">
-            <Scale size={26} />
-            <h3>Una opción se entiende mejor al compararla.</h3>
-            <p>
-              Elige otra carrera u otra oferta de la misma carrera y revisa qué
-              cambia.
-            </p>
+          <div className="detail-primary-actions">
             <Link
               className="button"
               to={`/comparar?opciones=${offer.oferta_id}`}
             >
-              Comparar opciones <ArrowRight size={16} />
+              <Scale size={18} aria-hidden="true" />
+              Agregar al comparador
             </Link>
+            <SaveOffer offer={offer} iconOnly />
           </div>
-        </aside>
+        </div>
+        <dl className="detail-facts">
+          {(
+            [
+              [Clock, "Duración publicada", duration(offer)],
+              [Monitor, "Modalidad", offer.modalidad || "Por confirmar"],
+              [MapPin, "Distrito", offer.distrito || "Por confirmar"],
+              [
+                GraduationCap,
+                "Nivel formativo",
+                offer.nivel || "Por confirmar",
+              ],
+            ] as const
+          ).map(([Icon, label, value]) => (
+            <div key={label}>
+              <dt>
+                <Icon size={20} aria-hidden="true" />
+                {label}
+              </dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="detail-source-date">
+          <CalendarDays size={15} aria-hidden="true" />
+          Consulta de la fuente: {dateLabel(offer.fecha_consulta)}
+          <a href="#fuentes">
+            Ver fuentes <ArrowRight size={14} aria-hidden="true" />
+          </a>
+        </p>
+      </header>
+
+      <div className="detail-content-grid">
+        <section
+          className="detail-section detail-overview"
+          aria-labelledby="detail-overview-title"
+        >
+          <header className="detail-section-heading">
+            <BookOpen size={22} aria-hidden="true" />
+            <h2 id="detail-overview-title">Sobre la carrera</h2>
+          </header>
+          <p className="detail-editorial-label">Síntesis editorial ORIENTA</p>
+          <div className="detail-copy-group">
+            <p>
+              {offer.enfoque_editorial ||
+                "Consulta el enfoque de la carrera en su programa oficial."}
+            </p>
+          </div>
+          <div className="detail-copy-group">
+            <h3>
+              <BriefcaseBusiness size={18} aria-hidden="true" />
+              Ámbitos de actividad
+            </h3>
+            {topics.length > 1 ? (
+              <ul className="detail-topics">
+                {topics.map((topic) => (
+                  <li key={topic}>{topic}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                {topics[0] ||
+                  "Consulta los ámbitos de actividad en el perfil de egreso oficial."}
+              </p>
+            )}
+          </div>
+          <p className="detail-footnote">
+            Síntesis orientativa; confirma el perfil de egreso y la malla en el
+            programa oficial.
+          </p>
+          {program && (
+            <a
+              className="text-link detail-section-link"
+              href={program}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consultar el programa oficial{" "}
+              <ExternalLink size={16} aria-hidden="true" />
+            </a>
+          )}
+        </section>
+
+        <section
+          className="detail-section detail-costs"
+          aria-labelledby="detail-costs-title"
+        >
+          <header className="detail-section-heading">
+            <Banknote size={22} aria-hidden="true" />
+            <h2 id="detail-costs-title">Costos y condiciones</h2>
+          </header>
+          <p className="published-cost-description">
+            {offer.consulta_costos ||
+              "No hay un costo publicado en esta ficha. Solicita el tarifario vigente a la institución."}
+          </p>
+          <p className="detail-footnote">
+            <Info size={17} aria-hidden="true" />
+            Confirma concepto, periodo y categoría. Matrícula y enseñanza son
+            conceptos distintos.
+          </p>
+          {tariffs.length > 0 && (
+            <details className="detail-tariffs">
+              <summary>
+                <FileText size={18} aria-hidden="true" />
+                Ver tarifario por categoría · {tariffs[0].periodo}
+              </summary>
+              <p>
+                Referencia para {tariffs[0].creditos_matriculados} créditos.
+                Confirma tu categoría y carga académica.
+              </p>
+              <table>
+                <caption className="sr-only">
+                  Tarifas publicadas por categoría en soles
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Por crédito</th>
+                    <th scope="col">Matrícula</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tariffs.map((item) => (
+                    <tr key={`${item.periodo}-${item.categoria}`}>
+                      <th scope="row">{item.categoria}</th>
+                      <td>{currency(item.tarifa_por_credito_pen)}</td>
+                      <td>{currency(item.matricula_pen)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {[...new Set(tariffs.map((item) => item.aplicacion))].map(
+                (condition) => (
+                  <p key={condition}>{condition}</p>
+                ),
+              )}
+            </details>
+          )}
+          <a className="text-link detail-section-link" href="#fuentes">
+            Revisar documentos y fechas{" "}
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
+        </section>
+
+        <section
+          className="detail-section detail-location"
+          aria-labelledby="detail-location-title"
+        >
+          <header className="detail-section-heading">
+            <MapPin size={22} aria-hidden="true" />
+            <h2 id="detail-location-title">Sede y ubicación</h2>
+          </header>
+          <dl className="detail-location-data">
+            <div>
+              <dt>Distrito</dt>
+              <dd>{offer.distrito || "Por confirmar"}</dd>
+            </div>
+            <div>
+              <dt>Sede</dt>
+              <dd>{offer.sede || "Por confirmar"}</dd>
+            </div>
+            <div>
+              <dt>Dirección</dt>
+              <dd>
+                {offer.direccion ||
+                  "Consulta la dirección del local con la institución."}
+              </dd>
+            </div>
+          </dl>
+          {site && (
+            <a
+              className="text-link detail-section-link"
+              href={site}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consultar sede <ExternalLink size={16} aria-hidden="true" />
+            </a>
+          )}
+        </section>
+
+        <section
+          className="detail-section detail-checklist"
+          aria-labelledby="detail-checklist-title"
+        >
+          <header className="detail-section-heading">
+            <ClipboardList size={22} aria-hidden="true" />
+            <h2 id="detail-checklist-title">Antes de elegir, confirma</h2>
+          </header>
+          <p>Estos datos requieren consulta directa con la institución.</p>
+          <ul className="detail-questions">
+            {(
+              [
+                [BookOpen, "Malla curricular y perfil de egreso"],
+                [FileText, "Requisitos de admisión"],
+                [Clock, "Horarios y prácticas"],
+                [Award, "Acreditaciones y convenios"],
+                [BriefcaseBusiness, "Bolsa laboral y datos de empleabilidad"],
+                [Banknote, "Costos completos de tu convocatoria"],
+              ] as const
+            ).map(([Icon, label]) => (
+              <li key={label}>
+                <Icon size={18} aria-hidden="true" />
+                <span>{label}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section
+          className="detail-section detail-sources"
+          id="fuentes"
+          aria-labelledby="detail-sources-title"
+        >
+          <header className="detail-section-heading">
+            <Files size={22} aria-hidden="true" />
+            <h2 id="detail-sources-title">Fuentes de esta opción.</h2>
+          </header>
+          <div className="source-list">
+            {!sources.length && (
+              <p>
+                No hay documentos asociados disponibles. Consulta el programa
+                oficial de la institución.
+              </p>
+            )}
+            {sources.map((source) => (
+              <a
+                key={source.fuente_id}
+                href={officialUrl(source.url)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FileText
+                  size={20}
+                  className="source-icon"
+                  aria-hidden="true"
+                />
+                <div>
+                  <strong>{sourceLabel(source, [offer])}</strong>
+                  <span className="detail-source-url">{source.url}</span>
+                  <small>
+                    <CalendarDays size={13} aria-hidden="true" />
+                    {source.fecha_o_periodo_fuente ===
+                    `Consulta ${source.fecha_consulta}`
+                      ? ""
+                      : `${source.fecha_o_periodo_fuente} · `}
+                    Consulta {dateLabel(source.fecha_consulta)}
+                  </small>
+                </div>
+                <ExternalLink size={17} aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -44,7 +44,6 @@
 .my-route-tabs [aria-current] {
   color: #174eaa;
   background: #e6efff;
-  box-shadow: inset 3px 0 #2361ea;
 }
 .my-route-tabs svg,
 .my-route-badge svg {
@@ -53,9 +52,9 @@
 }
 .my-route-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2.45fr) minmax(16rem, 1fr);
+  grid-template-columns: minmax(0, 1fr) 19rem;
   gap: clamp(0.75rem, 1.4vw, 1.25rem);
-  align-items: stretch;
+  align-items: start;
 }
 .my-route-layout.preferences-layout {
   grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 1fr);
@@ -70,11 +69,11 @@
   border: 1px solid #ccd8e9;
   border-radius: 0.8rem;
   background: white;
-  padding: clamp(0.75rem, 1.5vw, 1.35rem);
+  padding: clamp(1rem, 2vw, 1.75rem);
   align-content: start;
 }
 .my-route .route-stack {
-  gap: clamp(0.6rem, 1.05vw, 0.9rem);
+  gap: 1.25rem;
 }
 .my-route :is(.route-panel, .my-route-row, .my-route-header) > * {
   min-width: 0;
@@ -108,7 +107,7 @@
 .my-route-row {
   border: 1px solid #d1dcec;
   border-radius: 0.7rem;
-  padding: 0.7rem;
+  padding: 1rem;
   overflow-wrap: anywhere;
 }
 .my-route-row:where(a) {
@@ -120,24 +119,30 @@
 }
 .my-route-offer {
   display: grid;
-  grid-template-columns: minmax(0, 26%) minmax(0, 1fr) minmax(8rem, 27%);
+  grid-template-columns: 7rem minmax(0, 1fr);
   gap: 0.8rem;
   align-items: center;
 }
 .my-route-offer img {
   width: 100%;
   display: block;
-  aspect-ratio: 2 / 1;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius: 0.5rem;
 }
+.my-route-offer > .route-stack {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 .my-route-offer > .route-stack > .button {
-  width: 100%;
+  width: auto;
 }
 .my-route-row .button {
   min-height: 2.5rem;
   padding: 0.35rem 0.55rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 .my-route-badge {
   display: inline-flex;
@@ -272,6 +277,7 @@
   }
   .my-route-offer > .route-stack {
     grid-column: 1 / -1;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .my-route-offer > .route-stack > button {
@@ -296,5 +302,505 @@
   }
   .my-route .button {
     min-height: 2.75rem;
+  }
+}
+
+.my-route-empty {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: clamp(2rem, 4vw, 4rem) 1rem;
+  min-height: 23rem;
+}
+.my-route-empty > svg {
+  color: #2157a8;
+}
+.my-route .my-route-empty h3 {
+  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+}
+.my-route-empty p {
+  max-width: 48ch;
+  color: #415679;
+  line-height: 1.65;
+}
+.my-route-empty .text-link {
+  font-size: 0.875rem;
+  text-underline-offset: 0.2em;
+}
+.my-route-layout > aside .my-route-row {
+  border: 0;
+  border-bottom: 1px solid #d8e1ee;
+  border-radius: 0;
+  padding: 0.5rem 0 1rem;
+}
+.my-route textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+.my-route label {
+  line-height: 1.6;
+}
+.my-route .route-panel form > label {
+  display: grid;
+  gap: 0.4rem;
+}
+@media (max-width: 560px) {
+  .my-route-offer > .route-stack > .button {
+    width: 100%;
+  }
+  .my-route-empty {
+    min-height: 0;
+    padding: 2rem 0;
+  }
+}
+.route-questions-layout {
+  grid-template-columns: minmax(0, 1fr) 23rem;
+}
+.my-route-layout.preferences-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.route-preferences-panel h2,
+.route-data-panel h2,
+.route-question-editor h2,
+.route-ai-questions h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+:is(
+    .route-preferences-panel,
+    .route-data-panel,
+    .route-question-editor,
+    .route-ai-questions
+  )
+  h2
+  > svg {
+  flex-shrink: 0;
+  color: #24518c;
+}
+.route-preferences-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  align-items: start;
+}
+.route-preferences-form h3,
+.route-preferences-form fieldset,
+.route-preferences-form .route-flexible-choice,
+.route-preferences-form > button,
+.route-preferences-form > p {
+  grid-column: 1 / -1;
+}
+.route-preferences-form > h3 {
+  margin: 0;
+}
+.route-preferences-form > label {
+  display: grid;
+  gap: 8px;
+  font-weight: 500;
+}
+.route-preferences-form > label > span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.route-preferences-form > label > select {
+  font-weight: 400;
+}
+.route-preferences-form > fieldset {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
+}
+.route-preferences-form fieldset label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 8px;
+  border: 1px solid #d3dfee;
+  border-radius: 8px;
+  background: #f8faff;
+}
+.route-preferences-form input[type="checkbox"] {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+.route-preferences-form > .route-flexible-choice {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.route-preferences-panel > hr,
+.route-data-panel > hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #d8e2f0;
+  margin: 4px 0;
+}
+.route-data-panel .my-route-header {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #cddbec;
+  background: #f5f8fe;
+}
+.route-data-panel input[role="switch"] {
+  appearance: none;
+  width: 42px;
+  height: 24px;
+  border-radius: 20px;
+  border: 1px solid #7184a0;
+  background: #e3eaf4;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.route-data-panel input[role="switch"]::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #526989;
+  border-radius: 50%;
+}
+.route-data-panel input[role="switch"]:checked {
+  background: #123660;
+  border-color: #123660;
+}
+.route-data-panel input[role="switch"]:checked::before {
+  left: 21px;
+  background: #fff;
+}
+.route-question-tools {
+  align-items: stretch;
+  gap: 12px;
+}
+.route-question-tools .route-actions {
+  margin: 0;
+  gap: 8px;
+}
+.route-question-tools .button {
+  min-height: 44px;
+}
+.my-route-question {
+  grid-template-columns: 20px minmax(0, 1fr) 100px 44px;
+  padding: 16px;
+  gap: 12px;
+}
+.my-route-question > input {
+  width: 18px;
+  height: 18px;
+}
+.my-route-question > div > strong {
+  font-weight: 500;
+}
+.my-route-question > button {
+  width: 100%;
+}
+.route-question-editor > .button,
+.route-ai-questions > .button {
+  width: 100%;
+}
+.route-ai-questions header > p {
+  margin-top: 10px;
+  color: #526989;
+}
+.route-ai-questions .my-route-note {
+  font-size: var(--font-caption);
+}
+.route-ai-proposal {
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #d6e0ef;
+}
+.route-ai-proposal label {
+  display: grid;
+  gap: 8px;
+}
+.route-ai-proposal textarea {
+  min-height: 90px;
+}
+.route-ai-proposal button {
+  justify-self: end;
+}
+@media (max-width: 1100px) {
+  .route-preferences-form fieldset {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .my-route-layout.route-questions-layout,
+  .my-route-layout.preferences-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .route-preferences-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my-route-question {
+    grid-template-columns: 20px minmax(0, 1fr) 44px;
+  }
+  .my-route-question > div {
+    grid-column: 2 / -1;
+  }
+  .my-route-question > button:first-of-type {
+    width: 100px;
+  }
+}
+#root .route-preferences-form > .route-flexible-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#root .my-route-question > button {
+  min-height: 44px;
+  padding: 8px 10px;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+/* Mi ruta uses full-width work areas, without auxiliary sidebars. */
+#root .my-route-layout:not(.preferences-layout):not(.conversation-layout) {
+  grid-template-columns: minmax(0, 1fr);
+}
+#root .my-route-layout.preferences-layout {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+#root .my-route-offer > .route-stack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+#root .my-route-offer > .route-stack > .button {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+#root .my-route-offer > .route-stack > .button:first-child {
+  background: #123660;
+  border-color: #123660;
+  color: #fff;
+}
+#root .my-route-offer > .route-stack > .button:first-child:hover {
+  background: #1d487a;
+  border-color: #1d487a;
+}
+.my-route-comparison .route-actions {
+  margin: 0;
+  gap: 8px;
+}
+.my-route-comparison .my-route-pair {
+  gap: 20px;
+}
+.my-route-comparison .my-route-pair > div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 14px;
+  background: #f7f9fd;
+  border: 1px solid #d8e2f0;
+  border-radius: 10px;
+}
+.my-route-university-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 64px;
+  padding-right: 16px;
+  border-right: 1px solid #d3dfef;
+}
+.my-route-university-logo > img {
+  width: 100%;
+  max-width: 134px;
+  height: 58px;
+  object-fit: contain;
+}
+.my-route-university-logo .institution-name {
+  font-size: var(--font-caption);
+  color: #425372;
+}
+#root .my-route-comparison-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+#root .my-route-comparison-actions > .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  gap: 8px;
+}
+#root .route-ai-questions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px 24px;
+}
+#root .route-ai-questions > .button {
+  grid-column: 2;
+  grid-row: 1;
+  width: auto;
+  min-width: 245px;
+  min-height: 44px;
+  align-self: center;
+}
+.route-ai-questions > .my-route-note,
+.route-ai-questions > p[role="status"],
+.route-ai-proposals {
+  grid-column: 1 / -1;
+}
+.route-ai-questions .my-route-note {
+  margin: 0;
+  background: transparent;
+  padding: 0;
+  color: #526989;
+}
+.route-ai-proposals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.route-ai-proposals:empty {
+  display: none;
+}
+.route-ai-proposal {
+  align-content: start;
+  padding-top: 14px;
+}
+.route-ai-proposal label {
+  font-weight: 500;
+}
+.route-ai-proposal textarea {
+  height: 110px;
+}
+.route-ai-proposal > button {
+  width: 100%;
+  min-height: 44px;
+}
+.route-conversation-link {
+  justify-self: start;
+}
+#root .route-panel .button.danger {
+  background: #b4232a;
+  border-color: #b4232a;
+  color: #fff;
+}
+#root .route-panel .button.danger:hover {
+  background: #8e1b21;
+  border-color: #8e1b21;
+  color: #fff;
+}
+#root .route-panel .button.danger:active {
+  background: #76161c;
+  border-color: #76161c;
+}
+#root .route-panel .button.danger:focus-visible {
+  outline: 3px solid #b4232a;
+  outline-offset: 3px;
+}
+@media (max-width: 1000px) {
+  .my-route-comparison .my-route-pair > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my-route-university-logo {
+    border-right: 0;
+    padding-right: 0;
+    justify-content: start;
+  }
+}
+@media (max-width: 900px) {
+  #root .my-route-layout.preferences-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .route-ai-proposals {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  #root .route-ai-questions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #root .route-ai-questions > .button {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
+    min-width: 0;
+  }
+  #root .my-route-comparison-actions,
+  #root .my-route-offer > .route-stack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Saved careers: institution, academic choice and a fixed right action column. */
+#root .my-route-offer {
+  grid-template-columns: 150px minmax(0, 1fr) 220px;
+  gap: 20px;
+  align-items: center;
+}
+.my-route-saved-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 92px;
+  padding-right: 18px;
+  border-right: 1px solid #d5e0ef;
+}
+#root .my-route-saved-logo > img {
+  width: 100%;
+  height: 76px;
+  max-width: 140px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+.my-route-saved-logo .institution-name {
+  color: #425372;
+  font-size: var(--font-caption);
+}
+#root .my-route-offer > .route-stack {
+  grid-column: 3;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+#root .my-route-offer > .route-stack > .button {
+  min-height: 44px;
+  padding: 8px 12px;
+}
+@media (max-width: 900px) {
+  #root .my-route-offer {
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 16px;
+  }
+  #root .my-route-offer > .route-stack {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  #root .my-route-offer {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 12px;
+  }
+  #root .my-route-offer > .route-stack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .my-route-saved-logo {
+    padding-right: 12px;
+    min-height: 76px;
   }
 }

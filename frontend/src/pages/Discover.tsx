@@ -5,6 +5,13 @@ import {
   BookOpen,
   Building2,
   Check,
+  CircleHelp,
+  CheckCircle2,
+  Clock3,
+  Lightbulb,
+  Save,
+  ShieldCheck,
+  Sparkles,
   ClipboardList,
   Flag,
   GraduationCap,
@@ -45,13 +52,68 @@ import "../features/ruta/discovery-results.css";
 function PreferenceSummary({
   value,
   facets,
+  structured = false,
 }: {
   value: Preferences;
   facets?: Facets;
+  structured?: boolean;
 }) {
   const district = facets?.distritos.find(
     (item) => String(item.distrito_id) === value.district,
   );
+  if (structured) {
+    const entries = [
+      {
+        label: "Intereses",
+        Icon: Lightbulb,
+        text:
+          [...value.interests, value.extra].filter(Boolean).join(", ") ||
+          "Sin indicar",
+      },
+      {
+        label: "Distrito",
+        Icon: MapPin,
+        text:
+          (district?.distrito ??
+            (value.district ? "Selección guardada" : "Sin indicar")) +
+          (value.district && value.flexible
+            ? " (considerando otros distritos)"
+            : ""),
+      },
+      {
+        label: "Modalidad",
+        Icon: GraduationCap,
+        text:
+          value.modalities
+            .map(
+              (id) =>
+                facets?.modalidades.find((item) => item.codigo_id === id)
+                  ?.etiqueta ??
+                questions[21].choices[id - 1] ??
+                `Modalidad ${id}`,
+            )
+            .join(", ") || "Sin indicar",
+      },
+      {
+        label: "Disponibilidad",
+        Icon: Clock3,
+        text: value.availability || "Sin indicar",
+      },
+    ];
+    return (
+      <dl className="questionnaire-preference-facts">
+        {entries.map(({ label, Icon, text }) => (
+          <div key={label}>
+            <dt>
+              <Icon size={20} aria-hidden="true" />
+              <span>{label}</span>
+            </dt>
+            <dd>{text}</dd>
+          </div>
+        ))}
+      </dl>
+    );
+  }
   return (
     <ul>
       <li>
@@ -114,14 +176,34 @@ function DiscoveryResults({
   );
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [showAll, setShowAll] = useState(false);
+  const [showPrevious, setShowPrevious] = useState(false);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(() =>
+    window.matchMedia("(max-width: 600px)").matches ? 1 : 2,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 600px)");
+    const resize = () => {
+      setPageSize(media.matches ? 1 : 2);
+      setPage(0);
+    };
+    media.addEventListener("change", resize);
+    return () => media.removeEventListener("change", resize);
+  }, []);
+  const activeDiscovery =
+    showPrevious && progress.previous ? progress.previous : current;
+  const pageCount = Math.ceil(activeDiscovery.suggestions.length / pageSize);
+  const currentPage = Math.min(page, Math.max(0, pageCount - 1));
   const pending = useRef<AbortController | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
   const interests = [
-    ...current.preferences.interests,
-    current.preferences.extra,
+    ...activeDiscovery.preferences.interests,
+    activeDiscovery.preferences.extra,
   ].filter(Boolean);
-  const shown = showAll ? current.suggestions : current.suggestions.slice(0, 2);
+  const shown = activeDiscovery.suggestions.slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize,
+  );
   const hours = questions[22].choices;
   const modality = value.modalities.join(",");
   async function refresh() {
@@ -217,56 +299,32 @@ function DiscoveryResults({
             </p>
           )}
           <div className="discovery-condition-badges">
-            {current.preferences.district && (
+            {activeDiscovery.preferences.district && (
               <span className="discovery-tag">
                 {facets.data?.distritos.find(
                   (item) =>
-                    String(item.distrito_id) === current.preferences.district,
+                    String(item.distrito_id) ===
+                    activeDiscovery.preferences.district,
                 )?.distrito ?? "Distrito guardado"}
               </span>
             )}
-            {current.preferences.modalities.map((id) => (
+            {activeDiscovery.preferences.modalities.map((id) => (
               <span className="discovery-tag" key={id}>
                 {questions[21].choices[id - 1] ?? `Modalidad ${id}`}
               </span>
             ))}
-            {current.preferences.availability && (
+            {activeDiscovery.preferences.availability && (
               <span className="discovery-tag">
-                {current.preferences.availability}
+                {activeDiscovery.preferences.availability}
               </span>
             )}
-            <a href="#discovery-conditions">Ajustar condiciones</a>
+            <a className="button secondary" href="#discovery-conditions">
+              <SlidersHorizontal size={16} aria-hidden="true" />
+              Ajustar condiciones
+            </a>
           </div>
         </section>
         <div className="discovery-results-layout">
-          <section
-            className="discovery-results-panel"
-            aria-labelledby="affine-careers"
-            aria-busy={busy}
-          >
-            <header>
-              <div>
-                <h2 id="affine-careers">Opciones sugeridas</h2>
-                <p>Conoce las razones y revisa la información de origen.</p>
-              </div>
-              <span>
-                {shown.length} {shown.length === 1 ? "opción" : "opciones"}
-              </span>
-            </header>
-            <SuggestionList
-              suggestions={shown}
-              preferences={current.preferences}
-            />
-            {current.suggestions.length > 2 && (
-              <button
-                type="button"
-                className="button secondary discovery-show-more"
-                onClick={() => setShowAll(!showAll)}
-              >
-                {showAll ? "Mostrar menos opciones" : "Ver más opciones"}
-              </button>
-            )}
-          </section>
           <aside
             className="discovery-results-panel discovery-filters"
             id="discovery-conditions"
@@ -383,6 +441,88 @@ function DiscoveryResults({
               con cada institución.
             </p>
           </aside>
+          <section
+            className="discovery-results-panel"
+            aria-labelledby="affine-careers"
+            aria-busy={busy}
+          >
+            {progress.previous && (
+              <nav
+                className="discovery-version-controls"
+                aria-label="Versiones de sugerencias"
+              >
+                <button
+                  type="button"
+                  className="button secondary"
+                  aria-pressed={showPrevious}
+                  disabled={showPrevious}
+                  onClick={() => {
+                    setShowPrevious(true);
+                    setPage(0);
+                  }}
+                >
+                  <ArrowLeft size={17} aria-hidden="true" />
+                  <span>
+                    Sugerencias anteriores · versión {progress.previous.version}
+                  </span>
+                </button>
+                <span className="discovery-version-label">
+                  {showPrevious ? "Exploración anterior" : "Exploración actual"}
+                </span>
+                <button
+                  type="button"
+                  className="button secondary"
+                  aria-pressed={!showPrevious}
+                  disabled={!showPrevious}
+                  onClick={() => {
+                    setShowPrevious(false);
+                    setPage(0);
+                  }}
+                >
+                  <span>Sugerencias actuales · versión {current.version}</span>
+                  <ArrowRight size={17} aria-hidden="true" />
+                </button>
+              </nav>
+            )}
+            <header>
+              <div>
+                <h2 id="affine-careers">Opciones sugeridas</h2>
+                <p>Conoce las razones y revisa la información de origen.</p>
+              </div>
+              <nav
+                className="discovery-page-controls"
+                aria-label="Navegar opciones sugeridas"
+              >
+                <button
+                  type="button"
+                  className="button secondary"
+                  aria-label="Opciones anteriores"
+                  disabled={currentPage === 0}
+                  onClick={() => setPage(currentPage - 1)}
+                >
+                  <ArrowLeft size={18} aria-hidden="true" />
+                </button>
+                <span role="status">
+                  {activeDiscovery.suggestions.length
+                    ? `${currentPage * pageSize + 1}–${Math.min((currentPage + 1) * pageSize, activeDiscovery.suggestions.length)} de ${activeDiscovery.suggestions.length}`
+                    : "0 opciones"}
+                </span>
+                <button
+                  type="button"
+                  className="button secondary"
+                  aria-label="Ver más opciones"
+                  disabled={currentPage >= pageCount - 1}
+                  onClick={() => setPage(currentPage + 1)}
+                >
+                  <ArrowRight size={18} aria-hidden="true" />
+                </button>
+              </nav>
+            </header>
+            <SuggestionList
+              suggestions={shown}
+              preferences={activeDiscovery.preferences}
+            />
+          </section>
         </div>
         <footer className="discovery-results-footer">
           <Link className="button secondary" to={REVIEW_URL}>
@@ -395,22 +535,6 @@ function DiscoveryResults({
             <ArrowRight size={17} />
           </Link>
         </footer>
-        {progress.previous && (
-          <details className="discovery-results-panel">
-            <summary>
-              Sugerencias anteriores · versión {progress.previous.version}
-            </summary>
-            <PreferenceSummary
-              value={progress.previous.preferences}
-              facets={facets.data}
-            />
-            <SuggestionList
-              key={progress.previous.version}
-              suggestions={progress.previous.suggestions}
-              preferences={progress.previous.preferences}
-            />
-          </details>
-        )}
       </div>
     </div>
   );
@@ -450,13 +574,13 @@ function SuggestionList({
                 {offer.institucion} · {offer.distrito}
               </p>
               <strong>Por tus intereses</strong>
-              <p>
-                {relatedInterests?.length
-                  ? `La ficha coincide con ${relatedInterests.join(", ")}.`
-                  : preferences.extra
+              {!relatedInterests?.length && (
+                <p>
+                  {preferences.extra
                     ? reasons[0]
                     : "Opción disponible para explorar en el catálogo."}
-              </p>
+                </p>
+              )}
               {!!relatedInterests?.length && (
                 <ul className="discovery-tags">
                   {relatedInterests.map((interest) => (
@@ -468,8 +592,7 @@ function SuggestionList({
               )}
               <details className="discovery-relationship">
                 <summary>
-                  <Info size={16} aria-hidden="true" /> Ver respuestas
-                  relacionadas <ArrowRight size={15} aria-hidden="true" />
+                  <Info size={16} aria-hidden="true" /> Ver detalles y fuentes
                 </summary>
                 <ul>
                   {reasons.map((reason) => (
@@ -485,53 +608,53 @@ function SuggestionList({
                     preferences={preferences}
                   />
                 )}
-              </details>
-              <section className="discovery-card-section">
-                <h4>Por tus condiciones</h4>
-                <p>
-                  Oferta en {offer.distrito}
-                  {offer.modalidad ? ` · ${offer.modalidad}` : ""}.
-                </p>
-                {preferences.availability && (
+                <section className="discovery-card-section">
+                  <h4>Por tus condiciones</h4>
                   <p>
-                    Horario preferido: {preferences.availability}. Sujeto a
-                    disponibilidad.
+                    Oferta en {offer.distrito}
+                    {offer.modalidad ? ` · ${offer.modalidad}` : ""}.
                   </p>
-                )}
-              </section>
-              <section className="discovery-card-section">
-                <h4>Fuentes para revisar</h4>
-                <div className="discovery-career-actions">
-                  {officialUrl(source) && (
-                    <a
-                      className="button secondary"
-                      href={officialUrl(source)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Programa oficial ↗
-                    </a>
+                  {preferences.availability && (
+                    <p>
+                      Horario preferido: {preferences.availability}. Sujeto a
+                      disponibilidad.
+                    </p>
                   )}
-                  {programSources[offer.oferta_id]?.curriculum && (
-                    <a
-                      className="button secondary"
-                      href={programSources[offer.oferta_id]?.curriculum}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Malla curricular ↗
-                    </a>
-                  )}
-                  {!officialUrl(source) && (
-                    <Link
-                      className="text-link"
-                      to={`/carreras/${offer.oferta_id}`}
-                    >
-                      Fuentes de la oferta
-                    </Link>
-                  )}
-                </div>
-              </section>
+                </section>
+                <section className="discovery-card-section">
+                  <h4>Fuentes para revisar</h4>
+                  <div className="discovery-career-actions">
+                    {officialUrl(source) && (
+                      <a
+                        className="button secondary"
+                        href={officialUrl(source)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Programa oficial ↗
+                      </a>
+                    )}
+                    {programSources[offer.oferta_id]?.curriculum && (
+                      <a
+                        className="button secondary"
+                        href={programSources[offer.oferta_id]?.curriculum}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Malla curricular ↗
+                      </a>
+                    )}
+                    {!officialUrl(source) && (
+                      <Link
+                        className="text-link"
+                        to={`/carreras/${offer.oferta_id}`}
+                      >
+                        Fuentes de la oferta
+                      </Link>
+                    )}
+                  </div>
+                </section>
+              </details>
               <div className="discovery-career-actions">
                 <Link
                   className="button"
@@ -591,21 +714,24 @@ function SuggestionAI({
     }
   }
   return (
-    <details className="route-stack">
-      <summary>Explicar con IA</summary>
-      <p>
+    <details className="discovery-ai">
+      <summary><Sparkles size={20} aria-hidden="true" /><span><strong>Explicar con IA</strong><small>Comprende por qué aparece esta opción</small></span></summary>
+      <div className="discovery-ai-body" aria-busy={busy}>
+      <p className="discovery-ai-notice"><ShieldCheck size={17} aria-hidden="true" /><span>
         Al solicitar la explicación se envían a Gemini tus intereses y
         condiciones seleccionadas.
-      </p>
+      </span></p>
       <button
-        className="button secondary"
+        className="button discovery-ai-request"
         disabled={busy}
         onClick={() => void explain()}
       >
-        {busy ? "Preparando explicación…" : "Solicitar explicación"}
+        <Sparkles size={17} aria-hidden="true" />
+        {busy ? "Preparando explicación…" : error ? "Reintentar explicación" : text ? "Volver a solicitar explicación" : "Solicitar explicación"}
       </button>
-      {error && <Failure message={error} />}
-      {text && <p role="status">{text}</p>}
+      {error && <p className="discovery-ai-error" role="alert"><CircleHelp size={18} aria-hidden="true" /><span>{error}</span></p>}
+      {text && <div className="discovery-ai-response" role="status"><h4><BookOpen size={18} aria-hidden="true" />Sobre esta sugerencia</h4>{text.split(/\n\s*\n|\n/).filter(paragraph => paragraph.trim()).map((paragraph, index) => <p key={index}>{paragraph}</p>)}<small>Revisa las fuentes de la oferta antes de decidir.</small></div>}
+      </div>
     </details>
   );
 }
@@ -689,6 +815,11 @@ export function PreferenceForm() {
     }
   }
   const total = questions.length;
+  const reviewedCount = questions.reduce(
+    (count, _, index) => count + Number(index in answers),
+    0,
+  );
+  const progressPercent = Math.round((reviewedCount / total) * 100);
   const reviewing = step === total;
   const [editingReview, setEditingReview] = useState(false);
   const question = questions[step];
@@ -707,10 +838,10 @@ export function PreferenceForm() {
   const max = question?.kind !== "multiple" ? 1 : step < 20 ? 2 : Infinity;
   const hasSkip = step < 20 || step === 23;
 
-  function changeStep(next: number) {
+  function changeStep(next: number, reveal = false) {
     setSaved(false);
     setStep(next);
-    const scrollToTitle = reviewing !== (next === total);
+    const scrollToTitle = reveal || reviewing !== (next === total);
     requestAnimationFrame(() => {
       const title = heading.current;
       if (title?.parentElement) title.parentElement.scrollTop = 0;
@@ -742,7 +873,7 @@ export function PreferenceForm() {
   }
 
   return (
-    <div className="questionnaire-page">
+    <div className="questionnaire-page questionnaire-experience">
       <div className="container questionnaire-container">
         <nav
           className="questionnaire-breadcrumb"
@@ -753,7 +884,10 @@ export function PreferenceForm() {
         </nav>
         <header className="questionnaire-title">
           <h1>Explora lo que te interesa.</h1>
-          <p>Responde a tu ritmo. Puedes volver y cambiar tus respuestas.</p>
+          <p>
+            No hay respuestas correctas. Elige lo que te da curiosidad; puedes
+            cambiarlo después.
+          </p>
         </header>
         <div className="questionnaire-layout">
           <form
@@ -778,19 +912,40 @@ export function PreferenceForm() {
                       : `Pregunta ${step + 1} de ${total}`}
                   </strong>
                   <span>
-                    {reviewing ? "Cuestionario completo" : sections[section]}
+                    {reviewing
+                      ? "Tus respuestas, listas para revisar"
+                      : `Tramo ${section + 1} de ${sections.length} · ${sections[section]}`}
                   </span>
                 </div>
               </div>
               <div className="questionnaire-progress">
-                <span aria-hidden="true">
-                  {Math.min(step + 1, total)} / {total}
-                </span>
+                <div className="questionnaire-progress-caption">
+                  <span>Tu avance</span>
+                  <strong>{progressPercent}%</strong>
+                </div>
                 <progress
+                  className="sr-only"
                   max={total}
-                  value={Math.min(step + 1, total)}
+                  value={reviewedCount}
                   aria-label="Avance del cuestionario"
                 />
+                <div
+                  className="questionnaire-progress-track"
+                  aria-hidden="true"
+                >
+                  <span
+                    className="questionnaire-progress-fill"
+                    style={{ transform: `scaleX(${reviewedCount / total})` }}
+                  />
+                  <span className="questionnaire-progress-ticks">
+                    {sections.map((name) => (
+                      <i key={name} />
+                    ))}
+                  </span>
+                </div>
+                <small>
+                  {reviewedCount} de {total} preguntas revisadas
+                </small>
               </div>
             </div>
             {reviewing ? (
@@ -804,7 +959,11 @@ export function PreferenceForm() {
                 </p>
                 <div className="questionnaire-review-summary">
                   <h3>Preferencias para tus sugerencias</h3>
-                  <PreferenceSummary value={value} facets={facets.data} />
+                  <PreferenceSummary
+                    value={value}
+                    facets={facets.data}
+                    structured
+                  />
                 </div>
                 <div className="questionnaire-review-sections">
                   {sections.map((name, group) => {
@@ -816,7 +975,7 @@ export function PreferenceForm() {
                           <strong>{name}</strong>
                           <span>4 preguntas</span>
                         </summary>
-                        <ol start={group * 4 + 1}>
+                        <ol start={group * 4 + 1} role="list">
                           {questions
                             .slice(group * 4, group * 4 + 4)
                             .map((item, offset) => {
@@ -835,9 +994,28 @@ export function PreferenceForm() {
                                       .join(", ") || "Sin respuesta";
                               return (
                                 <li key={item.title}>
-                                  <div>
+                                  <span
+                                    className="questionnaire-review-number"
+                                    aria-hidden="true"
+                                  >
+                                    {index + 1}
+                                  </span>
+                                  <div className="questionnaire-review-answer">
                                     <strong>{item.title}</strong>
-                                    <p>{answer}</p>
+                                    <p>
+                                      {answer === "Sin respuesta" ? (
+                                        <CircleHelp
+                                          size={16}
+                                          aria-hidden="true"
+                                        />
+                                      ) : (
+                                        <CheckCircle2
+                                          size={16}
+                                          aria-hidden="true"
+                                        />
+                                      )}
+                                      <span>{answer}</span>
+                                    </p>
                                   </div>
                                   <button
                                     type="button"
@@ -849,6 +1027,7 @@ export function PreferenceForm() {
                                       changeStep(index);
                                     }}
                                   >
+                                    <Pencil size={16} aria-hidden="true" />
                                     Editar
                                   </button>
                                 </li>
@@ -862,7 +1041,8 @@ export function PreferenceForm() {
               </section>
             ) : (
               <section
-                className="questionnaire-body"
+                key={step}
+                className="questionnaire-body questionnaire-question"
                 aria-labelledby="current-question"
                 tabIndex={0}
               >
@@ -930,7 +1110,13 @@ export function PreferenceForm() {
                           edit({ district: "", flexible: false });
                           choose([]);
                         }}
-                      />{" "}
+                      />
+                      <span
+                        className="questionnaire-choice-indicator"
+                        aria-hidden="true"
+                      >
+                        <Check size={15} />
+                      </span>
                       No tengo un distrito preferido.
                     </label>
                   </div>
@@ -965,6 +1151,12 @@ export function PreferenceForm() {
                                 ]);
                             }}
                           />
+                          <span
+                            className="questionnaire-choice-indicator"
+                            aria-hidden="true"
+                          >
+                            <Check size={15} />
+                          </span>
                           {question.kind === "scale" && (
                             <strong>{index + 1}</strong>
                           )}
@@ -974,43 +1166,81 @@ export function PreferenceForm() {
                     })}
                   </fieldset>
                 )}
-                {hasSkip && (
-                  <button
-                    type="button"
-                    className="text-link questionnaire-skip"
-                    aria-pressed={step in answers && selected.length === 0}
-                    onClick={() => {
-                      choose([]);
-                      changeStep(editingReview ? total : step + 1);
-                      setEditingReview(false);
-                    }}
-                  >
-                    Aún no lo sé
-                  </button>
-                )}
+                <div className="questionnaire-response-footer">
+                  <span className="questionnaire-choice-feedback" role="status">
+                    {step === 20
+                      ? "Tu ubicación es una preferencia, no un límite."
+                      : selected.length
+                        ? `${selected.length} ${selected.length === 1 ? "opción seleccionada" : "opciones seleccionadas"}${max === 2 ? " · máximo 2" : ""}`
+                        : "Puedes revisar esta pregunta después."}
+                  </span>
+                  {hasSkip && (
+                    <button
+                      type="button"
+                      className="button secondary questionnaire-skip"
+                      aria-pressed={step in answers && selected.length === 0}
+                      onClick={() => {
+                        choose([]);
+                        changeStep(editingReview ? total : step + 1);
+                        setEditingReview(false);
+                      }}
+                    >
+                      <CircleHelp size={18} aria-hidden="true" />
+                      Aún no lo sé
+                    </button>
+                  )}
+                </div>
               </section>
             )}
             <footer className="questionnaire-footer">
-              {!reviewing && <p>Puedes revisar tus respuestas.</p>}
+              <div className="questionnaire-footer-note">
+                <ShieldCheck size={17} aria-hidden="true" />
+                <p>
+                  {reviewing
+                    ? "Revisa tus respuestas antes de consultar alternativas."
+                    : "Tu exploración es tuya. Puedes volver y cambiar cualquier respuesta."}
+                </p>
+              </div>
               <div className="questionnaire-actions">
                 <button
                   type="button"
-                  className="button secondary"
+                  className="button secondary questionnaire-previous"
                   disabled={(step === 0 && !editingReview) || busy}
                   onClick={() => {
                     changeStep(editingReview ? total : step - 1);
                     setEditingReview(false);
                   }}
                 >
-                  <ArrowLeft size={19} />{" "}
+                  <ArrowLeft size={18} aria-hidden="true" />
                   {reviewing
                     ? "Volver a la última pregunta"
                     : editingReview
                       ? "Volver a la revisión"
                       : "Anterior"}
                 </button>
-                <div>
-                  <button className="button" disabled={busy}>
+                <button
+                  className="button secondary questionnaire-save"
+                  type="button"
+                  disabled={busy}
+                  onClick={() => {
+                    setError("");
+                    setSaved(
+                      update((previous) => ({
+                        ...previous,
+                        questionnaire: { step, answers, preferences: value },
+                      })),
+                    );
+                  }}
+                >
+                  {saved ? (
+                    <Check size={18} aria-hidden="true" />
+                  ) : (
+                    <Save size={18} aria-hidden="true" />
+                  )}
+                  <span>Guardar y continuar después</span>
+                </button>
+                <button className="button questionnaire-next" disabled={busy}>
+                  <span>
                     {busy
                       ? "Buscando opciones…"
                       : reviewing
@@ -1019,29 +1249,16 @@ export function PreferenceForm() {
                           ? "Guardar y volver a la revisión"
                           : step === total - 1
                             ? "Revisar mis respuestas"
-                            : "Siguiente pregunta"}{" "}
-                    <ArrowRight size={19} />
-                  </button>
-                  <button
-                    className="text-link"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => {
-                      setError("");
-                      setSaved(
-                        update((previous) => ({
-                          ...previous,
-                          questionnaire: { step, answers, preferences: value },
-                        })),
-                      );
-                    }}
-                  >
-                    Guardar y continuar después
-                  </button>
-                </div>
+                            : "Siguiente pregunta"}
+                  </span>
+                  <ArrowRight size={18} aria-hidden="true" />
+                </button>
               </div>
               {saved && (
-                <p aria-hidden="true">Avance guardado en este navegador.</p>
+                <p className="questionnaire-save-feedback" aria-hidden="true">
+                  <Check size={16} />
+                  Avance guardado en este navegador.
+                </p>
               )}
               {error && <Failure message={error} />}
             </footer>
@@ -1053,39 +1270,66 @@ export function PreferenceForm() {
             <h2 id="questionnaire-route-title">
               <Route aria-hidden="true" /> Tu recorrido
             </h2>
+            <p className="questionnaire-route-intro">
+              Seis tramos para conocerte un poco más.
+            </p>
             <ol>
               {sections.map((name, index) => {
                 const Icon = sectionIcons[index];
                 const first = index * 4;
-                const complete = questions
+                const visited = questions
                   .slice(first, first + 4)
-                  .every((_, offset) => first + offset in answers);
+                  .filter((_, offset) => first + offset in answers).length;
+                const complete = visited === 4;
+                const active = !reviewing && index === section;
+                const available = reviewing || first <= step || visited > 0;
                 return (
                   <li
                     key={name}
-                    aria-current={
-                      !reviewing && index === section ? "step" : undefined
+                    className={
+                      complete ? "is-complete" : visited > 0 ? "is-started" : ""
                     }
                   >
-                    <Icon aria-hidden="true" />
-                    <span>
-                      <strong>{name}</strong>
-                      <small>4 preguntas</small>
-                    </span>
-                    {complete && (
-                      <Check
-                        className="questionnaire-complete"
-                        size={16}
-                        aria-label="Completado"
-                      />
-                    )}
-                    <span className="questionnaire-range">
-                      {first + 1} – {first + 4}
-                    </span>
+                    <button
+                      type="button"
+                      aria-current={active ? "step" : undefined}
+                      disabled={!available || busy}
+                      onClick={() => {
+                        setEditingReview(reviewing || editingReview);
+                        changeStep(first, true);
+                      }}
+                    >
+                      <span className="questionnaire-route-icon">
+                        {complete ? (
+                          <Check size={20} aria-hidden="true" />
+                        ) : (
+                          <Icon size={20} aria-hidden="true" />
+                        )}
+                      </span>
+                      <span className="questionnaire-route-copy">
+                        <strong>{name}</strong>
+                        <small>
+                          {complete
+                            ? "Tramo revisado"
+                            : active
+                              ? `${visited} de 4 revisadas · en curso`
+                              : visited
+                                ? `${visited} de 4 revisadas`
+                                : "Por explorar"}
+                        </small>
+                      </span>
+                      <span className="questionnaire-range">
+                        {first + 1}–{first + 4}
+                      </span>
+                    </button>
                   </li>
                 );
               })}
             </ol>
+            <div className="questionnaire-route-help">
+              <Bookmark size={18} aria-hidden="true" />
+              <p>Guarda tu avance para retomar desde este navegador.</p>
+            </div>
           </aside>
         </div>
       </div>

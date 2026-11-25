@@ -12,7 +12,7 @@ export type SavedOffer = Pick<
   Offer,
   "oferta_id" | "carrera_oficial" | "institucion" | "distrito"
 > &
-  Partial<Pick<Offer, "area_id" | "area" | "modalidad">>;
+  Partial<Pick<Offer, "area_id" | "area" | "modalidad" | "institucion_id">>;
 export interface Preferences {
   interests: string[];
   extra: string;
@@ -189,6 +189,7 @@ export function savedOffer({
   oferta_id,
   carrera_oficial,
   institucion,
+  institucion_id,
   distrito,
   area,
   area_id,
@@ -198,6 +199,7 @@ export function savedOffer({
     oferta_id,
     carrera_oficial,
     institucion,
+    institucion_id,
     distrito,
     area,
     area_id,
@@ -213,9 +215,11 @@ export const comparisonKey = (offers: SavedOffer[]) =>
 export function SaveOffer({
   offer,
   compact = false,
+  iconOnly = false,
 }: {
   offer: SavedOffer;
   compact?: boolean;
+  iconOnly?: boolean;
 }) {
   const { progress, update } = useProgress();
   const isSaved = progress.offers.some(
@@ -223,9 +227,14 @@ export function SaveOffer({
   );
   return (
     <button
-      className="button secondary"
+      className={
+        iconOnly
+          ? "save-offer-icon save-toggle"
+          : "button secondary save-toggle"
+      }
       aria-pressed={isSaved}
       aria-label={isSaved ? "Retirar de Mi ruta" : "Guardar en Mi ruta"}
+      title={isSaved ? "Guardada en Mi ruta" : "Guardar en Mi ruta"}
       onClick={() =>
         update((previous) => {
           const remaining = previous.offers.filter(
@@ -238,14 +247,19 @@ export function SaveOffer({
         })
       }
     >
-      {compact && <Bookmark size={16} aria-hidden="true" />}
-      {compact
-        ? isSaved
-          ? "Guardada"
-          : "Guardar"
-        : isSaved
-          ? "Retirar de Mi ruta"
-          : "Guardar en Mi ruta"}
+      <Bookmark
+        size={iconOnly ? 21 : 16}
+        fill={isSaved ? "currentColor" : "none"}
+        aria-hidden="true"
+      />
+      {!iconOnly &&
+        (compact
+          ? isSaved
+            ? "Retirar"
+            : "Guardar"
+          : isSaved
+            ? "Retirar de Mi ruta"
+            : "Guardar en Mi ruta")}
     </button>
   );
 }
@@ -258,7 +272,7 @@ export function SaveComparison({ offers }: { offers: SavedOffer[] }) {
   );
   return (
     <button
-      className="button secondary"
+      className="button secondary save-toggle"
       aria-pressed={isSaved}
       onClick={() =>
         update((previous) => {
@@ -274,6 +288,11 @@ export function SaveComparison({ offers }: { offers: SavedOffer[] }) {
         })
       }
     >
+      <Bookmark
+        size={18}
+        fill={isSaved ? "currentColor" : "none"}
+        aria-hidden="true"
+      />
       {isSaved ? "Retirar comparación" : "Guardar comparación"}
     </button>
   );

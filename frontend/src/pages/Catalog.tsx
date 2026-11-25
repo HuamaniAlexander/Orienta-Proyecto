@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Building2,
   GraduationCap,
@@ -6,7 +6,6 @@ import {
   Monitor,
   MapPin,
   Layers,
-  ChevronDown,
   ArrowDownAZ,
 } from "lucide-react";
 import {
@@ -26,7 +25,11 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
-import { SelectButton, SelectionTray } from "../features/comparador/Selection";
+import { SelectButton } from "../features/comparador/Selection";
+import {
+  SearchInput,
+  catalogSuggestions,
+} from "../shared/components/SearchInput";
 import {
   groupedOffers,
   OFFERS_PER_PAGE,
@@ -35,6 +38,15 @@ import type { Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
 export function Catalog() {
+  const [filtersOpen, setFiltersOpen] = useState(
+    () => window.matchMedia("(min-width: 900px)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 900px)");
+    const sync = () => setFiltersOpen(media.matches);
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
   const [rawParams, setParams] = useSearchParams();
   const facets = useApi<Facets>("/api/filtros");
   const params = facets.data
@@ -138,8 +150,11 @@ export function Catalog() {
         <span aria-current="page">Carreras</span>
       </nav>
       <div className="page-heading">
-        <h1>Encuentra y compara tu próxima carrera.</h1>
-        <p>Añade dos opciones y descubre sus diferencias.</p>
+        <h1>Encuentra tu próxima carrera.</h1>
+        <p>
+          Universidades e institutos de Lima Norte. Un lugar para empezar a
+          decidir.
+        </p>
       </div>
       <form
         className="catalog-search"
@@ -150,7 +165,7 @@ export function Catalog() {
         }}
       >
         <Search size={22} />
-        <input
+        <SearchInput
           key={params.get("q") ?? ""}
           defaultValue={params.get("q") ?? ""}
           type="search"
@@ -158,6 +173,8 @@ export function Catalog() {
           aria-label="Buscar carrera o institución"
           placeholder="Busca una carrera o institución…"
           maxLength={150}
+          suggestions={catalogSuggestions(facets.data)}
+          onChoose={(value) => change("q", value)}
         />
         <button className="button" type="submit">
           Buscar
@@ -165,7 +182,11 @@ export function Catalog() {
       </form>
       <div className="catalog-layout">
         <aside className="catalog-filters">
-          <details className="filters-panel" open>
+          <details
+            className="filters-panel"
+            open={filtersOpen}
+            onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
+          >
             <summary>
               <SlidersHorizontal size={18} /> Filtrar opciones
             </summary>
@@ -210,11 +231,6 @@ export function Catalog() {
                             </option>
                           ))}
                         </select>
-                        <ChevronDown
-                          className="select-chevron"
-                          size={16}
-                          aria-hidden="true"
-                        />
                       </span>
                     </label>
                   ))}
@@ -253,11 +269,6 @@ export function Catalog() {
                   <option value="nombre">Carrera</option>
                   <option value="institucion">Institución</option>
                 </select>
-                <ChevronDown
-                  className="select-chevron"
-                  size={16}
-                  aria-hidden="true"
-                />
               </span>
             </label>
           </div>
@@ -341,7 +352,6 @@ export function Catalog() {
             La información académica conserva sus fuentes y fechas de consulta.
           </p>
         </section>
-        <SelectionTray embedded />
       </div>
     </div>
   );
