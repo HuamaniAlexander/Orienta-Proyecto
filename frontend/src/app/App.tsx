@@ -5,6 +5,7 @@ import { PrepareConversation } from "../pages/PrepareConversation";
 import { MyRoute, ProgressSettings } from "../pages/MyRoute";
 import { Discover, PreferenceForm } from "../pages/Discover";
 import { Connect, FollowUp } from "../pages/Connect";
+import { Schools } from "../pages/Schools";
 import { Home } from "../pages/Home";
 import { Catalog } from "../pages/Catalog";
 import { Detail } from "../pages/Detail";
@@ -106,6 +107,9 @@ export function App() {
             <NavLink to="/conecta" onClick={() => setMenu(false)}>
               Conecta
             </NavLink>
+            <NavLink to="/colegios" onClick={() => setMenu(false)}>
+              Colegios
+            </NavLink>
           </nav>
           <div className="header-actions">
             <button
@@ -142,6 +146,7 @@ export function App() {
           <Route path="/mi-ruta/avance" element={<ProgressSettings />} />
           <Route path="/conecta" element={<Connect />} />
           <Route path="/conecta/solicitudes/:id" element={<FollowUp />} />
+          <Route path="/colegios" element={<Schools />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -163,7 +168,9 @@ export function App() {
           </p>
           <div>
             <Link to="/carreras">Explorar carreras</Link>
-            <Link to="/#como-funciona">Cómo funciona</Link>
+            <Link to="/descubre">Test vocacional</Link>
+            <Link to="/conecta">Orientadores Zoom</Link>
+            <Link to="/colegios">Planes para colegios</Link>
           </div>
         </div>
         <div className="container footer-bottom">

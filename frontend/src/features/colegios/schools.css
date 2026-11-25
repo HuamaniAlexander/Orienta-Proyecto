@@ -1,0 +1,236 @@
+.schools-page {
+  padding: 2rem 0 4rem;
+}
+
+.schools-hero {
+  background: linear-gradient(135deg, #f3f7ff 0%, #eef5f0 100%);
+  border: 1px solid var(--line, #dbe3ee);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.schools-hero h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  line-height: 1.15;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.schools-hero p {
+  max-width: 68ch;
+  color: var(--muted, #475569);
+  font-size: 1.05rem;
+}
+
+.schools-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0 3rem;
+}
+
+.schools-pillar {
+  background: #fff;
+  border: 1px solid var(--line, #dbe3ee);
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.schools-pillar svg {
+  color: var(--accent, #1d4ed8);
+}
+
+.schools-pillar h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.schools-pillar p {
+  margin: 0;
+  color: var(--muted, #475569);
+  font-size: 0.95rem;
+}
+
+.schools-period-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.schools-period-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line, #cbd5e1);
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink, #0f172a);
+}
+
+.schools-period-btn[aria-pressed="true"] {
+  background: var(--accent, #1d4ed8);
+  border-color: var(--accent, #1d4ed8);
+  color: #fff;
+}
+
+.schools-discount-tag {
+  font-size: 0.78rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #065f46;
+}
+
+.schools-period-btn[aria-pressed="true"] .schools-discount-tag {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.schools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.schools-tier {
+  background: #fff;
+  border: 1.5px solid var(--line, #dbe3ee);
+  border-radius: 20px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  position: relative;
+}
+
+.schools-tier.featured {
+  border-color: var(--accent, #1d4ed8);
+  box-shadow: 0 12px 28px rgba(29, 78, 216, 0.08);
+}
+
+.schools-tier-badge {
+  align-self: flex-start;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+.schools-price {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--ink, #0f172a);
+}
+
+.schools-price small {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted, #475569);
+  margin-top: 0.25rem;
+}
+
+.schools-tier-meta {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  color: var(--muted, #334155);
+}
+
+.schools-tier-meta li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.schools-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--line, #dbe3ee);
+  border-radius: 18px;
+  padding: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.schools-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.schools-table th,
+.schools-table td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+}
+
+.schools-table th {
+  font-weight: 700;
+  color: var(--ink, #0f172a);
+  background: #f8fafc;
+}
+
+.schools-form-section {
+  background: #fff;
+  border: 1px solid var(--line, #dbe3ee);
+  border-radius: 22px;
+  padding: 2rem;
+}
+
+.schools-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.schools-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.schools-form-grid input,
+.schools-form-grid select,
+.schools-form-grid textarea {
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--line, #cbd5e1);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.schools-receipt {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.schools-receipt h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #166534;
+  margin-top: 0;
+}
