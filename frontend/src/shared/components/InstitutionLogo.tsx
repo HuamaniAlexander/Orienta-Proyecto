@@ -4,7 +4,12 @@ import logos from "../../../public/images/instituciones-horizontal/procedencia.j
 const horizontal: Record<string, { archivo: string; fondo?: string }> = logos;
 
 export function InstitutionMark({ id, name }: { id: number; name: string }) {
-  const [failed, setFailed] = useState(false);
+  const src =
+    id > 0
+      ? `/images/institucion-${id}.webp${[4, 7, 8, 18, 19].includes(id) ? "?v=20261026" : ""}`
+      : null;
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = !src || failedSrc === src;
   const initials = name
     .split(/\s+/)
     .filter(
@@ -19,11 +24,11 @@ export function InstitutionMark({ id, name }: { id: number; name: string }) {
         <span aria-hidden="true">{initials}</span>
       ) : (
         <img
-          src={`/images/institucion-${id}.webp${[4, 7, 8, 18, 19].includes(id) ? "?v=20261026" : ""}`}
+          src={src}
           width="36"
           height="36"
           alt=""
-          onError={() => setFailed(true)}
+          onError={() => setFailedSrc(src)}
         />
       )}
     </span>
@@ -31,13 +36,15 @@ export function InstitutionMark({ id, name }: { id: number; name: string }) {
 }
 
 export function InstitutionLogo({ id, name }: { id: number; name: string }) {
-  const [failed, setFailed] = useState(false);
-  const official = horizontal[id]?.archivo;
+  const official = id > 0 ? horizontal[id]?.archivo : undefined;
+  const src = id > 0 ? (official ?? `/images/institucion-${id}.webp`) : null;
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = !src || failedSrc === src;
   return (
     <>
       {!failed && (
         <img
-          src={official ?? `/images/institucion-${id}.webp`}
+          src={src}
           className={
             horizontal[id]?.fondo === "oscuro"
               ? "institution-logo-dark"
@@ -47,7 +54,7 @@ export function InstitutionLogo({ id, name }: { id: number; name: string }) {
           loading="lazy"
           width={official ? 210 : 40}
           height={official ? 64 : 40}
-          onError={() => setFailed(true)}
+          onError={() => setFailedSrc(src)}
         />
       )}
       <span className={official && !failed ? "sr-only" : "institution-name"}>
