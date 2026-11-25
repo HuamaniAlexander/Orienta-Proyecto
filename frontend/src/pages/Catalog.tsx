@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Building2,
   GraduationCap,
@@ -6,7 +6,6 @@ import {
   Monitor,
   MapPin,
   Layers,
-  ChevronDown,
   ArrowDownAZ,
 } from "lucide-react";
 import {
@@ -22,15 +21,32 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
 import { OfferCard } from "../shared/components/OfferCard";
 import { SelectButton } from "../features/comparador/Selection";
-import type { CatalogPage, Facets } from "../shared/types/catalog";
+import {
+  SearchInput,
+  catalogSuggestions,
+} from "../shared/components/SearchInput";
+import {
+  groupedOffers,
+  OFFERS_PER_PAGE,
+} from "../features/catalogo/groupedOffers";
+import type { Facets } from "../shared/types/catalog";
 import "../features/catalogo/catalog.css";
 
 export function Catalog() {
+  const [filtersOpen, setFiltersOpen] = useState(
+    () => window.matchMedia("(min-width: 900px)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 900px)");
+    const sync = () => setFiltersOpen(media.matches);
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
   const [rawParams, setParams] = useSearchParams();
   const facets = useApi<Facets>("/api/filtros");
   const params = facets.data
@@ -41,7 +57,9 @@ export function Catalog() {
     if (facets.data && canonical !== rawParams.toString())
       setParams(canonical, { replace: true });
   }, [canonical, rawParams, setParams, facets.data]);
-  const result = useApi<CatalogPage>(`/api/ofertas?${params.toString()}`);
+  const query = new URLSearchParams(params);
+  query.delete("page");
+  const result = useApi(`/api/ofertas?${query}`, groupedOffers);
   function change(key: string, value: string) {
     const next = new URLSearchParams(params);
     if (value) next.set(key, value);
@@ -115,13 +133,23 @@ export function Catalog() {
     ),
   }));
   const active = filters.filter((filter) => params.has(filter.key));
-  const pages = result.data
-    ? Math.max(1, Math.ceil(result.data.total / result.data.page_size))
+  const total = result.data?.length ?? 0;
+  const pages = Math.max(1, Math.ceil(total / OFFERS_PER_PAGE));
+  const requestedPage = Number(params.get("page"));
+  const page = Number.isSafeInteger(requestedPage)
+    ? Math.max(1, Math.min(pages, requestedPage))
     : 1;
+  const visibleOffers =
+    result.data?.slice((page - 1) * OFFERS_PER_PAGE, page * OFFERS_PER_PAGE) ??
+    [];
   return (
     <div className="container catalog-page">
+      <nav className="catalog-breadcrumb" aria-label="Ruta de navegación">
+        <Link to="/">Inicio</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Carreras</span>
+      </nav>
       <div className="page-heading">
-        <p className="eyebrow">EXPLORA TUS POSIBILIDADES</p>
         <h1>Encuentra tu próxima carrera.</h1>
         <p>
           Universidades e institutos de Lima Norte. Un lugar para empezar a
@@ -137,7 +165,7 @@ export function Catalog() {
         }}
       >
         <Search size={22} />
-        <input
+        <SearchInput
           key={params.get("q") ?? ""}
           defaultValue={params.get("q") ?? ""}
           type="search"
@@ -145,75 +173,70 @@ export function Catalog() {
           aria-label="Buscar carrera o institución"
           placeholder="Busca una carrera o institución…"
           maxLength={150}
+          suggestions={catalogSuggestions(facets.data)}
+          onChoose={(value) => change("q", value)}
         />
         <button className="button" type="submit">
-          Buscar <ArrowRight size={16} />
+          Buscar
         </button>
       </form>
       <div className="catalog-layout">
-        <aside>
-          <details className="filters-panel" open>
+        <aside className="catalog-filters">
+          <details
+            className="filters-panel"
+            open={filtersOpen}
+            onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
+          >
             <summary>
               <SlidersHorizontal size={18} /> Filtrar opciones
             </summary>
-            <div className="filters-title">
-              <h2>Filtrar opciones</h2>
-              <button onClick={() => setParams({})}>Limpiar</button>
-            </div>
-            {facets.loading ? (
-              <Loading text="Cargando filtros…" />
-            ) : facets.error ? (
-              <Failure message={facets.error} retry={facets.retry} />
-            ) : (
-              <div className="filters-fields">
-                {available.map((filter) => (
-                  <label key={filter.key} htmlFor={filter.key}>
-                    {filter.label}
-                    <span className="filter-select">
-                      <filter.icon
-                        className="filter-icon"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                      <select
-                        id={filter.key}
-                        aria-label={filter.label}
-                        title={
-                          filter.options.find(
-                            ([id]) => String(id) === params.get(filter.key),
-                          )?.[1] ??
-                          `Sin restricción: ${filter.label.toLowerCase()}`
-                        }
-                        value={params.get(filter.key) ?? ""}
-                        onChange={(event) =>
-                          change(filter.key, event.target.value)
-                        }
-                      >
-                        <option value="">
-                          {["tipo_id", "distrito_id"].includes(filter.key)
-                            ? "Todos"
-                            : "Todas"}
-                        </option>
-                        {filter.options.map(([id, label]) => (
-                          <option key={id} value={id}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown
-                        className="select-chevron"
-                        size={16}
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </label>
-                ))}
+            <div className="catalog-filter-controls">
+              <div className="filters-title">
+                <h2>Filtrar opciones</h2>
+                <button onClick={() => setParams({})}>Limpiar</button>
               </div>
-            )}
-            <p className="filters-help">
-              Cada filtro muestra las alternativas compatibles con los
-              anteriores.
-            </p>
+              {facets.loading ? (
+                <Loading text="Cargando filtros…" />
+              ) : facets.error ? (
+                <Failure message={facets.error} retry={facets.retry} />
+              ) : (
+                <div className="filters-fields">
+                  {available.map((filter) => (
+                    <label key={filter.key} htmlFor={filter.key}>
+                      <span className="sr-only">{filter.label}</span>
+                      <span className="filter-select">
+                        <filter.icon
+                          className="filter-icon"
+                          size={18}
+                          aria-hidden="true"
+                        />
+                        <select
+                          id={filter.key}
+                          aria-label={filter.label}
+                          title={
+                            filter.options.find(
+                              ([id]) => String(id) === params.get(filter.key),
+                            )?.[1] ??
+                            `Sin restricción: ${filter.label.toLowerCase()}`
+                          }
+                          value={params.get(filter.key) ?? ""}
+                          onChange={(event) =>
+                            change(filter.key, event.target.value)
+                          }
+                        >
+                          <option value="">{filter.label}</option>
+                          {filter.options.map(([id, label]) => (
+                            <option key={id} value={id}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </details>
         </aside>
         <section
@@ -222,12 +245,12 @@ export function Catalog() {
         >
           <div className="results-toolbar">
             <div>
-              <h2>Opciones académicas</h2>
+              <h2>Opciones para explorar</h2>
               <p role="status">
                 {result.loading
                   ? "Buscando opciones…"
                   : result.data
-                    ? `${result.data.total} ${result.data.total === 1 ? "opción encontrada" : "opciones encontradas"}`
+                    ? `${total} ${total === 1 ? "opción encontrada" : "opciones encontradas"}`
                     : "La consulta no se pudo completar"}
               </p>
             </div>
@@ -246,11 +269,6 @@ export function Catalog() {
                   <option value="nombre">Carrera</option>
                   <option value="institucion">Institución</option>
                 </select>
-                <ChevronDown
-                  className="select-chevron"
-                  size={16}
-                  aria-hidden="true"
-                />
               </span>
             </label>
           </div>
@@ -278,10 +296,16 @@ export function Catalog() {
             <Loading />
           ) : result.error ? (
             <Failure message={result.error} retry={result.retry} />
-          ) : result.data?.items.length ? (
+          ) : visibleOffers.length ? (
             <>
-              <div className="offer-grid">
-                {result.data.items.map((offer) => (
+              <div
+                key={page}
+                className="offer-grid"
+                tabIndex={0}
+                role="region"
+                aria-label="Lista de ofertas"
+              >
+                {visibleOffers.map((offer) => (
                   <OfferCard
                     key={offer.oferta_id}
                     offer={offer}
@@ -292,19 +316,19 @@ export function Catalog() {
               <nav className="pagination" aria-label="Páginas del catálogo">
                 <button
                   className="button secondary"
-                  disabled={result.data.page <= 1}
-                  onClick={() => change("page", String(result.data!.page - 1))}
+                  disabled={page <= 1}
+                  onClick={() => change("page", String(page - 1))}
                 >
                   <ArrowLeft size={16} />
                   Anterior
                 </button>
                 <span>
-                  Página {result.data.page} de {pages}
+                  Página {page} de {pages}
                 </span>
                 <button
                   className="button secondary"
-                  disabled={result.data.page >= pages}
-                  onClick={() => change("page", String(result.data!.page + 1))}
+                  disabled={page >= pages}
+                  onClick={() => change("page", String(page + 1))}
                 >
                   Siguiente
                   <ArrowRight size={16} />

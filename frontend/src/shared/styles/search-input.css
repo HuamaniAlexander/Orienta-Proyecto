@@ -1,0 +1,62 @@
+.search-autocomplete {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.search-autocomplete > input {
+  width: 100%;
+  min-width: 0;
+}
+#root .search-suggestions {
+  position: absolute;
+  z-index: 45;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  list-style: none;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid #b8c7dc;
+  background: #fff;
+  color: #122445;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px #12244524;
+  max-height: min(320px, 45vh);
+  overflow: auto;
+}
+#root .search-suggestions [role="option"] {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 9px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: var(--font-control);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+#root .search-suggestions [aria-selected="true"] {
+  background: #e7efff;
+  color: #123f9e;
+}
+#root .home-field .search-autocomplete input {
+  padding-left: 50px;
+}
+#root .home-field > svg {
+  z-index: 1;
+}
+#root .connect-search > svg,
+#root .compare-setup-search > svg {
+  z-index: 1;
+}
+#root .connect-search .search-autocomplete input {
+  padding-left: 2.5rem;
+}
+#root .compare-setup-search .search-autocomplete input {
+  padding-left: 52px;
+}
+@media (max-width: 600px) {
+  .search-suggestions {
+    min-width: min(280px, calc(100vw - 48px));
+  }
+}

@@ -95,3 +95,42 @@ test("fallo de red permite reintentar", async ({ page }) => {
     page.getByRole("button", { name: "Volver a intentar" }),
   ).toBeVisible();
 });
+
+test("la barra de comparación permanece visible al desplazar el catálogo", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/carreras");
+  const list = page.getByRole("region", { name: "Lista de ofertas" });
+  const comparison = page.getByRole("complementary", {
+    name: "Opciones seleccionadas",
+  });
+  const card = list.getByTestId("offer-card").first();
+  await card.getByRole("button", { name: "Añadir a comparación" }).click();
+  await expect(comparison).toContainText("1 de 2 opciones seleccionadas");
+  const panelTop = await comparison.evaluate(
+    (element) => element.getBoundingClientRect().top,
+  );
+  const pageTop = await page.evaluate(() => window.scrollY);
+  const bounds = (await list.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + 35);
+  await page.mouse.wheel(0, 650);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(pageTop);
+  expect(
+    await comparison.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBe(panelTop);
+  await expect(
+    comparison.getByRole("button", { name: /^Quitar / }),
+  ).toBeVisible();
+});
+
+test("agrupa sedes de la misma carrera antes de paginar", async ({ page }) => {
+  await page.goto("/carreras");
+  const cards = page.getByTestId("offer-card");
+  await expect(cards.locator('a[href="/carreras/33"]').first()).toBeVisible();
+  await expect(cards.locator('a[href="/carreras/66"]')).toHaveCount(0);
+  await expect(cards.locator('a[href="/carreras/128"]').first()).toBeVisible();
+});

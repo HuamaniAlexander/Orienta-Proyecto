@@ -1,14 +1,16 @@
-import { Check, Plus, Scale, X } from "lucide-react";
+import { ArrowRight, Check, Plus, Scale, X } from "lucide-react";
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
+  useRef,
   type ReactNode,
 } from "react";
 import { Link, useLocation } from "react-router-dom";
 import type { Offer } from "../../shared/types/catalog";
+import { InstitutionMark } from "../../shared/components/InstitutionLogo";
 
 interface Selection {
   items: Offer[];
@@ -99,51 +101,118 @@ export function SelectButton({ offer }: { offer: Offer }) {
       onClick={() => toggle(offer)}
     >
       {selected ? <Check size={14} /> : <Plus size={14} />}{" "}
-      {selected ? "Elegida" : "Comparar"}
+      {selected ? "Añadida a comparación" : "Añadir a comparación"}
     </button>
   );
 }
 export function SelectionTray() {
   const { items, remove } = useSelection();
   const location = useLocation();
-  if (!location.pathname.startsWith("/carreras") || !items.length) return null;
+  const tray = useRef<HTMLElement>(null);
+  const visible = location.pathname.startsWith("/carreras");
+  useEffect(() => {
+    if (!visible || !tray.current) return;
+    const element = tray.current;
+    const updateHeight = () =>
+      document.documentElement.style.setProperty(
+        "--selection-tray-height",
+        `${element.offsetHeight}px`,
+      );
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+    updateHeight();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--selection-tray-height");
+    };
+  }, [visible]);
+  if (!visible) return null;
+  const comparisonUrl = `/comparar?opciones=${items.map((item) => item.oferta_id).join(",")}`;
   return (
-    <aside className="selection-tray" aria-label="Opciones seleccionadas">
+    <aside
+      ref={tray}
+      className="selection-tray catalog-tray"
+      aria-label="Opciones seleccionadas"
+    >
       <div className="container tray-content">
         <div className="tray-title">
-          <Scale size={25} />
+          <Scale size={26} aria-hidden="true" />
           <div>
-            <strong>{items.length} de 2 opciones</strong>
-            <small>Tu próxima comparación</small>
+            <strong>Compara 2 carreras</strong>
+            <small role="status">
+              {items.length} de 2 opciones seleccionadas
+            </small>
           </div>
         </div>
         <div className="tray-items">
-          {items.map((offer) => (
-            <div key={offer.oferta_id}>
-              <span>
-                <strong>{offer.carrera_oficial}</strong>
-                <small>{offer.institucion}</small>
-              </span>
-              <button
-                onClick={() => remove(offer.oferta_id)}
-                aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
+          {[0, 1].map((index) => {
+            const offer = items[index];
+            return (
+              <div
+                key={index}
+                className={offer ? "tray-choice" : "tray-choice is-empty"}
+                data-option={index + 1}
               >
-                <X size={16} />
-              </button>
-            </div>
-          ))}
+                {!offer && (
+                  <span className="tray-choice-number" aria-hidden="true">
+                    {index + 1}
+                  </span>
+                )}
+                {offer ? (
+                  <>
+                    <span className="tray-logo-ring">
+                      <InstitutionMark
+                        id={offer.institucion_id}
+                        name={offer.institucion}
+                      />
+                      <span className="tray-logo-number" aria-hidden="true">
+                        {index + 1}
+                      </span>
+                    </span>
+                    <span
+                      className="tray-choice-copy"
+                      title={`${offer.carrera_oficial} · ${offer.institucion} · ${offer.sede} · ${offer.distrito}`}
+                    >
+                      <strong className="tray-choice-name">
+                        {offer.carrera_oficial}
+                      </strong>
+                      <small className="tray-choice-institution">
+                        {offer.institucion}
+                      </small>
+                      <small className="tray-choice-location">
+                        {offer.sede || offer.distrito}
+                        {offer.sede && offer.sede !== offer.distrito
+                          ? ` · ${offer.distrito}`
+                          : ""}
+                      </small>
+                    </span>
+                    <button
+                      onClick={() => remove(offer.oferta_id)}
+                      aria-label={`Quitar ${offer.carrera_oficial} de ${offer.institucion}`}
+                    >
+                      <X size={18} aria-hidden="true" />
+                    </button>
+                  </>
+                ) : (
+                  <span>
+                    <strong>
+                      {index === 0 ? "Primera opción" : "Segunda opción"}
+                    </strong>
+                    <small>Elige una carrera del catálogo</small>
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
         {items.length === 2 ? (
-          <Link
-            className="button"
-            to={`/comparar?opciones=${items.map((item) => item.oferta_id).join(",")}`}
-          >
-            Comparar opciones
+          <Link className="button" to={comparisonUrl}>
+            Comparar ahora <ArrowRight size={18} aria-hidden="true" />
           </Link>
         ) : (
-          <span className="tray-prompt">
-            <Plus size={14} aria-hidden="true" /> Elige una segunda opción
-          </span>
+          <button className="button" disabled>
+            Comparar ahora <ArrowRight size={18} aria-hidden="true" />
+          </button>
         )}
       </div>
     </aside>

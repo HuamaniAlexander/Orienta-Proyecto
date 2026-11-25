@@ -1,6 +1,8 @@
+import asyncio
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -13,12 +15,18 @@ from app.domain.catalog import CatalogFilters, OfferNotFound, ServiceUnavailable
 from app.domain.comparison import InvalidComparison
 from app.infrastructure.ai.gemini import GeminiExplanation
 from app.infrastructure.ml.content import SklearnContent
+from app.infrastructure.orientation.profiles import default_advisors
+from app.infrastructure.orientation.store import OrientationStore
+from app.infrastructure.orientation.zoom import ZoomProvisioner
 from app.infrastructure.persistence.repository import InsforgeCatalog
 from app.infrastructure.settings import Settings
 from app.interfaces.http.catalog import router
 from app.interfaces.http.comparison import router as comparison_router
+from app.interfaces.http.discovery import router as discovery_router
 from app.interfaces.http.explanation import router as explanation_router
 from app.interfaces.http.ml import router as ml_router
+from app.interfaces.http.orientation import router as orientation_router
+from app.interfaces.http.schools import router as schools_router
 
 
 def create_app(settings: Settings | None = None, repository: Any = None,
@@ -27,6 +35,28 @@ def create_app(settings: Settings | None = None, repository: Any = None,
 
     @asynccontextmanager
     async def lifespan(api: FastAPI) -> AsyncIterator[None]:
+        zoom = ZoomProvisioner(
+            account_id=config.zoom_account_id,
+            client_id=config.zoom_client_id,
+            client_secret=config.zoom_client_secret.get_secret_value(),
+        )
+        if config.orientation_db_path and config.orientation_profiles_path:
+            api.state.orientation = OrientationStore(
+                config.orientation_db_path,
+                config.orientation_profiles_path,
+                zoom_provisioner=zoom,
+            )
+        else:
+            default_db = config.orientation_db_path or (
+                Path(__file__).resolve().parents[1] / "data" / "orientacion.sqlite3"
+            )
+            api.state.orientation = OrientationStore(
+                default_db,
+                default_advisors(),
+                auto_confirm_zoom=True,
+                zoom_provisioner=zoom,
+            )
+        api.state.schools_db_path = config.schools_db_path
         async with httpx.AsyncClient(
             base_url=config.insforge_base_url or "http://unconfigured.invalid",
             headers={"Authorization": f"Bearer {config.insforge_api_key.get_secret_value()}",
@@ -50,7 +80,17 @@ def create_app(settings: Settings | None = None, repository: Any = None,
                 )
                 api.state.explainer = Explain(api.state.repository, provider, api.state.content)
                 api.state.gemini_model = config.gemini_model
-                yield
+                api.state.gemini_client = gemini_client if config.gemini_api_key.get_secret_value() else None
+                warmup_task = (
+                    asyncio.create_task(api.state.repository.warmup())
+                    if repository is None and config.insforge_base_url
+                    else None
+                )
+                try:
+                    yield
+                finally:
+                    if warmup_task and not warmup_task.done():
+                        warmup_task.cancel()
 
     api = FastAPI(title="ORIENTA", version="0.1.0", lifespan=lifespan)
     api.add_middleware(
@@ -63,6 +103,9 @@ def create_app(settings: Settings | None = None, repository: Any = None,
     api.include_router(comparison_router)
     api.include_router(ml_router)
     api.include_router(explanation_router)
+    api.include_router(discovery_router)
+    api.include_router(orientation_router)
+    api.include_router(schools_router)
 
     @api.exception_handler(InvalidComparison)
     async def invalid_comparison(request: Request, error: InvalidComparison) -> JSONResponse:

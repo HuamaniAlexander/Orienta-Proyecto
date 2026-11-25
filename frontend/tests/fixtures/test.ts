@@ -60,6 +60,24 @@ export const test = base.extend<{ catalogApi: void }>({
           : q.includes("software")
             ? dataset.software
             : dataset.default;
+        if (params.get("page_size") === "48") {
+          const offers =
+            q || params.has("area_id")
+              ? result.items
+              : [
+                  ...result.items,
+                  ...dataset.software.items,
+                  ...dataset.comparisons["10,110"].opciones,
+                ];
+          const items = [
+            ...new Map(
+              offers.map((offer) => [offer.oferta_id, offer]),
+            ).values(),
+          ];
+          return route.fulfill({
+            json: { items, total: items.length, page: 1, page_size: 48 },
+          });
+        }
         return route.fulfill({
           json: { ...result, page: Number(params.get("page") ?? 1) },
         });

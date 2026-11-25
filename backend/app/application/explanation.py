@@ -82,15 +82,35 @@ class Explain:
                 matches[field] = [offer.oferta_id for offer in comparison.opciones if getattr(offer, field) == desired]
         analysis = self.content.compare(comparison.opciones[0].carrera_id, comparison.opciones[1].carrera_id,
                                         preferences.get('intereses', '')) if self.content else {'estado': 'no_disponible', 'opciones': []}
-        context = {'comparacion': asdict(comparison), 'preferencias_declaradas': preferences,
+        comparison_context = asdict(comparison)
+        for option in comparison_context['opciones']:
+            option['consulta_costos'] = None
+        comparison_context['criterios'] = [
+            row for row in comparison_context['criterios'] if row['key'] != 'costos'
+        ]
+        context = {'comparacion': comparison_context, 'preferencias_declaradas': preferences,
                    'restricciones_comprobadas': matches, 'fuentes': source_rows,
                    'coincidencia_lexica': analysis,
                    'datos_ausentes': comparison.pendientes,
-                   'regla_costos': 'No hay costos de enseñanza homogéneos para ordenar estas ofertas.'}
-        try:
-            explanation = await self.provider.explain(context)
-            explanation.validate_evidence(ids, set(sources))
-        except (ValueError, KeyError) as error:
-            raise ServiceUnavailable('La respuesta de IA no superó la validación. Tu comparación sigue disponible.') from error
-        return {'explicacion': explanation.model_dump(), 'fuentes': source_rows,
-                'contenido': analysis, 'restricciones_comprobadas': matches}
+                   'regla_costos': 'Remite a la pestaña Costos para ver los importes y las unidades de cobro.'}
+        for attempt in range(2):
+            try:
+                explanation = await self.provider.explain(context)
+                explanation.validate_evidence(ids, set(sources))
+            except (ValueError, KeyError) as error:
+                if attempt:
+                    raise ServiceUnavailable(
+                        'La respuesta de IA no superó la validación. Tu comparación sigue disponible.'
+                    ) from error
+                context = {
+                    **context,
+                    'correccion': (
+                        'La respuesta anterior no pasó la validación. Respeta el esquema, '
+                        'usa los IDs de las ofertas comparadas en su orden y cita solo '
+                        'fuentes del contexto. Evita enlaces, porcentajes e importes.'
+                    ),
+                }
+            else:
+                return {'explicacion': explanation.model_dump(), 'fuentes': source_rows,
+                        'contenido': analysis, 'restricciones_comprobadas': matches}
+        raise AssertionError('Se agotaron los intentos de validación.')

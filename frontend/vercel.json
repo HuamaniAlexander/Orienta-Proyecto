@@ -1,5 +1,11 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "VITE_API_BASE_URL=/ npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{"source": "/(.*)", "destination": "/index.html"}]
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://orienta-proyecto.onrender.com/api/:path*"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

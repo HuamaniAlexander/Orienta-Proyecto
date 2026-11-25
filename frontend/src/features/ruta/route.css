@@ -1,0 +1,90 @@
+.route-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+.route-panel {
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border: 1px solid #cbd7e6;
+  border-radius: 1rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.route-stack {
+  display: grid;
+  gap: 1rem;
+}
+.route-stack > .button {
+  justify-self: start;
+}
+.route-actions,
+.route-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-block: 1rem;
+}
+.route-item {
+  justify-content: space-between;
+  border-block-start: 1px solid #dce4ee;
+  padding-block-start: 0.8rem;
+}
+.route-item p,
+.route-stack > :is(h2, p, ul) {
+  margin: 0;
+}
+.route-panel :is(input:not([type="checkbox"]), textarea, select) {
+  display: block;
+  width: 100%;
+  border: 1px solid #a7b8cf;
+  border-radius: 0.5rem;
+  background: white;
+  color: inherit;
+  padding: 0.65rem;
+  font: inherit;
+}
+.route-panel :is(ul, ol) {
+  padding-inline-start: 1.25rem;
+}
+.route-panel .danger {
+  background: #a02a2a;
+  color: white;
+}
+@media (max-width: 850px) {
+  .route-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.discovery-options,
+.discovery-results {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.discovery-options {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.discovery-options legend {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.discovery-options label {
+  border: 1px solid #cbd7e6;
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+}
+.discovery-results {
+  margin-block: 1.25rem;
+}
+.route-panel progress {
+  width: 100%;
+  accent-color: #245faa;
+}
+.route-panel [aria-current="step"] {
+  color: #164b87;
+  font-weight: 700;
+}

@@ -2,7 +2,7 @@
 
 ## Trazabilidad
 
-- Tarjeta real de Trello (o tarea propuesta sin enlace):
+- Tarjeta real de Trello (URL obligatoria):
 - Dependencias y PR relacionados:
 
 ## Validación ejecutada
