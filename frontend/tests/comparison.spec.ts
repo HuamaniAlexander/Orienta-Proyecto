@@ -56,7 +56,7 @@ test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
     .first()
     .click();
   await expect(
-    page.getByRole("heading", { name: "Completa tu comparación" }),
+    page.getByRole("heading", { name: "Segunda opción" }),
   ).toBeVisible();
 });
 for (const width of [360, 390, 768, 1024, 1440])

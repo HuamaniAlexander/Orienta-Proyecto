@@ -73,15 +73,17 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
     }
     const cards = page.locator(".discovery-career-card");
     const first = await cards.nth(0).boundingBox();
-    const second = await cards.nth(1).boundingBox();
+    if (width <= 600) {
+      await expect(cards).toHaveCount(1);
+      await page.getByRole("button", { name: "Ver más opciones" }).click();
+    }
+    const second = await cards.nth(width <= 600 ? 0 : 1).boundingBox();
     expect(first).not.toBeNull();
     expect(second).not.toBeNull();
     expect(first!.width).toBeCloseTo(second!.width, 0);
-    if (width > 520) {
+    if (width > 600) {
       expect(first!.y).toBeCloseTo(second!.y, 0);
       expect(first!.height).toBeCloseTo(second!.height, 0);
-    } else {
-      expect(second!.y).toBeGreaterThan(first!.y);
     }
   });
 }

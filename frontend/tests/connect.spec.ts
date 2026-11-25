@@ -3,7 +3,7 @@ import { expect, test } from "./fixtures/test";
 for (const width of [375, 1440]) {
   test(`Conecta muestra el directorio, la agenda y la sesión a ${width} px`, async ({
     page,
-  }) => {
+  }, testInfo) => {
     await page.setViewportSize({ width, height: 900 });
     const id = "ea741ad2-1fd3-4456-ad9f-2f26f4981161";
     let confirmed = false;
@@ -55,7 +55,7 @@ for (const width of [375, 1440]) {
       ).toBe(width);
     await page.goto("/conecta");
     await page
-      .getByRole("textbox", { name: "Buscar por carrera o nombre" })
+      .getByRole("combobox", { name: "Buscar por carrera o nombre" })
       .fill("ingenieria");
     await page.getByRole("button", { name: "Buscar", exact: true }).click();
     await expect(
@@ -90,7 +90,30 @@ for (const width of [375, 1440]) {
     ).toHaveAttribute("href", "https://zoom.us/j/123456");
     await checkWidth();
     await page.getByRole("link", { name: "Mis sesiones" }).click();
-    await expect(page.getByRole("link", { name: /Ana Torres/ })).toBeVisible();
+    const session = page
+      .locator(".connect-session-row")
+      .filter({ hasText: "Ana Torres" });
+    await expect(
+      session.getByRole("link", { name: "Ver sesión" }),
+    ).toBeVisible();
+    await expect(
+      session.getByRole("link", { name: "Ir a la reunión en Zoom" }),
+    ).toHaveAttribute("href", "https://zoom.us/j/123456");
+    await expect(
+      page.getByRole("button", { name: /Añadir.*calendario/ }),
+    ).toHaveCount(0);
+    await page.screenshot({
+      path: testInfo.outputPath(`sesiones-${width}.png`),
+      fullPage: true,
+    });
+    await session
+      .getByRole("button", { name: "Eliminar de Mis sesiones" })
+      .click();
+    await expect(page.locator(".connect-session-row")).toHaveCount(0);
+    await page.reload();
+    await expect(
+      page.getByText("Aún no tienes solicitudes guardadas en este navegador."),
+    ).toBeVisible();
   });
 }
 
@@ -113,3 +136,70 @@ test("Conecta conserva la preparación de Mi ruta cuando falta el directorio", a
     page.getByRole("heading", { name: "Prepara tu conversación." }),
   ).toBeVisible();
 });
+
+for (const width of [390, 1440]) {
+  test(`cinco orientadores con retratos y tarjetas breves a ${width} px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize({ width, height: 1000 });
+    const people = [
+      ["ana-torres", "Ana Torres", "ana", "Ingeniería de Sistemas"],
+      ["luis-mendoza", "Luis Mendoza", "luis", "Administración"],
+      ["valeria-rojas", "Valeria Rojas", "valeria", "Psicología"],
+      [
+        "carlos-paredes",
+        "Carlos Paredes",
+        "carlos",
+        "Derecho y Comunicaciones",
+      ],
+      ["sofia-quispe", "Sofía Quispe", "sofia", "Ingeniería y Arquitectura"],
+    ];
+    await page.route("**/api/orientacion/orientadores", (route) =>
+      route.fulfill({
+        json: people.map(([id, name, photo, focus]) => ({
+          id,
+          name,
+          focus,
+          photo_url: `/images/orientadores/${photo}.jpg`,
+          conditions: "Información detallada para consultar en el perfil.",
+          topics: ["Proyectos y formación"],
+          tags: ["Proyectos", "Formación"],
+          duration_minutes: 30,
+          demonstration: true,
+          accepts_text: false,
+          response_window: "Demostración",
+          slots: [],
+        })),
+      }),
+    );
+    await page.goto("/conecta");
+    await expect(page.locator(".connect-card")).toHaveCount(5);
+    await expect
+      .poll(() =>
+        page
+          .locator(".connect-card .connect-portrait img")
+          .evaluateAll(
+            (items) =>
+              items.length === 5 &&
+              items.every(
+                (item) =>
+                  (item as HTMLImageElement).complete &&
+                  (item as HTMLImageElement).naturalWidth > 0,
+              ),
+          ),
+      )
+      .toBe(true);
+    await expect(
+      page
+        .locator(".connect-card")
+        .getByText("Información detallada para consultar en el perfil."),
+    ).toHaveCount(0);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBe(width);
+    await page.screenshot({
+      path: testInfo.outputPath(`orientadores-${width}.png`),
+      fullPage: true,
+    });
+  });
+}

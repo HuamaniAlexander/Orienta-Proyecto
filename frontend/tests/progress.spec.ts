@@ -27,7 +27,12 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
     await page.getByRole("button", { name: "Siguiente pregunta" }).click();
   }
   await page.getByRole("button", { name: "Revisar mis respuestas" }).click();
-  await expect(page.getByText("Intereses: Organizar proyectos")).toBeVisible();
+  await expect(
+    page
+      .locator(".questionnaire-preference-facts > div")
+      .filter({ has: page.getByText("Intereses", { exact: true }) })
+      .locator("dd"),
+  ).toHaveText("Organizar proyectos");
   await page.locator("summary").getByText("Actividades e intereses").click();
   await page
     .getByRole("button", { name: "Editar pregunta 1", exact: true })
@@ -103,27 +108,40 @@ test("las preferencias conservan las sugerencias previas y el avance se puede bo
 });
 
 for (const width of [390, 1440]) {
-  test(`la tarjeta conserva su tamaño en las 24 preguntas a ${width} px`, async ({
+  test(`las 24 preguntas muestran su contenido sin recortes a ${width} px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/descubre");
     const card = page.locator(".questionnaire-form");
-    const size = () =>
-      card.evaluate(({ offsetWidth, offsetHeight }) => ({
-        width: offsetWidth,
-        height: offsetHeight,
-      }));
-    const initial = await size();
+    const checkContent = async () => {
+      const content = await card
+        .locator(".questionnaire-body")
+        .evaluate((element) => ({
+          height: element.clientHeight,
+          contentHeight: element.scrollHeight,
+        }));
+      expect(content.contentHeight).toBeLessThanOrEqual(content.height + 1);
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBe(width);
+      await expect(card.getByRole("heading", { level: 2 })).toBeVisible();
+      await expect(
+        card.getByRole("button", {
+          name: /Siguiente pregunta|Revisar mis respuestas/,
+        }),
+      ).toBeEnabled();
+    };
+    await checkContent();
     for (let question = 2; question <= 24; question++) {
       await page.getByRole("button", { name: "Siguiente pregunta" }).click();
       await expect(
         card.getByText(`Pregunta ${question} de 24`, { exact: true }),
       ).toBeVisible();
-      expect(await size()).toEqual(initial);
+      await checkContent();
     }
     await page.getByRole("button", { name: "Anterior", exact: true }).click();
-    expect(await size()).toEqual(initial);
+    await checkContent();
   });
 }
 

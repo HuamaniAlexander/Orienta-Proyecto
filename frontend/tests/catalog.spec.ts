@@ -96,7 +96,7 @@ test("fallo de red permite reintentar", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("la lista se desplaza sin mover el comparador en escritorio", async ({
+test("la barra de comparación permanece visible al desplazar el catálogo", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -116,9 +116,9 @@ test("la lista se desplaza sin mover el comparador en escritorio", async ({
   await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + 35);
   await page.mouse.wheel(0, 650);
   await expect
-    .poll(() => list.evaluate((element) => element.scrollTop))
+    .poll(() => page.evaluate(() => window.scrollY))
     .toBeGreaterThan(0);
-  expect(await page.evaluate(() => window.scrollY)).toBe(pageTop);
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(pageTop);
   expect(
     await comparison.evaluate((element) => element.getBoundingClientRect().top),
   ).toBe(panelTop);
