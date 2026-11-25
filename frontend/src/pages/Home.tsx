@@ -46,7 +46,6 @@ export function Home() {
       <section className="hero home-hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">TU PRÓXIMO PASO</p>
             <h1>
               Descubre qué estudiar.
               <br />
@@ -55,6 +54,15 @@ export function Home() {
             <p className="hero-description">
               Carreras e instituciones de Lima Norte, en un solo lugar.
             </p>
+            <div className="home-hero-actions">
+              <Link to="/descubre">
+                Conoce tus intereses <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+              <Link to="/conecta">
+                Habla con un orientador{" "}
+                <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
           </div>
           <div className="hero-art illustration">
             <div className="hero-photo">
@@ -210,6 +218,26 @@ export function Home() {
         </div>
       </section>
       {data && <InstitutionCarousel institutions={data.instituciones} />}
+      <section
+        className="container home-schools"
+        aria-labelledby="home-schools-title"
+      >
+        <div className="home-schools-icon">
+          <Building2 size={28} aria-hidden="true" />
+        </div>
+        <div>
+          <h2 id="home-schools-title">
+            La orientación también empieza en el colegio.
+          </h2>
+          <p>
+            Planes institucionales de 100 a 1 000 cupos. Una experiencia para
+            explorar, comparar y conversar sobre el futuro.
+          </p>
+        </div>
+        <Link className="button" to="/colegios">
+          Ver planes para colegios <ArrowRight size={17} aria-hidden="true" />
+        </Link>
+      </section>
     </>
   );
 }

@@ -502,3 +502,131 @@
     margin-inline-start: 43px;
   }
 }
+.hero.home-hero {
+  min-height: 360px;
+  padding-block: 42px 136px;
+}
+#root .hero.home-hero h1 {
+  margin-top: 0;
+  line-height: 1.18;
+}
+.home-hero .hero-description {
+  color: #dce7f5;
+}
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 20px;
+}
+.home-hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: white;
+  min-height: 36px;
+  text-decoration: underline;
+  text-decoration-color: #7390b6;
+  text-underline-offset: 6px;
+}
+.home-hero-actions a:hover {
+  text-decoration-color: white;
+}
+.home-search .home-search-button {
+  min-height: 52px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.home-search-button svg {
+  width: 20px;
+  height: 20px;
+}
+.home-field :is(input, select) {
+  height: 52px;
+}
+.home-search {
+  box-shadow: 0 8px 24px #102a4314;
+}
+.home-schools {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-block: 30px;
+}
+.home-schools > div:nth-child(2) {
+  flex: 1;
+}
+.home-schools p {
+  max-width: 70ch;
+  color: #52667e;
+  margin-top: 6px;
+}
+.home-schools .button {
+  flex-shrink: 0;
+  background: #13385f;
+  border-color: #13385f;
+}
+.home-schools .button:hover {
+  background: #0c2848;
+}
+.home-schools-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  color: #315d91;
+  background: #e7eef8;
+  flex-shrink: 0;
+}
+@media (max-width: 767px) {
+  .hero.home-hero {
+    padding-top: 28px;
+    min-height: 330px;
+  }
+  .home-hero-actions {
+    gap: 6px 20px;
+    margin-top: 12px;
+  }
+  .home-schools {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .home-schools-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .home-schools > div:nth-child(2) {
+    min-width: 200px;
+  }
+  .home-schools .button {
+    width: 100%;
+  }
+}
+@media (max-width: 650px) {
+  .home-compare {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+  }
+  .home-compare > svg {
+    width: 28px;
+    height: 28px;
+  }
+  .home-compare p {
+    border: 0;
+    padding: 0;
+    font-weight: 500;
+  }
+  .home-compare a {
+    grid-column: 2;
+    margin: 0;
+    justify-self: start;
+    white-space: normal;
+  }
+  .hero.home-hero {
+    min-height: 0;
+    padding-bottom: 82px;
+  }
+}
