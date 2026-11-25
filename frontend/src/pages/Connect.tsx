@@ -27,6 +27,7 @@ import { useProgress } from "../features/ruta/Progress";
 import { ORIENTATION_ZOOM_URL } from "../features/ruta/zoom";
 import { api, useApi } from "../shared/api/client";
 import { Failure, Loading } from "../shared/components/Feedback";
+import { SearchInput } from "../shared/components/SearchInput";
 import { officialUrl } from "./Detail";
 import "../features/ruta/connect.css";
 
@@ -353,11 +354,15 @@ export function Connect() {
             >
               <label className="connect-search">
                 <Search size={20} aria-hidden="true" />
-                <input
+                <SearchInput
+                  suggestions={profiles.flatMap((profile) => [
+                    profile.name,
+                    profile.focus,
+                  ])}
                   aria-label="Buscar por carrera o nombre"
                   placeholder="Buscar por carrera o nombre"
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
+                  onValueChange={setQuery}
                 />
               </label>
               <select

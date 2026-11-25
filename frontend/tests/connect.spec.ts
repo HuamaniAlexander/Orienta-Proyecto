@@ -126,7 +126,9 @@ test("Conecta conserva la preparación de Mi ruta cuando falta el directorio", a
   );
   await page.goto("/conecta");
   await expect(
-    page.getByText("El directorio de orientadores aún no está disponible."),
+    page.getByRole("heading", {
+      name: "No pudimos cargar el directorio de orientadores.",
+    }),
   ).toBeVisible();
   await expect(page.getByText("Not Found", { exact: true })).toHaveCount(0);
   await expect(

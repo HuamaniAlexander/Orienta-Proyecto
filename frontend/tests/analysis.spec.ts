@@ -13,6 +13,7 @@ test("referencias y prosa identifican las carreras e instituciones", async ({
   );
   await page.goto("/analisis?opciones=10,110");
   await page.getByRole("button", { name: "Explicar con IA" }).click();
+  await page.getByRole("tab", { name: "Orientación", exact: true }).click();
   const suggestion = page.locator(".suggestion-panel");
   await expect(suggestion).toContainText("Universidad Tecnológica del Perú");
   await expect(suggestion).toContainText("Universidad César Vallejo");
@@ -66,6 +67,7 @@ test("explicacion se solicita una vez y muestra sus limites", async ({
   await expect(
     page.getByRole("heading", { name: "Una mirada a tus diferencias." }),
   ).toBeVisible();
+  await page.getByRole("tab", { name: "Orientación", exact: true }).click();
   await expect(
     page.getByText(
       "Respuesta simulada exclusiva de pruebas; no se sirve en la aplicación.",
@@ -172,7 +174,9 @@ test("la explicación general recorre los cuatro pasos y conserva sus fuentes", 
   );
   await steps.getByRole("button", { name: "Qué significa para ti" }).click();
   await expect(
-    page.getByText("Explicación general", { exact: false }),
+    page
+      .locator(".analysis-empty-note")
+      .filter({ hasText: "Explicación general" }),
   ).toBeVisible();
   await steps.getByRole("button", { name: "Fuentes y próximos pasos" }).click();
   await expect(

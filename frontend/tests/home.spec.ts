@@ -92,6 +92,7 @@ for (const width of [390, 900, 1440]) {
       Descubre: "/descubre",
       "Mi ruta": "/mi-ruta",
       Conecta: "/conecta",
+      Colegios: "/colegios",
     };
     const header = page.getByRole("banner");
     const nav = header.getByRole("navigation", {

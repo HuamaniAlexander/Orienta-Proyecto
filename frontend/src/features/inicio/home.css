@@ -224,7 +224,7 @@
 #root .hero.home-hero h1 {
   margin: 0.7rem 0 0;
   color: #fff;
-  font-size: clamp(2.2rem, 3.2vw, 2.85rem);
+  font-size: var(--font-page-title);
   line-height: 1.06;
   letter-spacing: -0.035em;
 }

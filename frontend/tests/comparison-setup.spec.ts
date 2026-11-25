@@ -109,11 +109,16 @@ test("la búsqueda vacía y el error se pueden recuperar", async ({ page }) => {
   );
   await page.goto("/comparar");
   await page.getByRole("button", { name: "Buscar primera opción" }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "El catálogo no responde",
-  );
+  await expect(
+    page
+      .getByRole("region", { name: "Primera opción", exact: true })
+      .getByRole("alert"),
+  ).toContainText("El catálogo no responde");
   fail = false;
-  await page.getByRole("button", { name: "Volver a intentar" }).click();
+  await page
+    .getByRole("region", { name: "Primera opción", exact: true })
+    .getByRole("button", { name: "Volver a intentar" })
+    .click();
   await expect(
     page.getByText("No encontramos ofertas.", { exact: false }),
   ).toBeVisible();

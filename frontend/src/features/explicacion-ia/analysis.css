@@ -1055,3 +1055,11 @@ label.interests-label {
   border-color: #1549eb;
   color: #103ba8;
 }
+
+@media (max-width: 520px) {
+  .analysis-selected { grid-template-columns: minmax(0, 1fr); }
+  .analysis-selected > div { grid-template-columns: 88px minmax(0, 1fr); }
+  .analysis-selected > div + div { border-inline-start: 0; border-top: 1px solid #c7d4e8; }
+  .analysis-selected-logo img { max-width: 80px; }
+  .analysis-selected small > svg { flex: 0 0 15px; }
+}

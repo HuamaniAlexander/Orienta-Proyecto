@@ -45,11 +45,9 @@ test("seleccion de dos ofertas se conserva y permite reemplazo", async ({
     page.getByRole("complementary", { name: "Opciones seleccionadas" }),
   ).toContainText("2 de 2 opciones");
   await page.getByRole("link", { name: "Comparar ahora", exact: true }).click();
-  await page.getByText("Ver comparación completa", { exact: true }).click();
+  await expect(page.locator(".comparison-option")).toHaveCount(2);
   await expect(
-    page.getByText("Comparas dos ofertas de la misma carrera:", {
-      exact: false,
-    }),
+    page.getByRole("region", { name: "Criterios de comparación", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: /^Quitar / })
@@ -77,11 +75,31 @@ for (const width of [360, 390, 768, 1024, 1440])
       type: "jpeg",
       quality: 65,
     });
-    await page.getByText("Ver comparación completa", { exact: true }).click();
-    await page.getByRole("checkbox", { name: "Solo diferencias" }).check();
-    await expect(page.locator(".comparison-row:not(.different)")).toHaveCount(
-      0,
-    );
+    const navigation = page.getByRole("navigation", {
+      name: "Criterios de comparación",
+      exact: true,
+    });
+    const guide = page.getByRole("region", {
+      name: "Criterios de comparación",
+      exact: true,
+    });
+    for (const [name, heading] of [
+      ["Enfoque", "Enfoque de la carrera"],
+      ["Costos", "Costos de estudio"],
+      ["Ubicación", "Ubicación y acceso"],
+      ["Modalidad", "Modalidad y experiencia"],
+      ["Ámbitos", "Ámbitos de actividad"],
+      ["Institución", "Institución y nivel"],
+      ["Duración", "Duración y recorrido"],
+    ]) {
+      await navigation.getByRole("button", { name, exact: true }).click();
+      await expect(
+        guide.getByRole("heading", { name: heading, exact: true }),
+      ).toBeVisible();
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBe(width);
+    }
   });
 test("enlace duplicado se rechaza sin perder el catalogo", async ({ page }) => {
   await page.goto("/comparar?opciones=10,10");
